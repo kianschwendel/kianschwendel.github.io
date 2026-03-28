@@ -15,7 +15,7 @@
 html,body{height:100%;}
 body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;min-height:100vh;overflow-x:hidden;line-height:1.5;}
 
-/* ── MODALS ── */
+/* MODALS */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
 .ov.on{display:flex;}
 .modal{background:var(--d3);border:1px solid var(--gold-d);border-radius:14px;padding:30px;width:420px;max-width:95vw;position:relative;max-height:88vh;overflow-y:auto;}
@@ -30,7 +30,10 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .btn-o:hover{background:rgba(201,168,76,0.1);}
 .btn-r{background:transparent;border:1px solid #922;color:#e55;width:100%;margin-top:8px;}
 .btn-r:hover{background:rgba(153,34,34,0.15);}
-.btn-sm{padding:5px 12px;font-size:0.72rem;width:auto;border-radius:7px;}
+.btn-grn{background:#2d7a2d;border:none;color:#fff;border-radius:8px;padding:8px 0;font-family:'Cinzel',serif;font-size:0.76rem;font-weight:700;cursor:pointer;flex:1;transition:background 0.2s;}
+.btn-grn:hover{background:#3a9e3a;}
+.btn-red{background:#7a2d2d;border:none;color:#fff;border-radius:8px;padding:8px 0;font-family:'Cinzel',serif;font-size:0.76rem;font-weight:700;cursor:pointer;flex:1;transition:background 0.2s;}
+.btn-red:hover{background:#9e3a3a;}
 .mc{position:absolute;top:12px;right:14px;background:none;border:none;color:#555;font-size:1.2rem;cursor:pointer;}
 .mc:hover{color:var(--white);}
 .ms{text-align:center;margin-top:11px;font-size:0.9rem;color:var(--mu);}
@@ -38,10 +41,10 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .fe{font-size:0.78rem;color:#e55;margin:-6px 0 9px;display:none;}
 .fe.on{display:block;}
 
-/* ── LAYOUT ── */
+/* LAYOUT */
 #app{display:flex;min-height:100vh;}
 
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 .sidebar{width:var(--sw);background:var(--d2);border-right:1px solid #1e1e1e;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:20;transition:width 0.25s ease;}
 .sidebar.collapsed{width:54px;}
 .sidebar.collapsed .logo-text,.sidebar.collapsed .logo-tagline,.sidebar.collapsed .nav-label,
@@ -55,11 +58,9 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .sidebar.collapsed .friend-item{justify-content:center;padding:7px 0;}
 .sidebar.collapsed .fl-head{justify-content:center;}
 .sidebar.collapsed .sdiv{margin:4px 8px;}
-.sidebar.collapsed .collapse-btn{right:-14px;}
 .logo-icon{display:none;font-size:1.4rem;}
 .collapse-btn{position:absolute;top:22px;right:-14px;width:26px;height:26px;border-radius:50%;background:var(--d3);border:1px solid #2e2e2e;color:var(--mu);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;z-index:30;transition:all 0.2s;}
 .collapse-btn:hover{border-color:var(--gold-d);color:var(--gold);}
-
 .logo{padding:18px 17px 15px;border-bottom:1px solid #1e1e1e;cursor:pointer;position:relative;}
 .logo:hover .logo-chess,.logo:hover .logo-grinder{opacity:0.85;}
 .logo-text{font-family:'Cinzel',serif;font-size:1.45rem;font-weight:900;letter-spacing:0.03em;user-select:none;}
@@ -73,7 +74,7 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .nav-item .icon{font-size:1rem;width:18px;text-align:center;flex-shrink:0;}
 .sdiv{height:1px;background:#1e1e1e;margin:4px 12px;}
 
-/* ── FRIENDS SECTION ── */
+/* FRIENDS */
 .friends-wrap{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
 .fl-head{display:flex;align-items:center;justify-content:space-between;padding:8px 11px 5px;}
 .fl-lbl{font-size:0.66rem;color:#888;letter-spacing:0.18em;text-transform:uppercase;font-family:'Cinzel',serif;font-weight:700;}
@@ -97,21 +98,21 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .fib:hover{border-color:var(--gold-d);color:var(--gold);}
 .fib.rem:hover{border-color:#922;color:#e55;}
 
-/* ── SIDEBAR BOTTOM ── */
+/* SIDEBAR BOTTOM */
 .sidebar-bottom{padding:8px 12px 10px;border-top:1px solid #1e1e1e;flex-shrink:0;}
 .legal-links{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
-.legal-link{font-size:0.7rem;color:#555;cursor:pointer;text-decoration:none;transition:color 0.14s;}
+.legal-link{font-size:0.7rem;color:#555;cursor:pointer;transition:color 0.14s;}
 .legal-link:hover{color:var(--gold);}
 .copy-line{font-size:0.65rem;color:#3a3a3a;}
 
-/* ── TOPBAR ── */
+/* TOPBAR */
 .main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;min-height:100vh;transition:margin-left 0.25s ease;}
 .main.collapsed{margin-left:54px;}
 .topbar{height:56px;background:var(--d2);border-bottom:1px solid #1e1e1e;display:flex;align-items:center;justify-content:flex-end;padding:0 22px;gap:10px;position:sticky;top:0;z-index:5;}
 .lang-sel{position:relative;}
 .lang-btn{display:flex;align-items:center;gap:6px;background:var(--d4);border:1px solid #252525;border-radius:9px;padding:7px 12px;color:var(--white);cursor:pointer;font-size:0.88rem;transition:border-color 0.2s;}
 .lang-btn:hover{border-color:var(--gold-d);}
-.lang-dd{position:absolute;top:calc(100%+7px);right:0;background:var(--d3);border:1px solid #252525;border-radius:11px;overflow:hidden;min-width:162px;display:none;box-shadow:0 14px 44px rgba(0,0,0,0.7);z-index:100;max-height:310px;overflow-y:auto;}
+.lang-dd{position:absolute;top:calc(100% + 7px);right:0;background:var(--d3);border:1px solid #252525;border-radius:11px;overflow:hidden;min-width:162px;display:none;box-shadow:0 14px 44px rgba(0,0,0,0.7);z-index:100;max-height:310px;overflow-y:auto;}
 .lang-dd.on{display:block;}
 .lang-opt{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;transition:background 0.12s;font-size:0.88rem;}
 .lang-opt:hover{background:var(--d5);}
@@ -127,10 +128,10 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .ab.li:hover{border-color:var(--gold-d);color:var(--gold);}
 .ab.re{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);}
 
-/* ── CONTENT ── */
+/* CONTENT */
 .content{flex:1;padding:26px 30px;display:flex;gap:22px;align-items:flex-start;justify-content:center;}
 
-/* ── BOARD ── */
+/* BOARD */
 .game-area{display:flex;gap:20px;align-items:flex-start;justify-content:center;width:100%;}
 .board-wrap{flex-shrink:0;}
 .chess-board{display:grid;grid-template-columns:repeat(8,var(--cell));border:3px solid var(--gold-d);border-radius:3px;box-shadow:0 0 50px rgba(201,168,76,0.08),0 24px 70px rgba(0,0,0,0.8);overflow:hidden;user-select:none;}
@@ -138,16 +139,16 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .cell.lt{background:var(--bl);}
 .cell.dk{background:var(--bd);}
 .cell.sel-c{background:rgba(201,168,76,0.55)!important;}
-.cell.pm-c::after{content:'';position:absolute;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,0.17);pointer-events:none;z-index:2;}
+.cell.pm-c::after{content:'';position:absolute;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.18);pointer-events:none;z-index:2;}
 .cell.cm-c::after{content:'';position:absolute;inset:4px;border-radius:3px;border:4px solid rgba(0,0,0,0.22);pointer-events:none;z-index:2;}
 .cell.lm-c{background:rgba(201,168,76,0.18)!important;}
 .cell.ck-c{background:rgba(220,50,50,0.5)!important;}
 .cell:hover{filter:brightness(1.08);}
 .piece-img{width:calc(var(--cell) - 4px);height:calc(var(--cell) - 4px);display:block;pointer-events:none;}
-.rc{width:16px;height:var(--cell);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#555;font-family:'Cinzel',serif;font-weight:700;}
-.fc{width:var(--cell);height:14px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#555;font-family:'Cinzel',serif;font-weight:700;}
+.rc{width:22px;height:var(--cell);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:#ccc;font-family:'Cinzel',serif;font-weight:700;}
+.fc{width:var(--cell);height:20px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:#ccc;font-family:'Cinzel',serif;font-weight:700;}
 
-/* ── GAME INFO ── */
+/* GAME INFO */
 .ginfo{width:256px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;}
 .pcard{background:var(--d3);border:1px solid #1e1e1e;border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;transition:border-color 0.3s;}
 .pcard.at{border-color:var(--gold-d);}
@@ -176,7 +177,7 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .gbtn:hover{border-color:var(--gold-d);color:var(--gold);}
 .gbtn.dng:hover{border-color:#922;color:#e55;}
 
-/* ── HOME ── */
+/* HOME */
 .hw{width:100%;max-width:630px;}
 .hey{font-size:0.7rem;color:#444;font-family:'Cinzel',serif;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:8px;}
 .hti{font-family:'Cinzel',serif;font-size:2rem;font-weight:900;color:var(--white);line-height:1.1;margin-bottom:8px;}
@@ -197,7 +198,7 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .mc2-ar{position:absolute;bottom:13px;right:13px;color:#252525;font-size:0.84rem;transition:color 0.18s,transform 0.18s;}
 .mc2:hover .mc2-ar{color:var(--gold-d);transform:translateX(3px);}
 
-/* ── LB ── */
+/* LB */
 .lbt{width:100%;border-collapse:collapse;}
 .lbt th{font-family:'Cinzel',serif;font-size:0.65rem;color:#444;letter-spacing:0.14em;text-align:left;padding:6px 12px;border-bottom:1px solid #1e1e1e;font-weight:700;}
 .lbt td{padding:9px 12px;border-bottom:1px solid #181818;font-size:0.88rem;}
@@ -207,19 +208,19 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .lbp{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;}
 .lby{color:var(--gold-l);}
 
-/* ── WAITING ── */
+/* WAITING */
 .wa{text-align:center;max-width:440px;}
 .wspin{width:48px;height:48px;border:3px solid var(--d5);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 18px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .wt{font-family:'Cinzel',serif;font-size:1.25rem;color:var(--gold);margin-bottom:7px;font-weight:700;}
 .ws{color:var(--mu);margin-bottom:18px;font-size:0.9rem;}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:18px;right:18px;background:var(--d3);border:1px solid var(--gold-d);border-radius:10px;padding:11px 17px;font-size:0.88rem;color:var(--white);transform:translateY(66px);opacity:0;transition:all 0.26s;z-index:2000;max-width:270px;}
+/* TOAST */
+.toast{position:fixed;bottom:18px;right:18px;background:var(--d3);border:1px solid var(--gold-d);border-radius:10px;padding:11px 17px;font-size:0.88rem;color:var(--white);transform:translateY(66px);opacity:0;transition:all 0.26s;z-index:2000;max-width:280px;}
 .toast.on{transform:translateY(0);opacity:1;}
 .toast.err{border-color:#922;}
 
-/* ── MISC ── */
+/* MISC */
 .ptit{font-family:'Cinzel',serif;font-size:1.55rem;color:var(--white);margin-bottom:4px;font-weight:700;}
 .ptit span{color:var(--gold);}
 .psub{color:var(--mu);margin-bottom:18px;font-size:0.9rem;}
@@ -237,8 +238,6 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .pp img{width:48px;height:48px;}
 .gor{font-size:2.8rem;text-align:center;margin:10px 0 6px;}
 .god{text-align:center;color:var(--mu);margin-bottom:15px;font-size:0.88rem;}
-
-/* ── PROFILE ── */
 .pmav{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.75rem;font-weight:700;color:var(--gold-l);margin:0 auto 11px;cursor:pointer;border:2px solid var(--gold-d);transition:border-color 0.2s;}
 .pmav:hover{border-color:var(--gold);}
 .avpick{display:none;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 11px;padding:9px;background:var(--d5);border-radius:9px;}
@@ -250,12 +249,8 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .psl{font-size:0.68rem;color:var(--mu);margin-top:2px;}
 .cc{font-size:0.66rem;color:var(--mu);text-align:right;margin-top:-7px;margin-bottom:8px;}
 .pmeta{font-size:0.82rem;color:var(--mu);margin-bottom:9px;display:flex;flex-direction:column;gap:4px;}
-
-/* ── FRIEND PROFILE ── */
 .fpav{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 10px;border:2px solid var(--gold-d);}
 .fpbio{font-size:0.88rem;color:var(--mu);text-align:center;margin-bottom:11px;font-style:italic;min-height:17px;}
-
-/* ── DM ── */
 .dm-msgs{max-height:165px;overflow-y:auto;margin:8px 0;display:flex;flex-direction:column;gap:5px;}
 .dm-m{padding:7px 11px;border-radius:8px;font-size:0.85rem;max-width:80%;}
 .dm-m.mine{background:rgba(201,168,76,0.12);border:1px solid var(--gold-d);align-self:flex-end;}
@@ -264,14 +259,7 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .dm-row input{flex:1;margin-bottom:0;}
 .dm-send{background:var(--gold-d);border:none;border-radius:8px;color:var(--dark);padding:0 13px;cursor:pointer;font-size:0.92rem;font-weight:700;}
 .dm-send:hover{background:var(--gold);}
-
-/* ── CONFIRM ── */
 .confirm-btns{display:flex;gap:10px;margin-top:6px;}
-.confirm-btns .btn{flex:1;margin:0;}
-
-/* ── LEGAL ── */
-.legal-body{font-size:0.9rem;color:var(--mu);min-height:80px;padding:10px 0;}
-
 .pts-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(201,168,76,0.07);border:1px solid #252525;border-radius:18px;padding:3px 11px;font-family:'Cinzel',serif;font-size:0.78rem;color:var(--gold);font-weight:700;}
 .on-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.76rem;color:#4CAF50;font-weight:600;}
 .on-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#4CAF50;flex-shrink:0;}
@@ -282,43 +270,39 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .ouc-t{font-size:0.7rem;color:var(--mu);}
 .ouc-p{font-size:0.74rem;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;}
 .cb{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);border-radius:7px;padding:5px 12px;font-size:0.7rem;font-family:'Cinzel',serif;font-weight:700;}
-
-/* ── REQ LIST ── */
 .req-i{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:10px;margin-bottom:5px;background:var(--d4);}
 .req-info{flex:1;}
 .req-n{font-size:0.88rem;font-weight:600;}
 .req-t{font-size:0.68rem;color:var(--mu);}
+.req-acts{display:flex;gap:8px;min-width:160px;}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
-<!-- LOGIN -->
 <div class="ov" id="mL"><div class="modal">
   <button class="mc" onclick="cm('mL')">✕</button>
-  <h2>Welcome Back</h2>
+  <h2 id="mLH">Welcome Back</h2>
   <input type="text" id="lU" placeholder="Username" autocomplete="off"/>
   <div class="fe" id="lE"></div>
   <input type="password" id="lP" placeholder="Password"/>
-  <button class="btn btn-g" onclick="doLogin()">Sign In</button>
-  <div class="ms">No account? <a onclick="swm('mL','mR')">Create one</a></div>
+  <button class="btn btn-g" id="mLBtn" onclick="doLogin()">Sign In</button>
+  <div class="ms" id="mLSw">No account? <a onclick="swm('mL','mR')">Create one</a></div>
 </div></div>
 
-<!-- REGISTER -->
 <div class="ov" id="mR"><div class="modal">
   <button class="mc" onclick="cm('mR')">✕</button>
-  <h2>Join ChessGrinder</h2>
+  <h2 id="mRH">Join ChessGrinder</h2>
   <input type="text" id="rU" placeholder="Username (5–16 chars)" maxlength="16" autocomplete="off"/>
   <div class="fe" id="rUE"></div>
   <input type="email" id="rEm" placeholder="Email" autocomplete="off"/>
   <div class="fe" id="rEE"></div>
   <input type="password" id="rP" placeholder="Password (min 6 chars)"/>
   <div class="fe" id="rPE"></div>
-  <button class="btn btn-g" onclick="doReg()">Create Account</button>
-  <div class="ms">Already have an account? <a onclick="swm('mR','mL')">Sign in</a></div>
+  <button class="btn btn-g" id="mRBtn" onclick="doReg()">Create Account</button>
+  <div class="ms" id="mRSw">Already have an account? <a onclick="swm('mR','mL')">Sign in</a></div>
 </div></div>
 
-<!-- MY PROFILE -->
 <div class="ov" id="mPr"><div class="modal">
   <button class="mc" onclick="cm('mPr')">✕</button>
   <h2 id="mPrH">My Profile</h2>
@@ -332,52 +316,47 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
   </div>
   <div class="pst" id="pmSt"></div>
   <div class="pmeta" id="pmMeta"></div>
-  <input type="text" id="pmN" placeholder="Display name (5–16 chars)" maxlength="16"/>
+  <input type="text" id="pmN" placeholder="Display name (5–16)"/>
   <textarea id="pmB" placeholder="Bio (max 30 chars)" maxlength="30" rows="2"></textarea>
   <div class="cc"><span id="bCC">0</span>/30</div>
   <button class="btn btn-g" id="pmSvBtn" onclick="saveProf()">Save Changes</button>
-  <button class="btn btn-r" onclick="doLogout()">Sign Out</button>
+  <button class="btn btn-r" id="pmSOBtn" onclick="doLogout()">Sign Out</button>
 </div></div>
 
-<!-- FRIEND PROFILE -->
 <div class="ov" id="mFP"><div class="modal">
   <button class="mc" onclick="cm('mFP')">✕</button>
-  <h2>Player Profile</h2>
+  <h2 id="mFPH">Player Profile</h2>
   <div class="fpav" id="fpAv"></div>
   <div style="text-align:center;margin-bottom:3px"><span style="font-family:'Cinzel',serif;font-size:0.97rem;font-weight:700" id="fpN"></span></div>
   <div style="text-align:center;font-size:0.7rem;color:var(--mu);margin-bottom:8px" id="fpTg"></div>
   <div class="fpbio" id="fpBio"></div>
   <div class="pst" id="fpSt"></div>
   <div class="pmeta" id="fpMeta"></div>
-  <button class="btn btn-g" style="margin-top:4px" onclick="cm('mFP')">Close</button>
+  <button class="btn btn-g" id="mFPClose" onclick="cm('mFP')">Close</button>
 </div></div>
 
-<!-- ADD FRIEND -->
 <div class="ov" id="mAF"><div class="modal">
   <button class="mc" onclick="cm('mAF')">✕</button>
-  <h2>Find Players</h2>
+  <h2 id="mAFH">Find Players</h2>
   <input type="text" id="fs" placeholder="Search by username or #tag..." oninput="searchP()"/>
   <div class="sr-wrap" id="sR"></div>
 </div></div>
 
-<!-- FRIEND REQUESTS -->
 <div class="ov" id="mRQ"><div class="modal">
   <button class="mc" onclick="cm('mRQ')">✕</button>
-  <h2>Friend Requests</h2>
+  <h2 id="mRQH">Friend Requests</h2>
   <div id="rqList"></div>
 </div></div>
 
-<!-- CONFIRM REMOVE FRIEND -->
 <div class="ov" id="mCF"><div class="modal" style="max-width:360px">
-  <h2>Remove Friend?</h2>
-  <p style="text-align:center;color:var(--mu);font-size:0.92rem;margin-bottom:18px" id="cfTxt">Are you sure you want to remove this friend?</p>
+  <h2 id="mCFH">Remove Friend?</h2>
+  <p style="text-align:center;color:var(--mu);font-size:0.92rem;margin-bottom:18px" id="cfTxt"></p>
   <div class="confirm-btns">
-    <button class="btn btn-r" onclick="confirmRemove()">Remove</button>
-    <button class="btn btn-o" onclick="cm('mCF')">Cancel</button>
+    <button class="btn btn-r" style="flex:1;margin:0" id="cfYes" onclick="confirmRemove()">Remove</button>
+    <button class="btn btn-o" style="flex:1;margin:0" id="cfNo" onclick="cm('mCF')">Cancel</button>
   </div>
 </div></div>
 
-<!-- DM -->
 <div class="ov" id="mDM"><div class="modal">
   <button class="mc" onclick="cm('mDM')">✕</button>
   <h2 id="dmTi">Message</h2>
@@ -388,13 +367,11 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
   </div>
 </div></div>
 
-<!-- PROMOTION -->
 <div class="ov" id="mPM"><div class="modal" style="text-align:center">
-  <h2>Promote Pawn</h2>
+  <h2 id="mPMH">Promote Pawn</h2>
   <div class="promo-ps" id="promoPcs"></div>
 </div></div>
 
-<!-- GAME OVER -->
 <div class="ov" id="mGO"><div class="modal">
   <h2 id="goTi">Game Over</h2>
   <div class="gor" id="goEm">🏆</div>
@@ -403,26 +380,13 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
   <button class="btn btn-o" id="goBM" onclick="goHome()">Back to Menu</button>
 </div></div>
 
-<!-- LEGAL MODALS -->
-<div class="ov" id="mPriv"><div class="modal">
-  <button class="mc" onclick="cm('mPriv')">✕</button>
-  <h2>Privacy Policy</h2>
-  <div class="legal-body">Content coming soon.</div>
-</div></div>
-<div class="ov" id="mTos"><div class="modal">
-  <button class="mc" onclick="cm('mTos')">✕</button>
-  <h2>Terms of Service</h2>
-  <div class="legal-body">Content coming soon.</div>
-</div></div>
-<div class="ov" id="mImp"><div class="modal">
-  <button class="mc" onclick="cm('mImp')">✕</button>
-  <h2>Impressum</h2>
-  <div class="legal-body">Content coming soon.</div>
-</div></div>
+<div class="ov" id="mPriv"><div class="modal"><button class="mc" onclick="cm('mPriv')">✕</button><h2>Privacy Policy</h2><p style="color:var(--mu);font-size:0.9rem;padding:10px 0">Content coming soon.</p></div></div>
+<div class="ov" id="mTos"><div class="modal"><button class="mc" onclick="cm('mTos')">✕</button><h2>Terms of Service</h2><p style="color:var(--mu);font-size:0.9rem;padding:10px 0">Content coming soon.</p></div></div>
+<div class="ov" id="mImp"><div class="modal"><button class="mc" onclick="cm('mImp')">✕</button><h2>Impressum</h2><p style="color:var(--mu);font-size:0.9rem;padding:10px 0">Content coming soon.</p></div></div>
 
 <div id="app">
   <aside class="sidebar" id="sidebar">
-    <button class="collapse-btn" id="colBtn" onclick="toggleSidebar()" title="Toggle sidebar">◀</button>
+    <button class="collapse-btn" id="colBtn" onclick="toggleSB()">◀</button>
     <div class="logo" onclick="showSect('home')">
       <span class="logo-icon">♟</span>
       <div class="logo-text"><span class="logo-chess">Chess</span><span class="logo-grinder">Grinder</span></div>
@@ -456,7 +420,6 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
       <div class="copy-line">© 2026 ChessGrinder. All rights reserved.</div>
     </div>
   </aside>
-
   <main class="main" id="mainEl">
     <div class="topbar">
       <div class="lang-sel">
@@ -484,189 +447,238 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 </div>
 
 <script>
-// ═══ TRANSLATIONS (compact) ═══
+// ═══ TRANSLATIONS ═══
 const TR={
   en:{tag:'Master the board',play:'Play',home:'Home',solo:'Solo',pvp:'PvP',comp:'Competitive',friends:'Friends',freqs:'Friend Requests',
     ey:'Ready to play?',ht:'Your move,',hs:'Champion.',hb:'Choose a game mode and sharpen your strategy.',
     wins:'Wins',losses:'Losses',pts:'Points',frnds:'Friends',joined:'Joined',lastOn:'Last seen',
-    sT:'Solo',sD:"Larry never lost a game he didn't want to lose. Prove him wrong.",
-    pT:'PvP',pD:'Challenge online players and dominate.',
-    cT:'Competitive',cD:'Climb the ladder. Win +10 pts. Lose −5 pts.',
+    sT:'Solo',sD:"Larry never lost a game he didn't want to lose.",pT:'PvP',pD:'Challenge online players.',
+    cT:'Competitive',cD:'Win +10 pts. Lose −5 pts. Max 20 games/day.',
     wm:'White to move',bm:'Black to move',ip:'Game in progress',
     draw:'½ Draw',resign:'⚑ Resign',exit:'✕ Exit',
     fm:'Find Match',fo:'Finding Opponent…',sp:'Searching for an online player',cancel:'Cancel',
     mh:'MOVE HISTORY',si:'Sign In',reg:'Register',profile:'My Profile',save:'Save Changes',dname:'Display name',bio:'Bio',so:'Sign Out',
-    pa:'Play Again',bm2:'Back to Menu',cm:'Checkmate!',stale:'Stalemate!',res:'You Resigned',bl:'Better luck next time!',wb:'wins by checkmate!',
+    pa:'Play Again',bm2:'Back to Menu',cm_:'Checkmate!',stale:'Stalemate!',res:'You Resigned',bl:'Better luck next time!',wb:'wins by checkmate!',
     np:'No online players found.',on:'Online Now',wl:'W/L',pD2:'Challenge an online player:',
     days:'days ago',today:'today',yesterday:'yesterday',
-    rSent:'Request sent!',alF:'Already friends!',alS:'Request already sent.',
-    acc:'Accept',dec:'Decline',noRQ:'No pending requests.',
-    rmConf:'Are you sure you want to remove',as:'as a friend?',
+    rSent:'Request sent!',alF:'Already friends!',alS:'Request already sent.',acc:'Accept',dec:'Decline',noRQ:'No pending requests.',
+    rmConf:'Remove',as:'as a friend?',rmTitle:'Remove Friend?',
+    close:'Close',dailyLeft:'Daily games remaining:',limitReached:'⛔ Daily limit reached — resets at 00:00',
   },
   de:{tag:'Meistere das Brett',play:'Spielen',home:'Startseite',solo:'Solo',pvp:'PvP',comp:'Wettkampf',friends:'Freunde',freqs:'Freundschaftsanfragen',
-    ey:'Bereit?',ht:'Dein Zug,',hs:'Champion.',hb:'Wähle einen Modus.',
-    wins:'Siege',losses:'Niederlagen',pts:'Punkte',frnds:'Freunde',joined:'Beigetreten',lastOn:'Zuletzt online',
-    sT:'Solo',sD:'Larry hat noch nie verloren, was er nicht verlieren wollte.',
-    pT:'PvP',pD:'Fordere Online-Spieler heraus.',
-    cT:'Wettkampf',cD:'Sieg +10 Pkt. Niederlage −5 Pkt.',
-    wm:'Weiß am Zug',bm:'Schwarz am Zug',ip:'Spiel läuft',
-    draw:'½ Remis',resign:'⚑ Aufgeben',exit:'✕ Verlassen',
-    fm:'Suchen',fo:'Suche läuft…',sp:'Suche Online-Spieler',cancel:'Abbrechen',
+    ey:'Bereit?',ht:'Dein Zug,',hs:'Champion.',hb:'Wähle einen Spielmodus.',wins:'Siege',losses:'Niederlagen',pts:'Punkte',frnds:'Freunde',joined:'Beigetreten',lastOn:'Zuletzt online',
+    sT:'Solo',sD:'Larry verliert nur was er will.',pT:'PvP',pD:'Fordere Online-Spieler heraus.',cT:'Wettkampf',cD:'Sieg +10 Pkt. Niederlage −5 Pkt. Max. 20/Tag.',
+    wm:'Weiß am Zug',bm:'Schwarz am Zug',ip:'Spiel läuft',draw:'½ Remis',resign:'⚑ Aufgeben',exit:'✕ Verlassen',
+    fm:'Gegner suchen',fo:'Suche läuft…',sp:'Suche Online-Spieler',cancel:'Abbrechen',
     mh:'ZUGHISTORIE',si:'Anmelden',reg:'Registrieren',profile:'Mein Profil',save:'Speichern',dname:'Anzeigename',bio:'Bio',so:'Abmelden',
-    pa:'Nochmal',bm2:'Zurück',cm:'Schachmatt!',stale:'Patt!',res:'Aufgegeben',bl:'Beim nächsten Mal!',wb:'gewinnt!',
+    pa:'Nochmal',bm2:'Zurück',cm_:'Schachmatt!',stale:'Patt!',res:'Aufgegeben',bl:'Beim nächsten Mal!',wb:'gewinnt!',
     np:'Keine Online-Spieler.',on:'Jetzt online',wl:'S/N',pD2:'Fordere einen Spieler heraus:',
     days:'Tage her',today:'heute',yesterday:'gestern',
-    rSent:'Anfrage gesendet!',alF:'Bereits befreundet!',alS:'Anfrage bereits gesendet.',
-    acc:'Annehmen',dec:'Ablehnen',noRQ:'Keine ausstehenden Anfragen.',
-    rmConf:'Möchtest du wirklich',as:'als Freund entfernen?',
+    rSent:'Anfrage gesendet!',alF:'Bereits befreundet!',alS:'Anfrage bereits gesendet.',acc:'Annehmen',dec:'Ablehnen',noRQ:'Keine ausstehenden Anfragen.',
+    rmConf:'Möchtest du wirklich',as:'als Freund entfernen?',rmTitle:'Freund entfernen?',
+    close:'Schließen',dailyLeft:'Verbleibende Partien heute:',limitReached:'⛔ Tageslimit erreicht — Reset um 00:00',
   },
   es:{tag:'Domina el tablero',play:'Jugar',home:'Inicio',solo:'Solo',pvp:'PvP',comp:'Competitivo',friends:'Amigos',freqs:'Solicitudes de amistad',
-    ey:'¿Listo?',ht:'Tu turno,',hs:'Campeón.',hb:'Elige un modo.',
-    wins:'Victorias',losses:'Derrotas',pts:'Puntos',frnds:'Amigos',joined:'Unido',lastOn:'Última vez online',
-    sT:'Solo',sD:'Larry nunca perdió lo que no quiso perder.',pT:'PvP',pD:'Desafía jugadores online.',
-    cT:'Competitivo',cD:'Gana +10. Pierde −5.',wm:'Blancas mueven',bm:'Negras mueven',ip:'En curso',
-    draw:'½ Tablas',resign:'⚑ Rendirse',exit:'✕ Salir',
+    ey:'¿Listo?',ht:'Tu turno,',hs:'Campeón.',hb:'Elige un modo.',wins:'Victorias',losses:'Derrotas',pts:'Puntos',frnds:'Amigos',joined:'Unido',lastOn:'Última vez',
+    sT:'Solo',sD:'Larry nunca pierde lo que no quiere.',pT:'PvP',pD:'Desafía jugadores online.',cT:'Competitivo',cD:'Gana +10. Pierde −5. Máx. 20/día.',
+    wm:'Blancas mueven',bm:'Negras mueven',ip:'En curso',draw:'½ Tablas',resign:'⚑ Rendirse',exit:'✕ Salir',
     fm:'Buscar',fo:'Buscando…',sp:'Buscando jugador',cancel:'Cancelar',
     mh:'HISTORIAL',si:'Entrar',reg:'Registrarse',profile:'Mi perfil',save:'Guardar',dname:'Nombre',bio:'Bio',so:'Salir',
-    pa:'De nuevo',bm2:'Volver',cm:'¡Jaque mate!',stale:'Ahogado.',res:'Te rendiste',bl:'¡Mejor suerte!',wb:'gana.',
+    pa:'De nuevo',bm2:'Volver',cm_:'¡Jaque mate!',stale:'Ahogado.',res:'Te rendiste',bl:'¡Mejor suerte!',wb:'gana.',
     np:'Sin jugadores.',on:'En línea',wl:'V/D',pD2:'Desafía a alguien:',
     days:'días',today:'hoy',yesterday:'ayer',
-    rSent:'¡Solicitud enviada!',alF:'Ya son amigos.',alS:'Ya enviada.',acc:'Aceptar',dec:'Rechazar',noRQ:'Sin solicitudes.',
-    rmConf:'¿Seguro que quieres eliminar a',as:'como amigo?',
+    rSent:'¡Enviada!',alF:'Ya son amigos.',alS:'Ya enviada.',acc:'Aceptar',dec:'Rechazar',noRQ:'Sin solicitudes.',
+    rmConf:'¿Eliminar a',as:'de amigos?',rmTitle:'¿Eliminar amigo?',
+    close:'Cerrar',dailyLeft:'Partidas restantes hoy:',limitReached:'⛔ Límite diario — reinicia a las 00:00',
   },
   fr:{tag:"Maîtrisez l'échiquier",play:'Jouer',home:'Accueil',solo:'Solo',pvp:'PvP',comp:'Compétitif',friends:'Amis',freqs:"Demandes d'amis",
-    ey:'Prêt ?',ht:'À vous,',hs:'Champion.',hb:'Choisissez un mode.',
-    wins:'Victoires',losses:'Défaites',pts:'Points',frnds:'Amis',joined:'Inscrit',lastOn:'Dernière connexion',
-    sT:'Solo',sD:"Larry n'a jamais perdu ce qu'il ne voulait pas perdre.",pT:'PvP',pD:'Défiez des joueurs en ligne.',
-    cT:'Compétitif',cD:'Victoire +10. Défaite −5.',wm:'Blancs jouent',bm:'Noirs jouent',ip:'En cours',
-    draw:'½ Nulle',resign:'⚑ Abandonner',exit:'✕ Quitter',
+    ey:'Prêt ?',ht:'À vous,',hs:'Champion.',hb:'Choisissez un mode.',wins:'Victoires',losses:'Défaites',pts:'Points',frnds:'Amis',joined:'Inscrit',lastOn:'Dernière connexion',
+    sT:'Solo',sD:"Larry ne perd que ce qu'il veut.",pT:'PvP',pD:'Défiez des joueurs en ligne.',cT:'Compétitif',cD:'Victoire +10. Défaite −5. Max. 20/jour.',
+    wm:'Blancs jouent',bm:'Noirs jouent',ip:'En cours',draw:'½ Nulle',resign:'⚑ Abandonner',exit:'✕ Quitter',
     fm:'Chercher',fo:'Recherche…',sp:"Recherche d'adversaire",cancel:'Annuler',
     mh:'HISTORIQUE',si:'Connexion',reg:"S'inscrire",profile:'Mon profil',save:'Enregistrer',dname:'Nom',bio:'Bio',so:'Déconnexion',
-    pa:'Rejouer',bm2:'Retour',cm:'Échec et mat !',stale:'Pat !',res:'Abandon',bl:'Meilleure chance !',wb:'gagne.',
+    pa:'Rejouer',bm2:'Retour',cm_:'Échec et mat !',stale:'Pat !',res:'Abandon',bl:'Meilleure chance !',wb:'gagne.',
     np:'Aucun joueur.',on:'En ligne',wl:'V/D',pD2:'Défiez un joueur :',
     days:'jours',today:"aujourd'hui",yesterday:'hier',
-    rSent:'Demande envoyée !',alF:'Déjà amis.',alS:'Déjà envoyée.',acc:'Accepter',dec:'Refuser',noRQ:'Aucune demande.',
-    rmConf:'Supprimer',as:'de vos amis ?',
+    rSent:'Envoyée !',alF:'Déjà amis.',alS:'Déjà envoyée.',acc:'Accepter',dec:'Refuser',noRQ:'Aucune demande.',
+    rmConf:'Supprimer',as:'des amis ?',rmTitle:'Supprimer ami ?',
+    close:'Fermer',dailyLeft:'Parties restantes aujourd\'hui :',limitReached:'⛔ Limite atteinte — réinitialisation à 00:00',
   },
   ru:{tag:'Мастер доски',play:'Играть',home:'Главная',solo:'Соло',pvp:'PvP',comp:'Соревнование',friends:'Друзья',freqs:'Заявки в друзья',
-    ey:'Готов?',ht:'Ваш ход,',hs:'Чемпион.',hb:'Выберите режим.',
-    wins:'Победы',losses:'Поражения',pts:'Очки',frnds:'Друзья',joined:'Зарегистрирован',lastOn:'Последний онлайн',
-    sT:'Соло',sD:'Ларри не проигрывает то, что не хочет.',pT:'PvP',pD:'Вызовите игроков онлайн.',
-    cT:'Соревнование',cD:'Победа +10. Поражение −5.',wm:'Ход белых',bm:'Ход чёрных',ip:'Игра идёт',
-    draw:'½ Ничья',resign:'⚑ Сдаться',exit:'✕ Выйти',
+    ey:'Готов?',ht:'Ваш ход,',hs:'Чемпион.',hb:'Выберите режим.',wins:'Победы',losses:'Поражения',pts:'Очки',frnds:'Друзья',joined:'Зарегистрирован',lastOn:'Последний онлайн',
+    sT:'Соло',sD:'Ларри проигрывает только то, что хочет.',pT:'PvP',pD:'Вызовите игроков онлайн.',cT:'Соревнование',cD:'Победа +10. Поражение −5. Макс. 20/день.',
+    wm:'Ход белых',bm:'Ход чёрных',ip:'Игра идёт',draw:'½ Ничья',resign:'⚑ Сдаться',exit:'✕ Выйти',
     fm:'Найти',fo:'Поиск…',sp:'Ищем игрока',cancel:'Отмена',
     mh:'ИСТОРИЯ',si:'Войти',reg:'Регистрация',profile:'Профиль',save:'Сохранить',dname:'Имя',bio:'Био',so:'Выйти',
-    pa:'Снова',bm2:'Назад',cm:'Шах и мат!',stale:'Пат!',res:'Сдались',bl:'Удачи!',wb:'побеждает!',
+    pa:'Снова',bm2:'Назад',cm_:'Шах и мат!',stale:'Пат!',res:'Сдались',bl:'Удачи!',wb:'побеждает!',
     np:'Нет игроков.',on:'Онлайн',wl:'П/П',pD2:'Вызовите игрока:',
     days:'дней назад',today:'сегодня',yesterday:'вчера',
     rSent:'Заявка отправлена!',alF:'Уже друзья.',alS:'Уже отправлена.',acc:'Принять',dec:'Отклонить',noRQ:'Нет заявок.',
-    rmConf:'Удалить',as:'из друзей?',
+    rmConf:'Удалить',as:'из друзей?',rmTitle:'Удалить друга?',
+    close:'Закрыть',dailyLeft:'Осталось партий сегодня:',limitReached:'⛔ Лимит. Сброс в 00:00',
   },
   ar:{tag:'أتقن الرقعة',play:'العب',home:'الرئيسية',solo:'منفرد',pvp:'PvP',comp:'تنافسي',friends:'أصدقاء',freqs:'طلبات الصداقة',
     ey:'مستعد؟',ht:'دورك،',hs:'بطل.',hb:'اختر وضع اللعب.',wins:'انتصارات',losses:'خسائر',pts:'نقاط',frnds:'أصدقاء',joined:'انضم',lastOn:'آخر ظهور',
-    sT:'منفرد',sD:'لاري لم يخسر ما لم يُرد.',pT:'PvP',pD:'تحدّ لاعبين.',cT:'تنافسي',cD:'فوز +10. خسارة −5.',
+    sT:'منفرد',sD:'لاري يخسر فقط ما يريد.',pT:'PvP',pD:'تحدّ لاعبين.',cT:'تنافسي',cD:'فوز +10. خسارة −5. الحد 20/يوم.',
     wm:'دور الأبيض',bm:'دور الأسود',ip:'جارية',draw:'½ تعادل',resign:'⚑ استسلام',exit:'✕ خروج',
-    fm:'بحث',fo:'جارٍ…',sp:'نبحث',cancel:'إلغاء',mh:'السجل',si:'دخول',reg:'تسجيل',profile:'الملف',save:'حفظ',dname:'الاسم',bio:'نبذة',so:'خروج',
-    pa:'مجدداً',bm2:'رجوع',cm:'كش مات!',stale:'تعادل!',res:'استسلمت',bl:'حظاً أوفر!',wb:'يفوز!',
-    np:'لا يوجد لاعبون.',on:'متصل',wl:'ف/خ',pD2:'تحدّ لاعباً:',days:'أيام',today:'اليوم',yesterday:'أمس',
-    rSent:'تم الإرسال!',alF:'أصدقاء مسبقاً.',alS:'تم مسبقاً.',acc:'قبول',dec:'رفض',noRQ:'لا طلبات.',rmConf:'إزالة',as:'من الأصدقاء؟',
+    fm:'بحث',fo:'جارٍ…',sp:'نبحث',cancel:'إلغاء',
+    mh:'السجل',si:'دخول',reg:'تسجيل',profile:'الملف',save:'حفظ',dname:'الاسم',bio:'نبذة',so:'خروج',
+    pa:'مجدداً',bm2:'رجوع',cm_:'كش مات!',stale:'تعادل!',res:'استسلمت',bl:'حظاً أوفر!',wb:'يفوز!',
+    np:'لا يوجد لاعبون.',on:'متصل',wl:'ف/خ',pD2:'تحدّ لاعباً:',
+    days:'أيام',today:'اليوم',yesterday:'أمس',
+    rSent:'تم الإرسال!',alF:'أصدقاء مسبقاً.',alS:'تم مسبقاً.',acc:'قبول',dec:'رفض',noRQ:'لا طلبات.',
+    rmConf:'إزالة',as:'من الأصدقاء؟',rmTitle:'إزالة صديق؟',
+    close:'إغلاق',dailyLeft:'الألعاب المتبقية:',limitReached:'⛔ الحد اليومي — يُعاد الضبط عند 00:00',
   },
   hi:{tag:'बोर्ड पर महारत',play:'खेलें',home:'होम',solo:'एकल',pvp:'PvP',comp:'प्रतिस्पर्धी',friends:'दोस्त',freqs:'मित्र अनुरोध',
     ey:'तैयार?',ht:'आपकी चाल,',hs:'चैंपियन।',hb:'एक मोड चुनें।',wins:'जीत',losses:'हार',pts:'अंक',frnds:'दोस्त',joined:'शामिल हुए',lastOn:'अंतिम बार ऑनलाइन',
-    sT:'एकल',sD:'लैरी ने वो मैच नहीं हारा।',pT:'PvP',pD:'ऑनलाइन खिलाड़ियों को चुनौती दें।',cT:'प्रतिस्पर्धी',cD:'जीत +10। हार −5।',
+    sT:'एकल',sD:'लैरी वही हारता है जो वो हारना चाहता है।',pT:'PvP',pD:'ऑनलाइन खिलाड़ियों को चुनौती दें।',cT:'प्रतिस्पर्धी',cD:'जीत +10। हार −5। अधिकतम 20/दिन।',
     wm:'सफ़ेद की बारी',bm:'काले की बारी',ip:'जारी है',draw:'½ ड्रॉ',resign:'⚑ हार',exit:'✕ बाहर',
-    fm:'खोजें',fo:'खोज…',sp:'खिलाड़ी खोज',cancel:'रद्द',mh:'इतिहास',si:'साइन इन',reg:'पंजीकरण',profile:'प्रोफ़ाइल',save:'सहेजें',dname:'नाम',bio:'बायो',so:'साइन आउट',
-    pa:'फिर खेलें',bm2:'वापस',cm:'शह और मात!',stale:'पैट!',res:'हार मानी',bl:'शुभकामनाएं!',wb:'जीत!',
-    np:'कोई ऑनलाइन नहीं।',on:'ऑनलाइन',wl:'जी/ह',pD2:'चुनौती दें:',days:'दिन पहले',today:'आज',yesterday:'कल',
-    rSent:'अनुरोध भेजा!',alF:'पहले से दोस्त।',alS:'पहले से भेजा।',acc:'स्वीकार',dec:'अस्वीकार',noRQ:'कोई अनुरोध नहीं।',rmConf:'हटाएं',as:'को दोस्तों से?',
+    fm:'खोजें',fo:'खोज…',sp:'खिलाड़ी खोज',cancel:'रद्द',
+    mh:'इतिहास',si:'साइन इन',reg:'पंजीकरण',profile:'प्रोफ़ाइल',save:'सहेजें',dname:'नाम',bio:'बायो',so:'साइन आउट',
+    pa:'फिर खेलें',bm2:'वापस',cm_:'शह और मात!',stale:'पैट!',res:'हार मानी',bl:'शुभकामनाएं!',wb:'जीत!',
+    np:'कोई ऑनलाइन नहीं।',on:'ऑनलाइन',wl:'जी/ह',pD2:'चुनौती दें:',
+    days:'दिन पहले',today:'आज',yesterday:'कल',
+    rSent:'अनुरोध भेजा!',alF:'पहले से दोस्त।',alS:'पहले से भेजा।',acc:'स्वीकार',dec:'अस्वीकार',noRQ:'कोई अनुरोध नहीं।',
+    rmConf:'हटाएं',as:'को दोस्तों से?',rmTitle:'दोस्त हटाएं?',
+    close:'बंद करें',dailyLeft:'आज के शेष खेल:',limitReached:'⛔ दैनिक सीमा — 00:00 पर रीसेट',
   },
-  pt:{tag:'Domine o tabuleiro',play:'Jogar',home:'Início',solo:'Solo',pvp:'PvP',comp:'Competitivo',friends:'Amigos',freqs:'Solicitações de amizade',
+  pt:{tag:'Domine o tabuleiro',play:'Jogar',home:'Início',solo:'Solo',pvp:'PvP',comp:'Competitivo',friends:'Amigos',freqs:'Pedidos de amizade',
     ey:'Pronto?',ht:'Sua vez,',hs:'Campeão.',hb:'Escolha um modo.',wins:'Vitórias',losses:'Derrotas',pts:'Pontos',frnds:'Amigos',joined:'Entrou',lastOn:'Visto por último',
-    sT:'Solo',sD:'Larry nunca perdeu o que não queria.',pT:'PvP',pD:'Desafie jogadores.',cT:'Competitivo',cD:'Ganhe +10. Perca −5.',
+    sT:'Solo',sD:'Larry só perde o que quer.',pT:'PvP',pD:'Desafie jogadores online.',cT:'Competitivo',cD:'Ganhe +10. Perca −5. Máx. 20/dia.',
     wm:'Brancas jogam',bm:'Pretas jogam',ip:'Em andamento',draw:'½ Empate',resign:'⚑ Desistir',exit:'✕ Sair',
-    fm:'Buscar',fo:'Buscando…',sp:'Procurando jogador',cancel:'Cancelar',mh:'HISTÓRICO',si:'Entrar',reg:'Cadastrar',profile:'Meu perfil',save:'Salvar',dname:'Nome',bio:'Bio',so:'Sair',
-    pa:'De novo',bm2:'Voltar',cm:'Xeque-mate!',stale:'Empate!',res:'Desistiu',bl:'Boa sorte!',wb:'vence!',
-    np:'Nenhum jogador.',on:'Online agora',wl:'V/D',pD2:'Desafie alguém:',days:'dias atrás',today:'hoje',yesterday:'ontem',
-    rSent:'Enviada!',alF:'Já são amigos.',alS:'Já enviada.',acc:'Aceitar',dec:'Recusar',noRQ:'Sem solicitações.',rmConf:'Remover',as:'dos amigos?',
+    fm:'Buscar',fo:'Buscando…',sp:'Procurando jogador',cancel:'Cancelar',
+    mh:'HISTÓRICO',si:'Entrar',reg:'Cadastrar',profile:'Meu perfil',save:'Salvar',dname:'Nome',bio:'Bio',so:'Sair',
+    pa:'Jogar de novo',bm2:'Voltar',cm_:'Xeque-mate!',stale:'Empate!',res:'Desistiu',bl:'Boa sorte!',wb:'vence!',
+    np:'Nenhum jogador.',on:'Online agora',wl:'V/D',pD2:'Desafie alguém:',
+    days:'dias atrás',today:'hoje',yesterday:'ontem',
+    rSent:'Enviado!',alF:'Já são amigos.',alS:'Já enviado.',acc:'Aceitar',dec:'Recusar',noRQ:'Sem pedidos.',
+    rmConf:'Remover',as:'dos amigos?',rmTitle:'Remover amigo?',
+    close:'Fechar',dailyLeft:'Partidas restantes hoje:',limitReached:'⛔ Limite diário — reinicia às 00:00',
   },
   sv:{tag:'Bemästra brädet',play:'Spela',home:'Hem',solo:'Solo',pvp:'PvP',comp:'Tävling',friends:'Vänner',freqs:'Vänförfrågningar',
     ey:'Redo?',ht:'Din tur,',hs:'Mästare.',hb:'Välj ett läge.',wins:'Vinster',losses:'Förluster',pts:'Poäng',frnds:'Vänner',joined:'Gick med',lastOn:'Senast online',
-    sT:'Solo',sD:'Larry förlorade aldrig vad han inte ville.',pT:'PvP',pD:'Utmana spelare online.',cT:'Tävling',cD:'Vinst +10. Förlust −5.',
+    sT:'Solo',sD:'Larry förlorar bara vad han vill.',pT:'PvP',pD:'Utmana spelare online.',cT:'Tävling',cD:'Vinst +10. Förlust −5. Max 20/dag.',
     wm:'Vit spelar',bm:'Svart spelar',ip:'Pågår',draw:'½ Remi',resign:'⚑ Ge upp',exit:'✕ Avsluta',
-    fm:'Hitta',fo:'Söker…',sp:'Söker spelare',cancel:'Avbryt',mh:'DRAG',si:'Logga in',reg:'Registrera',profile:'Min profil',save:'Spara',dname:'Namn',bio:'Bio',so:'Logga ut',
-    pa:'Spela igen',bm2:'Tillbaka',cm:'Schack matt!',stale:'Patt!',res:'Gav upp',bl:'Lycka till!',wb:'vinner!',
-    np:'Inga spelare.',on:'Online nu',wl:'V/F',pD2:'Utmana en spelare:',days:'dagar sedan',today:'idag',yesterday:'igår',
-    rSent:'Skickad!',alF:'Redan vänner.',alS:'Redan skickad.',acc:'Acceptera',dec:'Neka',noRQ:'Inga förfrågningar.',rmConf:'Ta bort',as:'från vänner?',
+    fm:'Hitta match',fo:'Söker…',sp:'Söker spelare',cancel:'Avbryt',
+    mh:'DRAGHISTORIK',si:'Logga in',reg:'Registrera',profile:'Min profil',save:'Spara',dname:'Namn',bio:'Bio',so:'Logga ut',
+    pa:'Spela igen',bm2:'Tillbaka',cm_:'Schack matt!',stale:'Patt!',res:'Gav upp',bl:'Lycka till!',wb:'vinner!',
+    np:'Inga spelare.',on:'Online nu',wl:'V/F',pD2:'Utmana en spelare:',
+    days:'dagar sedan',today:'idag',yesterday:'igår',
+    rSent:'Skickad!',alF:'Redan vänner.',alS:'Redan skickad.',acc:'Acceptera',dec:'Neka',noRQ:'Inga förfrågningar.',
+    rmConf:'Ta bort',as:'från vänner?',rmTitle:'Ta bort vän?',
+    close:'Stäng',dailyLeft:'Spel kvar idag:',limitReached:'⛔ Daggräns — återställs 00:00',
   },
   ur:{tag:'بورڈ پر مہارت',play:'کھیلیں',home:'ہوم',solo:'سولو',pvp:'PvP',comp:'مسابقتی',friends:'دوست',freqs:'دوستی کی درخواستیں',
-    ey:'تیار؟',ht:'آپ کی باری،',hs:'چیمپیئن۔',hb:'ایک موڈ چنیں۔',wins:'جیت',losses:'ہار',pts:'پوائنٹس',frnds:'دوست',joined:'شامل ہوئے',lastOn:'آخری بار آن لائن',
-    sT:'سولو',sD:'لیری نے وہ میچ نہیں ہارا جو وہ نہیں ہارنا چاہتا تھا۔',pT:'PvP',pD:'آن لائن چیلنج کریں۔',cT:'مسابقتی',cD:'جیت +10۔ ہار −5۔',
+    ey:'تیار؟',ht:'آپ کی باری،',hs:'چیمپیئن۔',hb:'موڈ چنیں۔',wins:'جیت',losses:'ہار',pts:'پوائنٹس',frnds:'دوست',joined:'شامل ہوئے',lastOn:'آخری بار آن لائن',
+    sT:'سولو',sD:'لیری صرف وہی ہارتا ہے جو وہ ہارنا چاہتا ہے۔',pT:'PvP',pD:'آن لائن چیلنج۔',cT:'مسابقتی',cD:'جیت +10۔ ہار −5۔ زیادہ سے زیادہ 20/دن۔',
     wm:'سفید کی باری',bm:'سیاہ کی باری',ip:'جاری ہے',draw:'½ ڈرا',resign:'⚑ ہار',exit:'✕ باہر',
-    fm:'تلاش',fo:'تلاش…',sp:'کھلاڑی تلاش',cancel:'منسوخ',mh:'تاریخ',si:'سائن ان',reg:'رجسٹر',profile:'پروفائل',save:'محفوظ',dname:'نام',bio:'بایو',so:'سائن آؤٹ',
-    pa:'دوبارہ',bm2:'واپس',cm:'شہ مات!',stale:'ڈرا!',res:'ہار مانی',bl:'اگلی بار!',wb:'جیت!',
-    np:'کوئی آن لائن نہیں۔',on:'آن لائن',wl:'ج/ہ',pD2:'چیلنج کریں:',days:'دن پہلے',today:'آج',yesterday:'کل',
-    rSent:'بھیجی!',alF:'پہلے سے دوست۔',alS:'پہلے بھیجی۔',acc:'قبول',dec:'رد',noRQ:'کوئی درخواست نہیں۔',rmConf:'ہٹائیں',as:'کو دوستوں سے؟',
+    fm:'تلاش',fo:'تلاش…',sp:'کھلاڑی تلاش',cancel:'منسوخ',
+    mh:'تاریخ',si:'سائن ان',reg:'رجسٹر',profile:'پروفائل',save:'محفوظ',dname:'نام',bio:'بایو',so:'سائن آؤٹ',
+    pa:'دوبارہ',bm2:'واپس',cm_:'شہ مات!',stale:'ڈرا!',res:'ہار مانی',bl:'اگلی بار!',wb:'جیت!',
+    np:'کوئی آن لائن نہیں۔',on:'آن لائن',wl:'ج/ہ',pD2:'چیلنج:',
+    days:'دن پہلے',today:'آج',yesterday:'کل',
+    rSent:'بھیجی!',alF:'پہلے سے دوست۔',alS:'پہلے بھیجی۔',acc:'قبول',dec:'رد',noRQ:'کوئی درخواست نہیں۔',
+    rmConf:'ہٹائیں',as:'دوستوں سے؟',rmTitle:'دوست ہٹائیں؟',
+    close:'بند',dailyLeft:'آج کے باقی کھیل:',limitReached:'⛔ حد پوری — 00:00 پر ری سیٹ',
   },
   fa:{tag:'تسلط بر صفحه',play:'بازی',home:'خانه',solo:'تکی',pvp:'PvP',comp:'رقابتی',friends:'دوستان',freqs:'درخواست‌های دوستی',
     ey:'آماده؟',ht:'نوبت توست،',hs:'قهرمان.',hb:'یک حالت انتخاب کن.',wins:'برد',losses:'باخت',pts:'امتیاز',frnds:'دوستان',joined:'عضو از',lastOn:'آخرین آنلاین',
-    sT:'تکی',sD:'لری هرگز نباخت آنچه نمی‌خواست.',pT:'PvP',pD:'با بازیکنان آنلاین رقابت کن.',cT:'رقابتی',cD:'برد +10. باخت −5.',
+    sT:'تکی',sD:'لری فقط چیزی را می‌بازد که می‌خواهد.',pT:'PvP',pD:'با بازیکنان آنلاین رقابت کن.',cT:'رقابتی',cD:'برد +10. باخت −5. حداکثر 20/روز.',
     wm:'نوبت سفید',bm:'نوبت سیاه',ip:'در جریان',draw:'½ مساوی',resign:'⚑ تسلیم',exit:'✕ خروج',
-    fm:'جستجو',fo:'در حال جستجو…',sp:'دنبال بازیکن',cancel:'لغو',mh:'تاریخچه',si:'ورود',reg:'ثبت‌نام',profile:'پروفایل من',save:'ذخیره',dname:'نام',bio:'بیو',so:'خروج',
-    pa:'دوباره',bm2:'برگشت',cm:'کیش و مات!',stale:'مات مساوی!',res:'تسلیم',bl:'موفق باشی!',wb:'برنده شد!',
-    np:'بازیکنی نیست.',on:'آنلاین',wl:'ب/ب',pD2:'چالش بده:',days:'روز پیش',today:'امروز',yesterday:'دیروز',
-    rSent:'ارسال شد!',alF:'از قبل دوست.',alS:'قبلاً ارسال شده.',acc:'قبول',dec:'رد',noRQ:'درخواستی نیست.',rmConf:'حذف',as:'از دوستان؟',
+    fm:'جستجو',fo:'در حال جستجو…',sp:'دنبال بازیکن',cancel:'لغو',
+    mh:'تاریخچه',si:'ورود',reg:'ثبت‌نام',profile:'پروفایل',save:'ذخیره',dname:'نام',bio:'بیو',so:'خروج',
+    pa:'دوباره',bm2:'برگشت',cm_:'کیش و مات!',stale:'مات مساوی!',res:'تسلیم',bl:'موفق باشی!',wb:'برنده شد!',
+    np:'بازیکنی نیست.',on:'آنلاین',wl:'ب/ب',pD2:'چالش بده:',
+    days:'روز پیش',today:'امروز',yesterday:'دیروز',
+    rSent:'ارسال شد!',alF:'از قبل دوست.',alS:'قبلاً ارسال.',acc:'قبول',dec:'رد',noRQ:'درخواستی نیست.',
+    rmConf:'حذف',as:'از دوستان؟',rmTitle:'حذف دوست؟',
+    close:'بستن',dailyLeft:'بازی‌های باقیمانده:',limitReached:'⛔ محدودیت روزانه — ساعت 00:00 بازنشانی',
   },
 };
 let lang='en';
 function t(k){return(TR[lang]&&TR[lang][k])||TR.en[k]||k;}
 
-// ═══ DATABASE + SESSION PERSISTENCE ═══
+// ═══ STABLE DB KEY — never change this ═══
+const DB_KEY='cg_v1';
+const SES_KEY='cg_ses';
+
 let DB={users:[],friends:{},requests:{},msgs:{}};
 let me=null;
-let sidebarCollapsed=false;
+let sbCollapsed=false;
 
 function dbLoad(){
   try{
-    const s=localStorage.getItem('cg_db3');
-    if(s)DB=JSON.parse(s);
-    // Restore session
-    const sid=localStorage.getItem('cg_session');
-    if(sid){
-      const u=DB.users.find(x=>x.id===sid);
-      if(u){me={...u};u.online=true;}
-    }
-    // Mark all offline except current session
+    const s=localStorage.getItem(DB_KEY);
+    if(s) DB=JSON.parse(s);
+    // ensure structure
+    if(!DB.users)DB.users=[];
+    if(!DB.friends)DB.friends={};
+    if(!DB.requests)DB.requests={};
+    if(!DB.msgs)DB.msgs={};
+    // restore session
+    const sid=localStorage.getItem(SES_KEY);
+    if(sid){const u=DB.users.find(x=>x.id===sid);if(u){me={...u};u.online=true;u.lastSeen=Date.now();}}
+    // mark others offline
     DB.users.forEach(u=>{if(u.id!==me?.id)u.online=false;});
-    if(me){const u=DB.users.find(x=>x.id===me.id);if(u)u.online=true;}
     dbSave();
-  }catch(e){console.warn('DB load error',e);}
+  }catch(e){console.warn(e);}
+}
+function dbSave(){try{localStorage.setItem(DB_KEY,JSON.stringify(DB));}catch(e){}}
+function sesSave(){if(me)localStorage.setItem(SES_KEY,me.id);else localStorage.removeItem(SES_KEY);}
+
+// ═══ LIVE SYNC — cross-tab via storage events ═══
+// Poll every 3 seconds to detect changes from other tabs
+let syncInterval=null;
+function startSync(){
+  if(syncInterval)clearInterval(syncInterval);
+  syncInterval=setInterval(()=>{
+    try{
+      const raw=localStorage.getItem(DB_KEY);
+      if(!raw)return;
+      const fresh=JSON.parse(raw);
+      // merge fresh DB
+      DB=fresh;
+      if(!DB.users)DB.users=[];
+      if(!DB.friends)DB.friends={};
+      if(!DB.requests)DB.requests={};
+      // if I'm logged in, update my cached data
+      if(me){
+        const u=DB.users.find(x=>x.id===me.id);
+        if(u){
+          // keep me in sync but don't overwrite my online status
+          me.points=u.points;me.wins=u.wins;me.losses=u.losses;
+          me.compDay=u.compDay;me.compPlayed=u.compPlayed;
+        }
+      }
+      // re-render live parts
+      updRQ();
+      renderFL();
+      // if on pvp/competitive page, refresh
+      if(curS==='pvp')renderPvP(document.getElementById('mainC'));
+      if(curS==='competitive')renderComp(document.getElementById('mainC'));
+    }catch(e){}
+  },2500);
 }
 
-function dbSave(){
-  try{localStorage.setItem('cg_db3',JSON.stringify(DB));}catch(e){}
-}
-
-function sessionSave(){
-  if(me)localStorage.setItem('cg_session',me.id);
-  else localStorage.removeItem('cg_session');
-}
-
+// ═══ AUTH ═══
 function genID(){return Date.now()+'_'+Math.random().toString(36).slice(2,8);}
 function genTag(){let g;do{g='#'+String(Math.floor(Math.random()*9000000)+1000000);}while(DB.users.find(u=>u.tag===g));return g;}
 function fmtDate(ts){if(!ts)return'—';return new Date(ts).toLocaleDateString();}
 function fmtSeen(ts){if(!ts)return t('today');const d=Math.floor((Date.now()-ts)/(864e5));if(d===0)return t('today');if(d===1)return t('yesterday');return d+' '+t('days');}
 
-// ═══ AUTH ═══
 function doLogin(){
   const u=document.getElementById('lU').value.trim(),p=document.getElementById('lP').value;
   const e=document.getElementById('lE');e.classList.remove('on');
   if(!u||!p){e.textContent='Please fill in all fields.';e.classList.add('on');return;}
+  // reload fresh DB first
+  try{const raw=localStorage.getItem(DB_KEY);if(raw)DB=JSON.parse(raw);}catch(x){}
   const usr=DB.users.find(x=>x.name.toLowerCase()===u.toLowerCase());
   if(!usr){e.textContent='Username not found.';e.classList.add('on');return;}
   if(usr.password!==p){e.textContent='Incorrect password.';e.classList.add('on');return;}
   usr.online=true;usr.lastSeen=Date.now();dbSave();
-  me={...usr};sessionSave();
-  cm('mL');updTB();renderFL();updRQ();
+  me={...usr};sesSave();
+  cm('mL');updTB();renderFL();updRQ();startSync();
   showToast('Welcome back, '+usr.name+'!');
 }
 
@@ -676,6 +688,8 @@ function doReg(){
   const p=document.getElementById('rP').value;
   const eu=document.getElementById('rUE'),ee=document.getElementById('rEE'),ep=document.getElementById('rPE');
   [eu,ee,ep].forEach(x=>x.classList.remove('on'));
+  // reload fresh DB
+  try{const raw=localStorage.getItem(DB_KEY);if(raw)DB=JSON.parse(raw);}catch(x){}
   let ok=true;
   if(u.length<5||u.length>16){eu.textContent='Username must be 5–16 characters.';eu.classList.add('on');ok=false;}
   else if(DB.users.find(x=>x.name.toLowerCase()===u.toLowerCase())){eu.textContent='Username already taken.';eu.classList.add('on');ok=false;}
@@ -686,16 +700,16 @@ function doReg(){
   const id=genID(),tag=genTag(),now=Date.now();
   const nu={id,name:u,tag,email:em,password:p,points:0,wins:0,losses:0,avatar:'♟',bio:'',online:true,joined:now,lastSeen:now};
   DB.users.push(nu);DB.friends[id]=[];DB.requests[id]=[];dbSave();
-  me={...nu};sessionSave();
-  cm('mR');updTB();renderFL();updRQ();
-  showToast('Welcome, '+u+'! Your tag: '+tag);
+  me={...nu};sesSave();
+  cm('mR');updTB();renderFL();updRQ();startSync();
+  showToast('Welcome, '+u+'! Tag: '+tag);
 }
 
 function doLogout(){
   if(me){const u=DB.users.find(x=>x.id===me.id);if(u){u.online=false;u.lastSeen=Date.now();dbSave();}}
-  me=null;sessionSave();
-  cm('mPr');updTB();renderFL();updRQ();
-  showSect('home');showToast('Signed out.');
+  me=null;sesSave();
+  if(syncInterval){clearInterval(syncInterval);syncInterval=null;}
+  cm('mPr');updTB();renderFL();updRQ();showSect('home');showToast('Signed out.');
 }
 
 function rA(cb){if(!me){om('mL');return;}cb();}
@@ -715,15 +729,12 @@ function updTB(){
   }
 }
 
-// ═══ SIDEBAR COLLAPSE ═══
-function toggleSidebar(){
-  sidebarCollapsed=!sidebarCollapsed;
-  const sb=document.getElementById('sidebar');
-  const mn=document.getElementById('mainEl');
-  const btn=document.getElementById('colBtn');
-  sb.classList.toggle('collapsed',sidebarCollapsed);
-  mn.classList.toggle('collapsed',sidebarCollapsed);
-  btn.textContent=sidebarCollapsed?'▶':'◀';
+// ═══ SIDEBAR ═══
+function toggleSB(){
+  sbCollapsed=!sbCollapsed;
+  document.getElementById('sidebar').classList.toggle('collapsed',sbCollapsed);
+  document.getElementById('mainEl').classList.toggle('collapsed',sbCollapsed);
+  document.getElementById('colBtn').textContent=sbCollapsed?'▶':'◀';
 }
 
 // ═══ PROFILE ═══
@@ -731,8 +742,11 @@ document.getElementById('pmB').addEventListener('input',function(){document.getE
 
 function openProf(){
   if(!me)return;
+  // refresh from DB
+  const u=DB.users.find(x=>x.id===me.id);if(u)Object.assign(me,u);
   document.getElementById('mPrH').textContent=t('profile');
   document.getElementById('pmSvBtn').textContent=t('save');
+  document.getElementById('pmSOBtn').textContent=t('so');
   document.getElementById('pmN').placeholder=t('dname')+' (5–16)';
   document.getElementById('pmN').value=me.name;
   document.getElementById('pmB').value=me.bio||'';
@@ -765,6 +779,8 @@ function saveProf(){
 
 function openFP(uid){
   const f=DB.users.find(x=>x.id===uid);if(!f)return;
+  document.getElementById('mFPH').textContent=t('profile');
+  document.getElementById('mFPClose').textContent=t('close');
   document.getElementById('fpAv').innerHTML=avH(f,74);
   document.getElementById('fpN').textContent=f.name;
   document.getElementById('fpTg').textContent=f.tag;
@@ -787,21 +803,23 @@ function cm(id){document.getElementById(id).classList.remove('on');}
 function swm(a,b){cm(a);om(b);}
 document.querySelectorAll('.ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');}));
 
-// ═══ FRIEND REQUESTS ═══
+// ═══ FRIENDS ═══
 function getFs(){return DB.friends[me?.id]||[];}
 function getRQs(){return DB.requests[me?.id]||[];}
 
-let pendingRemoveId=null;
-function askRemoveFriend(uid){
-  const f=DB.users.find(x=>x.id===uid);
-  if(!f)return;
-  pendingRemoveId=uid;
+let pendingRmId=null;
+function askRm(uid){
+  const f=DB.users.find(x=>x.id===uid);if(!f)return;
+  pendingRmId=uid;
+  document.getElementById('mCFH').textContent=t('rmTitle');
   document.getElementById('cfTxt').textContent=`${t('rmConf')} "${f.name}" ${t('as')}`;
+  document.getElementById('cfYes').textContent='Remove';
+  document.getElementById('cfNo').textContent='Cancel';
   om('mCF');
 }
 function confirmRemove(){
-  if(!pendingRemoveId)return;
-  const uid=pendingRemoveId;pendingRemoveId=null;
+  if(!pendingRmId)return;
+  const uid=pendingRmId;pendingRmId=null;
   DB.friends[me.id]=(DB.friends[me.id]||[]).filter(x=>x!==uid);
   DB.friends[uid]=(DB.friends[uid]||[]).filter(x=>x!==me.id);
   dbSave();renderFL();cm('mCF');showToast('Friend removed.');
@@ -809,6 +827,8 @@ function confirmRemove(){
 
 function sendFReq(toId){
   if(!me)return;
+  // reload fresh DB before writing
+  try{const raw=localStorage.getItem(DB_KEY);if(raw)DB=JSON.parse(raw);}catch(x){}
   if(getFs().includes(toId)){showToast(t('alF'));return;}
   if(!DB.requests[toId])DB.requests[toId]=[];
   if(DB.requests[toId].includes(me.id)){showToast(t('alS'));return;}
@@ -844,21 +864,22 @@ function updRQ(){
   cnt.textContent=n;
 }
 
-function openAF(){document.getElementById('fs').value='';document.getElementById('sR').innerHTML='';om('mAF');}
+function openAF(){document.getElementById('mAFH').textContent='Find Players';document.getElementById('fs').value='';document.getElementById('sR').innerHTML='';om('mAF');}
 function openRQ(){renderRQ();om('mRQ');}
 
 function renderRQ(){
   const reqs=getRQs();
   const el=document.getElementById('rqList');
+  document.getElementById('mRQH').textContent=t('freqs');
   if(!reqs.length){el.innerHTML=`<p style="color:var(--mu);text-align:center;padding:14px;font-size:0.88rem">${t('noRQ')}</p>`;return;}
   el.innerHTML=reqs.map(fid=>{
     const f=DB.users.find(x=>x.id===fid);if(!f)return'';
     return`<div class="req-i">
       <div class="fav">${avH(f,28)}</div>
       <div class="req-info"><div class="req-n">${f.name}</div><div class="req-t">${f.tag}</div></div>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-sm btn-g" onclick="acceptRQ('${fid}')">${t('acc')}</button>
-        <button class="btn btn-sm btn-o" onclick="declineRQ('${fid}')">${t('dec')}</button>
+      <div class="req-acts">
+        <button class="btn-grn" onclick="acceptRQ('${fid}')">${t('acc')}</button>
+        <button class="btn-red" onclick="declineRQ('${fid}')">${t('dec')}</button>
       </div>
     </div>`;
   }).join('');
@@ -868,56 +889,49 @@ function searchP(){
   const q=document.getElementById('fs').value.toLowerCase().trim();
   const res=document.getElementById('sR');
   if(!q){res.innerHTML='';return;}
+  // reload fresh DB to see newest registrations
+  try{const raw=localStorage.getItem(DB_KEY);if(raw)DB=JSON.parse(raw);}catch(x){}
   const found=DB.users.filter(u=>u.id!==me?.id&&(u.name.toLowerCase().includes(q)||u.tag.toLowerCase().includes(q)));
   if(!found.length){res.innerHTML='<p style="color:var(--mu);padding:7px;font-size:0.86rem">No players found</p>';return;}
   const myF=getFs();
   res.innerHTML=found.map(u=>{
     const isFr=myF.includes(u.id);
-    const sent=(DB.requests[u.id]||[]).includes(me.id);
+    const sent=(DB.requests[u.id]||[]).includes(me?.id);
     return`<div class="sri">
       <div class="fav" style="width:30px;height:30px">${avH(u,30)}</div>
-      <div style="flex:1"><div class="sri-n">${u.name}</div><div class="sri-t">${u.tag} · ${u.points} pts</div></div>
+      <div style="flex:1"><div class="sri-n">${u.name}</div><div class="sri-t">${u.tag} · ${u.points} pts · ${u.online?'🟢 Online':'⚫ Offline'}</div></div>
       ${!isFr&&!sent?`<button class="sb" onclick="sendFReq('${u.id}')">Send Request</button>`:`<span style="font-size:0.76rem;color:var(--mu)">${isFr?'✓ Friends':'Sent'}</span>`}
     </div>`;
   }).join('');
 }
 
-// ═══ FRIENDS LIST ═══
+// ═══ DM ═══
 let dmTId=null,dmH={};
-
 function openDM(uid){
   const f=DB.users.find(x=>x.id===uid);if(!f)return;
-  dmTId=uid;
-  const k=me.id+'_'+uid;
+  dmTId=uid;const k=me.id+'_'+uid;
   if(!dmH[k])dmH[k]=[{from:'them',text:'Hey! Ready to play? 👑'}];
-  document.getElementById('dmTi').textContent=f.name;
-  renderDM();om('mDM');
+  document.getElementById('dmTi').textContent=f.name;renderDM();om('mDM');
 }
-
 function renderDM(){
-  const k=me.id+'_'+dmTId;
-  const el=document.getElementById('dmMs');
+  const k=me.id+'_'+dmTId,el=document.getElementById('dmMs');
   el.innerHTML=(dmH[k]||[]).map(m=>`<div class="dm-m ${m.from==='me'?'mine':'theirs'}">${m.text}</div>`).join('');
   el.scrollTop=el.scrollHeight;
 }
-
 function sendDm(){
   const inp=document.getElementById('dmIn'),txt=inp.value.trim();
   if(!txt||!dmTId)return;
-  const k=me.id+'_'+dmTId;
-  if(!dmH[k])dmH[k]=[];
+  const k=me.id+'_'+dmTId;if(!dmH[k])dmH[k]=[];
   dmH[k].push({from:'me',text:txt});inp.value='';renderDM();
   const r=['Nice! ♟','GG!','Ready! 🎯','Let\'s go! ⚔️','Good luck! 🏆'];
   setTimeout(()=>{dmH[k].push({from:'them',text:r[Math.floor(Math.random()*r.length)]});renderDM();},700+Math.random()*600);
 }
-
 function chalFriend(uid){
   const f=DB.users.find(x=>x.id===uid);if(!f)return;
   if(!f.online){showToast(f.name+' is offline.',true);return;}
   showToast('Challenge sent to '+f.name+'!');
   setTimeout(()=>{showToast(f.name+' accepted!');setTimeout(()=>startGame('pvp',document.getElementById('mainC'),f.name),700);},1300);
 }
-
 function renderFL(){
   const el=document.getElementById('fList');
   if(!me){el.innerHTML='<p style="color:#333;font-size:0.82rem;padding:5px 9px">Sign in to see friends</p>';return;}
@@ -931,7 +945,7 @@ function renderFL(){
       <div class="fbtns">
         <button class="fib" onclick="openDM('${f.id}')" title="Message">💬</button>
         <button class="fib" onclick="chalFriend('${f.id}')" title="Challenge">⚔️</button>
-        <button class="fib rem" onclick="askRemoveFriend('${f.id}')" title="Remove">✕</button>
+        <button class="fib rem" onclick="askRm('${f.id}')" title="Remove">✕</button>
       </div>
     </div>`).join('');
 }
@@ -950,6 +964,7 @@ function setLang(code,flag,name){
 document.addEventListener('click',e=>{if(!e.target.closest('.lang-sel'))document.getElementById('lgDD').classList.remove('on');});
 
 function applyLang(){
+  // static elements
   document.getElementById('lgTag').textContent=t('tag');
   document.getElementById('nvPl').textContent=t('play');
   document.getElementById('nvHm').textContent=t('home');
@@ -957,12 +972,19 @@ function applyLang(){
   document.getElementById('nvPV').textContent=t('pvp');
   document.getElementById('nvCo').textContent=t('comp');
   document.getElementById('nvFr').textContent=t('friends');
+  // modal titles & buttons
+  document.getElementById('mLH').textContent=t('si');
+  document.getElementById('mLBtn').textContent=t('si');
+  document.getElementById('mRH').textContent=t('reg');
+  document.getElementById('mRBtn').textContent=t('reg');
+  // re-render dynamic
   updRQ();updTB();renderFL();
   const c=document.getElementById('mainC');
   if(curS==='home')renderHome(c);
   else if(curS==='competitive')renderComp(c);
   else if(curS==='pvp')renderPvP(c);
   const st=document.getElementById('stT');if(st)st.textContent=G.turn==='w'?t('wm'):t('bm');
+  const mhEl=document.getElementById('mhH');if(mhEl)mhEl.textContent=t('mh');
 }
 
 // ═══ SECTIONS ═══
@@ -996,7 +1018,11 @@ function renderHome(c){
   </div>`;
 }
 
-function getOnline(){return DB.users.filter(u=>u.id!==me?.id&&u.online);}
+function getOnline(){
+  // reload fresh DB
+  try{const raw=localStorage.getItem(DB_KEY);if(raw)DB=JSON.parse(raw);}catch(x){}
+  return DB.users.filter(u=>u.id!==me?.id&&u.online);
+}
 
 function renderPvP(c){
   const online=getOnline();
@@ -1025,36 +1051,21 @@ function startOPvP(uid){
   setTimeout(()=>{showToast(opp.name+' accepted!');setTimeout(()=>startGame('pvp',document.getElementById('mainC'),opp.name),600);},1200);
 }
 
-// ── Daily competitive game limit ──
-const MAX_COMP_GAMES = 20;
-
-function getTodayKey(){
-  const d = new Date();
-  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+// ═══ DAILY LIMIT ═══
+const MAX_COMP=20;
+function todayKey(){const d=new Date();return`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
+function compLeft(){
+  if(!me)return MAX_COMP;
+  const u=DB.users.find(x=>x.id===me.id);if(!u)return MAX_COMP;
+  if(u.compDay!==todayKey()){u.compDay=todayKey();u.compPlayed=0;dbSave();}
+  return Math.max(0,MAX_COMP-(u.compPlayed||0));
 }
-
-function getCompGamesLeft(){
-  if(!me) return MAX_COMP_GAMES;
-  const u = DB.users.find(x=>x.id===me.id);
-  if(!u) return MAX_COMP_GAMES;
-  const today = getTodayKey();
-  if(u.compDay !== today){
-    u.compDay = today;
-    u.compPlayed = 0;
-    dbSave();
-  }
-  return Math.max(0, MAX_COMP_GAMES - (u.compPlayed||0));
-}
-
-function incrementCompGames(){
-  if(!me) return;
-  const u = DB.users.find(x=>x.id===me.id);
-  if(!u) return;
-  const today = getTodayKey();
-  if(u.compDay !== today){ u.compDay = today; u.compPlayed = 0; }
-  u.compPlayed = (u.compPlayed||0) + 1;
-  me.compDay = u.compDay;
-  me.compPlayed = u.compPlayed;
+function compIncrement(){
+  if(!me)return;
+  const u=DB.users.find(x=>x.id===me.id);if(!u)return;
+  if(u.compDay!==todayKey()){u.compDay=todayKey();u.compPlayed=0;}
+  u.compPlayed=(u.compPlayed||0)+1;
+  me.compDay=u.compDay;me.compPlayed=u.compPlayed;
   dbSave();
 }
 
@@ -1062,29 +1073,24 @@ function renderComp(c){
   const sorted=[...DB.users].sort((a,b)=>b.points-a.points);
   const rc=i=>i===0?'g':i===1?'s':i===2?'b':'';
   const rs=i=>i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
-  const left = getCompGamesLeft();
-  const limitColor = left === 0 ? '#e55' : left <= 5 ? '#C9A84C' : '#4CAF50';
-
+  const left=compLeft();
+  const lc=left===0?'#e55':left<=5?'var(--gold)':'#4CAF50';
   c.innerHTML=`<div class="sect">
     <div class="ptit">${t('cT')} <span>Ladder</span></div>
     <div class="psub">${t('cD')}</div>
-
     <div style="background:var(--d3);border:1px solid #1e1e1e;border-radius:14px;padding:28px;text-align:center;margin-bottom:22px">
-      <button class="btn btn-g" style="width:260px;padding:14px 28px;font-size:0.95rem;letter-spacing:0.1em;margin-bottom:10px" onclick="startMM()" ${left===0?'disabled':''}>
+      <button class="btn btn-g" style="width:260px;padding:14px;font-size:0.95rem;letter-spacing:0.1em;margin-bottom:10px" onclick="startMM()" ${left===0?'disabled style="opacity:0.5;cursor:not-allowed"':''}>
         🔍 ${t('fm')}
       </button>
-      <div style="font-size:0.82rem;color:${limitColor};font-weight:600">
-        ${left === 0
-          ? '⛔ Daily limit reached — resets at 00:00'
-          : `<span style="color:var(--mu)">Daily games remaining:</span> <span style="font-family:\'Cinzel\',serif">${left} / ${MAX_COMP_GAMES}</span>`}
+      <div style="font-size:0.82rem;color:${lc};font-weight:600">
+        ${left===0?t('limitReached'):`<span style="color:var(--mu)">${t('dailyLeft')}</span> <span style="font-family:'Cinzel',serif">${left} / ${MAX_COMP}</span>`}
       </div>
     </div>
-
     <table class="lbt">
       <thead><tr><th>RANK</th><th>PLAYER</th><th>TAG</th><th>${t('wl')}</th><th>${t('pts').toUpperCase()}</th></tr></thead>
       <tbody>${sorted.map((u,i)=>`<tr>
         <td><span class="lbr ${rc(i)}">${rs(i)}</span></td>
-        <td class="${me&&u.id===me.id?'lby':''}">${u.online?'🟢 ':''}<b style="font-family:\'Cinzel\',serif;font-size:0.84rem">${u.name}</b>${me&&u.id===me.id?' (You)':''}</td>
+        <td class="${me&&u.id===me.id?'lby':''}">${u.online?'🟢 ':''}<b style="font-family:'Cinzel',serif;font-size:0.84rem">${u.name}</b>${me&&u.id===me.id?' (You)':''}</td>
         <td style="color:var(--mu);font-size:0.76rem">${u.tag}</td>
         <td style="color:var(--mu)">${u.wins}/${u.losses}</td>
         <td><span class="lbp">${u.points}</span></td>
@@ -1094,8 +1100,8 @@ function renderComp(c){
 }
 
 function startMM(){
-  const left = getCompGamesLeft();
-  if(left <= 0){ showToast('Daily limit reached! Resets at midnight.',true); return; }
+  const left=compLeft();
+  if(left<=0){showToast('Daily limit reached! Resets at midnight.',true);return;}
   const online=getOnline();
   const c=document.getElementById('mainC');
   if(!online.length){
@@ -1114,157 +1120,121 @@ function startMM(){
   },2000);
 }
 
-// ══════════════════════════════════════════════════════════
-// CHESS PIECES — Detailed classic Staunton SVG
-// Fully hand-crafted paths matching traditional piece shapes
-// White: #fff fill, #000 stroke | Black: #1a1a1a fill, #bbb stroke
-// ══════════════════════════════════════════════════════════
-const PIECE_SVGS = {
-// ── PAWN ──
-wP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="22.5" cy="10.5" r="4.5"/>
-  <path d="M18 16c0-1 .5-2 1.5-2.5-1 .5-2.5 1.5-3.5 4s0 5 2 6.5l-4 7c-1 1.5-1.5 2.5-1.5 4h20c0-1.5-.5-2.5-1.5-4l-4-7c2-1.5 3-4 2-6.5s-2.5-3.5-3.5-4c1 .5 1.5 1.5 1.5 2.5z"/>
-  <path d="M11 39.5h23v-2H11v2z"/>
-</g></svg>`,
-bP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="22.5" cy="10.5" r="4.5"/>
-  <path d="M18 16c0-1 .5-2 1.5-2.5-1 .5-2.5 1.5-3.5 4s0 5 2 6.5l-4 7c-1 1.5-1.5 2.5-1.5 4h20c0-1.5-.5-2.5-1.5-4l-4-7c2-1.5 3-4 2-6.5s-2.5-3.5-3.5-4c1 .5 1.5 1.5 1.5 2.5z"/>
-  <path d="M11 39.5h23v-2H11v2z"/>
-</g></svg>`,
+// ═══ CHESS PIECES — proper Staunton silhouettes ═══
+// Based on the classic Merida/Staunton set used by Chess.com
+// Clean filled shapes, no thin strokes, clear silhouettes
+const WF='#FFFFFF',WS='#1a1a1a'; // white fill, dark stroke
+const BF='#1a1a1a',BS='#cccccc'; // black fill, light stroke
 
-// ── ROOK ──
-wR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9 39h27v-3H9v3z" stroke-linecap="butt"/>
-  <path d="M12 36v-4h21v4H12z" stroke-linecap="butt"/>
-  <path d="M12 32V19.5h21V32H12z" stroke-linecap="butt"/>
-  <path d="M14 19.5v-2.5h4v2.5M22 17v2.5M27 17v2.5h4v-2.5" stroke-linecap="butt"/>
-  <path d="M13 14l1.5-5.5h16L32 14H13z" stroke-linecap="round"/>
-  <path d="M9 12h27" fill="none" stroke-linecap="butt"/>
-  <rect x="13" y="9" width="4" height="3.5" rx="0.5"/>
-  <rect x="20.5" y="9" width="4" height="3.5" rx="0.5"/>
-  <rect x="28" y="9" width="4" height="3.5" rx="0.5"/>
-  <path d="M12 19.5h21" fill="none"/>
-  <path d="M12 32h21" fill="none"/>
-</g></svg>`,
-bR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9 39h27v-3H9v3z" stroke-linecap="butt"/>
-  <path d="M12 36v-4h21v4H12z" stroke-linecap="butt"/>
-  <path d="M12 32V19.5h21V32H12z" stroke-linecap="butt"/>
-  <path d="M14 19.5v-2.5h4v2.5M22 17v2.5M27 17v2.5h4v-2.5" stroke-linecap="butt"/>
-  <path d="M13 14l1.5-5.5h16L32 14H13z" stroke-linecap="round"/>
-  <path d="M9 12h27" fill="none" stroke-linecap="butt"/>
-  <rect x="13" y="9" width="4" height="3.5" rx="0.5"/>
-  <rect x="20.5" y="9" width="4" height="3.5" rx="0.5"/>
-  <rect x="28" y="9" width="4" height="3.5" rx="0.5"/>
-  <path d="M12 19.5h21" fill="none" stroke="#888"/>
-  <path d="M12 32h21" fill="none" stroke="#888"/>
-</g></svg>`,
+function mkSVG(body){return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">${body}</svg>`;}
 
-// ── KNIGHT ──
-wN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9.5 39.5h26v-2h-26v2z" fill="#fff"/>
-  <path d="M11.5 37.5c0-4.5 9.5-5 9.5-5s5.5-1.5 8-8c0 0 .5 2.5 0 5-1.5 5-7 5-7 5l2 3" fill="#fff"/>
-  <path d="M11.5 37.5c0-4.5 9-5.5 9-5.5s.5-3.5 2-5.5c1.5-1.5 3-2 4.5-3.5 2-2 2.5-4 2-6.5 0-3-2-4.5-4-5.5-2-1-4-1.5-4-1.5s.5 2 .5 3.5c0 0-2.5-1-4.5.5-2.5 1.5-4.5 5-4.5 8.5" fill="#fff"/>
-  <path d="M20.5 19.5c.5 1 1 2 1.5 2.5" fill="none"/>
-  <path d="M22 22c-1 .5-2.5.5-3 1.5-.5 1 0 2 .5 3" fill="none"/>
-  <circle cx="16" cy="22" r="1.5" fill="#000" stroke="none"/>
-  <path d="M22.5 11.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#000" stroke="none"/>
-</g></svg>`,
-bN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="none" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9.5 39.5h26v-2h-26v2z" fill="#1a1a1a"/>
-  <path d="M11.5 37.5c0-4.5 9.5-5 9.5-5s5.5-1.5 8-8c0 0 .5 2.5 0 5-1.5 5-7 5-7 5l2 3" fill="#1a1a1a"/>
-  <path d="M11.5 37.5c0-4.5 9-5.5 9-5.5s.5-3.5 2-5.5c1.5-1.5 3-2 4.5-3.5 2-2 2.5-4 2-6.5 0-3-2-4.5-4-5.5-2-1-4-1.5-4-1.5s.5 2 .5 3.5c0 0-2.5-1-4.5.5-2.5 1.5-4.5 5-4.5 8.5" fill="#1a1a1a"/>
-  <path d="M20.5 19.5c.5 1 1 2 1.5 2.5" fill="none"/>
-  <path d="M22 22c-1 .5-2.5.5-3 1.5-.5 1 0 2 .5 3" fill="none"/>
-  <circle cx="16" cy="22" r="1.5" fill="#ddd" stroke="none"/>
-  <path d="M22.5 11.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#ddd" stroke="none"/>
-</g></svg>`,
+const PIECE_SVGS={
+// PAWN
+wP:mkSVG(`<path d="M22.5 9a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<path d="M19 17c-2 1.5-3 3.5-3 5.5 0 1.5.5 3 1.5 4l-3.5 7c-.5 1-.5 2-.5 2.5h18c0-.5 0-1.5-.5-2.5L27.5 26.5c1-1 1.5-2.5 1.5-4 0-2-1-4-3-5.5H19z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
+<rect x="11" y="36" width="23" height="3" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>`),
 
-// ── BISHOP ──
-wB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9 36c3.4-1 10.1.43 13.5-2 3.4 2.43 10.1 1 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.4-.97-10.1.46-13.5-1-3.4 1.46-10.1.03-13.5 1-1.35.49-2.32.47-3-.5 1.35-1.94 3-2 3-2z" fill="#fff" stroke-linecap="butt"/>
-  <path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z" fill="#fff"/>
-  <circle cx="22.5" cy="8" r="2.5" fill="#fff"/>
-  <path d="M17.5 26h10M15 30h15" stroke-linejoin="miter"/>
-  <path d="M22.5 15.5v5M20 18h5" stroke-width="1" stroke-linejoin="miter"/>
-</g></svg>`,
-bB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="none" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9 36c3.4-1 10.1.43 13.5-2 3.4 2.43 10.1 1 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.4-.97-10.1.46-13.5-1-3.4 1.46-10.1.03-13.5 1-1.35.49-2.32.47-3-.5 1.35-1.94 3-2 3-2z" fill="#1a1a1a" stroke-linecap="butt"/>
-  <path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z" fill="#1a1a1a"/>
-  <circle cx="22.5" cy="8" r="2.5" fill="#1a1a1a"/>
-  <path d="M17.5 26h10M15 30h15" stroke="#888" stroke-linejoin="miter"/>
-  <path d="M22.5 15.5v5M20 18h5" stroke="#888" stroke-width="1" stroke-linejoin="miter"/>
-</g></svg>`,
+bP:mkSVG(`<path d="M22.5 9a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<path d="M19 17c-2 1.5-3 3.5-3 5.5 0 1.5.5 3 1.5 4l-3.5 7c-.5 1-.5 2-.5 2.5h18c0-.5 0-1.5-.5-2.5L27.5 26.5c1-1 1.5-2.5 1.5-4 0-2-1-4-3-5.5H19z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
+<rect x="11" y="36" width="23" height="3" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>`),
 
-// ── QUEEN ──
-wQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="6" cy="12" r="2.75"/>
-  <circle cx="14" cy="9" r="2.75"/>
-  <circle cx="22.5" cy="8" r="2.75"/>
-  <circle cx="31" cy="9" r="2.75"/>
-  <circle cx="39" cy="12" r="2.75"/>
-  <path d="M9 26c8.5-8.5 15.5-4 16.5 2h1.5c1-6 8-10.5 16-2l-5-4L33 5l-6.5 9L22.5 5l-4 9L11 5 9 22z"/>
-  <path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-7 4-23 4-30 0z"/>
-  <path d="M11.5 30c3.5-1 18.5-1 22 0" fill="none" stroke-linejoin="miter"/>
-</g></svg>`,
-bQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="6" cy="12" r="2.75"/>
-  <circle cx="14" cy="9" r="2.75"/>
-  <circle cx="22.5" cy="8" r="2.75"/>
-  <circle cx="31" cy="9" r="2.75"/>
-  <circle cx="39" cy="12" r="2.75"/>
-  <path d="M9 26c8.5-8.5 15.5-4 16.5 2h1.5c1-6 8-10.5 16-2l-5-4L33 5l-6.5 9L22.5 5l-4 9L11 5 9 22z"/>
-  <path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-7 4-23 4-30 0z"/>
-  <path d="M11.5 30c3.5-1 18.5-1 22 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
-</g></svg>`,
+// ROOK
+wR:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<rect x="11" y="20" width="23" height="16" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<rect x="13" y="15" width="19" height="6" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<rect x="9" y="9" width="5" height="7" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<rect x="20" y="9" width="5" height="7" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<rect x="31" y="9" width="5" height="7" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<line x1="14" y1="15" x2="14" y2="20" stroke="${WS}" stroke-width="1.5"/>
+<line x1="31" y1="15" x2="31" y2="20" stroke="${WS}" stroke-width="1.5"/>`),
 
-// ── KING ──
-wK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M22.5 11.63V6M20 8h5" stroke-linejoin="miter"/>
-  <path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" stroke-linecap="butt" stroke-linejoin="miter"/>
-  <path d="M12.5 37c5.5 3.5 14.5 3.5 20 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 5 10 5 10V37z"/>
-  <path d="M12.5 30c5.5-3 14.5-3 20 0" fill="none" stroke-linejoin="miter"/>
-  <path d="M12.5 33.5c5.5-3 14.5-3 20 0" fill="none" stroke-linejoin="miter"/>
-  <path d="M12.5 37c5.5-3 14.5-3 20 0" fill="none" stroke-linejoin="miter"/>
-</g></svg>`,
-bK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
-<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M22.5 11.63V6M20 8h5" stroke="#ccc" stroke-linejoin="miter"/>
-  <path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" stroke-linecap="butt" stroke-linejoin="miter"/>
-  <path d="M12.5 37c5.5 3.5 14.5 3.5 20 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 5 10 5 10V37z"/>
-  <path d="M12.5 30c5.5-3 14.5-3 20 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
-  <path d="M12.5 33.5c5.5-3 14.5-3 20 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
-  <path d="M12.5 37c5.5-3 14.5-3 20 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
-</g></svg>`,
+bR:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<rect x="11" y="20" width="23" height="16" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<rect x="13" y="15" width="19" height="6" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<rect x="9" y="9" width="5" height="7" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<rect x="20" y="9" width="5" height="7" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<rect x="31" y="9" width="5" height="7" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<line x1="14" y1="15" x2="14" y2="20" stroke="${BS}" stroke-width="1.5"/>
+<line x1="31" y1="15" x2="31" y2="20" stroke="${BS}" stroke-width="1.5"/>`),
+
+// KNIGHT
+wN:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<path d="M14 37c0 0 1-8 4-11 2-2 4-3 4-3s-2-2-2-5c0-3 2-5 5-6 3-1 6 0 7.5 2.5 1 1.5 1 4-.5 6-1 1.5-3 2-3 2s1 1 1 3c0 2-1 4-2.5 5.5L25 37H14z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="27" cy="15" r="2" fill="${WS}"/>
+<path d="M16 26c1-2 3-3 4-5 1-2 0-4-.5-5.5" fill="none" stroke="${WS}" stroke-width="1"/>`),
+
+bN:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<path d="M14 37c0 0 1-8 4-11 2-2 4-3 4-3s-2-2-2-5c0-3 2-5 5-6 3-1 6 0 7.5 2.5 1 1.5 1 4-.5 6-1 1.5-3 2-3 2s1 1 1 3c0 2-1 4-2.5 5.5L25 37H14z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="27" cy="15" r="2" fill="${BS}"/>
+<path d="M16 26c1-2 3-3 4-5 1-2 0-4-.5-5.5" fill="none" stroke="${BS}" stroke-width="1"/>`),
+
+// BISHOP
+wB:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<ellipse cx="22.5" cy="33" rx="10" ry="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<path d="M17 30c0 0 .5-4 2-7 1.5-3 3.5-6 3.5-8.5 0-2-1-3.5-1-3.5s1.5-1.5 1-3.5c-.5-1.5-1.5-2.5-2-3 1 0 2.5.5 3.5 1.5s2 2.5 2 4c0 2-1.5 4-1.5 4s2 1.5 3.5 4.5 2 9.5 2 9.5" fill="none" stroke="${WS}" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M15 30c0 0 2-3 7.5-3s7.5 3 7.5 3" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M14 30h17c0 0 1 0 2 2H12c1-2 2-2 2-2z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="22.5" cy="8" r="2.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<line x1="22.5" y1="8" x2="22.5" y2="13" stroke="${WS}" stroke-width="1.5"/>
+<line x1="20" y1="10.5" x2="25" y2="10.5" stroke="${WS}" stroke-width="1.5"/>`),
+
+bB:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<ellipse cx="22.5" cy="33" rx="10" ry="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<path d="M17 30c0 0 .5-4 2-7 1.5-3 3.5-6 3.5-8.5 0-2-1-3.5-1-3.5s1.5-1.5 1-3.5c-.5-1.5-1.5-2.5-2-3 1 0 2.5.5 3.5 1.5s2 2.5 2 4c0 2-1.5 4-1.5 4s2 1.5 3.5 4.5 2 9.5 2 9.5" fill="none" stroke="${BS}" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M15 30c0 0 2-3 7.5-3s7.5 3 7.5 3" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M14 30h17c0 0 1 0 2 2H12c1-2 2-2 2-2z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="22.5" cy="8" r="2.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<line x1="22.5" y1="8" x2="22.5" y2="13" stroke="${BS}" stroke-width="1.5"/>
+<line x1="20" y1="10.5" x2="25" y2="10.5" stroke="${BS}" stroke-width="1.5"/>`),
+
+// QUEEN
+wQ:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<path d="M9 30h27v5.5H9z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M22.5 8L9 30h27L22.5 8z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M9 30c0 0 3.5-2 13.5-2s13.5 2 13.5 2" fill="none" stroke="${WS}" stroke-width="1"/>
+<circle cx="6" cy="13" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<circle cx="13.5" cy="8" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<circle cx="22.5" cy="6.5" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<circle cx="31.5" cy="8" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<circle cx="39" cy="13" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<path d="M6 13L9 30M13.5 8L14 30M22.5 6.5L22.5 30M31.5 8L31 30M39 13L36 30" stroke="${WS}" stroke-width="1"/>`),
+
+bQ:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<path d="M9 30h27v5.5H9z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M22.5 8L9 30h27L22.5 8z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M9 30c0 0 3.5-2 13.5-2s13.5 2 13.5 2" fill="none" stroke="${BS}" stroke-width="1"/>
+<circle cx="6" cy="13" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<circle cx="13.5" cy="8" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<circle cx="22.5" cy="6.5" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<circle cx="31.5" cy="8" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<circle cx="39" cy="13" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<path d="M6 13L9 30M13.5 8L14 30M22.5 6.5L22.5 30M31.5 8L31 30M39 13L36 30" stroke="${BS}" stroke-width="1"/>`),
+
+// KING
+wK:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
+<path d="M9 30h27v5.5H9z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M12 30c0 0 0-12 10.5-15C33 18 33 30 33 30H12z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M22.5 5v12M17 11h11" stroke="${WS}" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M12 30c0 0 3-3 10.5-3s10.5 3 10.5 3" fill="none" stroke="${WS}" stroke-width="1"/>`),
+
+bK:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
+<path d="M9 30h27v5.5H9z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M12 30c0 0 0-12 10.5-15C33 18 33 30 33 30H12z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M22.5 5v12M17 11h11" stroke="${BS}" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M12 30c0 0 3-3 10.5-3s10.5 3 10.5 3" fill="none" stroke="${BS}" stroke-width="1"/>`),
 };
 
-const pieceCache = {};
-function getPieceSrc(code) {
-  if (pieceCache[code]) return pieceCache[code];
-  const svg = PIECE_SVGS[code];
-  if (!svg) return '';
-  const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  pieceCache[code] = url;
-  return url;
+const pCache={};
+function getPSrc(code){
+  if(pCache[code])return pCache[code];
+  const svg=PIECE_SVGS[code];if(!svg)return'';
+  const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  pCache[code]=url;return url;
 }
-
-function mkPImg(code) {
-  if (!code) return null;
-  const img = document.createElement('img');
-  img.className = 'piece-img';
-  img.src = getPieceSrc(code);
-  img.draggable = false;
+function mkPI(code){
+  if(!code)return null;
+  const img=document.createElement('img');
+  img.className='piece-img';img.src=getPSrc(code);img.draggable=false;
   return img;
 }
 
@@ -1282,12 +1252,12 @@ function initB(){return[
 
 let G={b:null,turn:'w',sel:null,moves:[],lm:null,mode:null,opp:'',
   cas:{wK:1,wRa:1,wRh:1,bK:1,bRa:1,bRh:1},ep:null,prCb:null,over:false,hm:0};
+let openingUsed=null;
 
 function startGame(mode,c,oppName){
   G={b:initB(),turn:'w',sel:null,moves:[],lm:null,mode,opp:oppName||(mode==='solo'?'Larry':'Opponent'),
     cas:{wK:1,wRa:1,wRh:1,bK:1,bRa:1,bRh:1},ep:null,prCb:null,over:false,hm:0};
-  openingUsed=null;
-  renderGame(c);
+  openingUsed=null;renderGame(c);
 }
 
 function renderGame(c){
@@ -1311,7 +1281,7 @@ function renderGame(c){
       <div class="pcard"><div class="pcav wp">${pn[0]?.toUpperCase()}</div>
         <div class="pcinfo"><div class="pcn">${pn}</div><div class="pct">${pt}</div></div>
         <div class="ti" id="wTI">● Moving</div></div>
-      <div class="mh"><h4>${t('mh')}</h4><div class="ml" id="mL"></div></div>
+      <div class="mh"><h4 id="mhH">${t('mh')}</h4><div class="ml" id="mL"></div></div>
       <div class="gctrl">
         <button class="gbtn" onclick="offerDraw()">${t('draw')}</button>
         <button class="gbtn dng" onclick="resignG()">${t('resign')}</button>
@@ -1335,7 +1305,7 @@ function drawB(){
       const isp=pm.some(m=>m[0]===r&&m[1]===f);
       if(isp)cell.classList.add(G.b[r][f]&&G.b[r][f][0]!==G.turn?'cm-c':'pm-c');
       if(G.b[r][f]===G.turn+'K'&&inChk(G.b,G.turn))cell.classList.add('ck-c');
-      const p=G.b[r][f];if(p){const img=mkPImg(p);if(img)cell.appendChild(img);}
+      const p=G.b[r][f];if(p){const img=mkPI(p);if(img)cell.appendChild(img);}
       cell.addEventListener('click',()=>clkCell(r,f));
       el.appendChild(cell);
     }
@@ -1375,7 +1345,7 @@ function mkMv(fr,ff,tr,tf,promo){
   updMH();G.turn=G.turn==='w'?'b':'w';updTI();
   const st=gStat();if(st!=='playing'){endGame(st);return;}
   drawB();
-  if(G.mode==='solo'&&G.turn==='b')setTimeout(larryM,340+Math.random()*530);
+  if(G.mode==='solo'&&G.turn==='b')setTimeout(larryM,350+Math.random()*550);
   else if((G.mode==='pvp'||G.mode==='competitive')&&G.turn==='b')setTimeout(simOpp,800+Math.random()*1100);
 }
 
@@ -1387,7 +1357,6 @@ function updMH(){
   let h='';for(let i=0;i<G.moves.length;i+=2){const n=Math.floor(i/2)+1,w=G.moves[i]?.s||'',b=G.moves[i+1]?.s||'';h+=`<div class="mr"><span class="mn">${n}.</span><span class="mw">${w}</span><span class="mb">${b}</span></div>`;}
   el.innerHTML=h;el.scrollTop=el.scrollHeight;
 }
-
 function updTI(){
   const wt=document.getElementById('wTI'),bt=document.getElementById('bTI'),st=document.getElementById('stT');
   if(!wt||!bt||!st)return;
@@ -1410,7 +1379,6 @@ function pseudo(board,r,f){
     if(c==='b'&&r===0&&f===4&&G.cas.bK){if(G.cas.bRh&&!board[0][5]&&!board[0][6]&&!sqA(board,'w',0,4)&&!sqA(board,'w',0,5))mv.push([0,6]);if(G.cas.bRa&&!board[0][3]&&!board[0][2]&&!board[0][1]&&!sqA(board,'w',0,4)&&!sqA(board,'w',0,3))mv.push([0,2]);}}
   return mv;
 }
-
 function pseudoS(board,r,f){
   const p=board[r][f];if(!p)return[];
   const c=p[0],tp=p[1],op=c==='w'?'b':'w',mv=[];
@@ -1423,10 +1391,8 @@ function pseudoS(board,r,f){
   else if(tp==='K'){for(const[dr,df]of[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]){const nr=r+dr,nf=f+df;if(nr>=0&&nr<=7&&nf>=0&&nf<=7)mv.push([nr,nf]);}}
   return mv;
 }
-
 function sqA(board,byC,r,f){for(let rr=0;rr<8;rr++)for(let ff=0;ff<8;ff++){const p=board[rr][ff];if(!p||p[0]!==byC)continue;if(pseudoS(board,rr,ff).some(m=>m[0]===r&&m[1]===f))return true;}return false;}
 function inChk(board,c){let kr,kf;for(let r=0;r<8;r++)for(let f=0;f<8;f++)if(board[r][f]===c+'K'){kr=r;kf=f;}return sqA(board,c==='w'?'b':'w',kr,kf);}
-
 function lmoves(r,f){
   const ps=pseudo(G.b,r,f),c=G.b[r][f][0];
   return ps.filter(([tr,tf])=>{
@@ -1436,13 +1402,11 @@ function lmoves(r,f){
     nb[tr][tf]=nb[r][f];nb[r][f]=null;return!inChk(nb,c);
   });
 }
-
 function allLM(board,color){
   const all=[];
   for(let r=0;r<8;r++)for(let f=0;f<8;f++){if(board[r][f]?.[0]===color){for(const[tr,tf]of pseudo(board,r,f)){const nb=board.map(row=>[...row]);nb[tr][tf]=nb[r][f];nb[r][f]=null;if(!inChk(nb,color))all.push({fr:r,ff:f,tr,tf});}}}
   return all;
 }
-
 function gStat(){
   const legal=allLM(G.b,G.turn);
   if(!legal.length)return inChk(G.b,G.turn)?'checkmate':'stalemate';
@@ -1461,21 +1425,17 @@ const PST={
   Km:[[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-20,-30,-30,-40,-40,-30,-30,-20],[-10,-20,-20,-20,-20,-20,-20,-10],[20,20,0,0,0,0,20,20],[20,30,10,0,0,10,30,20]],
   Ke:[[-50,-40,-30,-20,-20,-30,-40,-50],[-30,-20,-10,0,0,-10,-20,-30],[-30,-10,20,30,30,20,-10,-30],[-30,-10,30,40,40,30,-10,-30],[-30,-10,30,40,40,30,-10,-30],[-30,-10,20,30,30,20,-10,-30],[-30,-30,0,0,0,0,-30,-30],[-50,-30,-30,-30,-30,-30,-30,-50]],
 };
-
 function isEg(){let q=0,m=0;for(let r=0;r<8;r++)for(let f=0;f<8;f++){const p=G.b[r][f];if(!p)continue;if(p[1]==='Q')q++;if(p[1]==='N'||p[1]==='B')m++;}return q===0||(q<=2&&m<=2);}
-
 function evalB(board){
   const eg=isEg();let sc=0;
   for(let r=0;r<8;r++)for(let f=0;f<8;f++){
     const p=board[r][f];if(!p)continue;
-    const v=PV[p[1]]||0;
-    const row=p[0]==='b'?r:7-r;
+    const v=PV[p[1]]||0,row=p[0]==='b'?r:7-r;
     let pv=p[1]==='K'?(eg?PST.Ke:PST.Km)[row]?.[f]||0:(PST[p[1]]||[])[row]?.[f]||0;
     sc+=p[0]==='b'?v+pv:-(v+pv);
   }
   return sc;
 }
-
 function mmAB(board,depth,a,b,max,ep){
   if(depth===0)return evalB(board);
   const c=max?'b':'w',sEP=G.ep;G.ep=ep;
@@ -1506,7 +1466,6 @@ function mmAB(board,depth,a,b,max,ep){
     return best;
   }
 }
-
 const OPENINGS=[
   [[6,4,4,4],[1,4,3,4],[6,5,5,5],[0,1,2,0],[7,6,5,5],[0,5,2,3]],
   [[6,4,4,4],[1,4,3,4],[6,5,5,5],[0,1,2,0],[7,6,5,5],[0,6,5,5],[7,5,4,4]],
@@ -1517,8 +1476,6 @@ const OPENINGS=[
   [[6,3,4,3],[1,6,2,5],[6,6,5,6],[1,5,2,4],[7,5,6,4],[0,4,1,4]],
   [[6,2,4,2],[1,4,3,4],[7,3,5,5],[0,3,1,4],[6,4,4,4],[1,3,3,3]],
 ];
-let openingUsed=null;
-
 function getOBM(){
   if(!openingUsed)openingUsed=OPENINGS[Math.floor(Math.random()*OPENINGS.length)];
   const idx=G.moves.length;
@@ -1528,13 +1485,10 @@ function getOBM(){
   }
   return null;
 }
-
 function larryBest(){
   const mvs=allLM(G.b,'b');if(!mvs.length)return null;
   if(G.moves.length<16){const ob=getOBM();if(ob)return ob;}
-  const depth=G.moves.length>32?2:3;
-  const under=inChk(G.b,'b');
-  const scored=[];
+  const depth=G.moves.length>32?2:3,under=inChk(G.b,'b'),scored=[];
   for(const m of mvs){
     const nb=G.b.map(r=>[...r]);const pc=nb[m.fr][m.ff];const sEP=G.ep;
     if(pc[1]==='P'&&G.ep&&m.tr===G.ep[0]&&m.tf===G.ep[1])nb[m.fr][m.tf]=null;
@@ -1546,17 +1500,12 @@ function larryBest(){
   }
   scored.sort((a,b)=>b.score-a.score);
   const safe=scored.filter(m=>!m.hangs),pool=safe.length?safe:scored;
-  if(pool.length>1&&Math.random()<0.22){
-    const alt=pool.slice(1).find(m=>m.pt!==pool[0].pt&&pool[0].score-m.score<50);
-    if(alt)return alt;
-  }
+  if(pool.length>1&&Math.random()<0.22){const alt=pool.slice(1).find(m=>m.pt!==pool[0].pt&&pool[0].score-m.score<50);if(alt)return alt;}
   if(Math.random()<(under?0.03:0.06)&&pool.length>2)return pool[1+Math.floor(Math.random()*Math.min(2,pool.length-1))];
   const rr=Math.random();
-  if(rr<0.72||pool.length===1)return pool[0];
-  if(rr<0.92||pool.length===2)return pool[1];
+  if(rr<0.72||pool.length===1)return pool[0];if(rr<0.92||pool.length===2)return pool[1];
   return pool[Math.min(2,pool.length-1)];
 }
-
 function larryM(){if(G.over||G.turn!=='b')return;const m=larryBest();if(m)mkMv(m.fr,m.ff,m.tr,m.tf);}
 
 // ═══ GAME EVENTS ═══
@@ -1567,29 +1516,23 @@ function endGame(status){
   const ti=document.getElementById('goTi'),em=document.getElementById('goEm'),de=document.getElementById('goDe');
   if(status==='checkmate'){
     const winner=G.turn==='w'?'Black':'White',youWon=G.turn==='b';
-    ti.textContent=t('cm');em.textContent=youWon?'🏆':'💀';de.textContent=winner+' '+t('wb');
-    // Only competitive mode gives/removes points
+    ti.textContent=t('cm_');em.textContent=youWon?'🏆':'💀';de.textContent=winner+' '+t('wb');
     if(G.mode==='competitive'&&me){
-      incrementCompGames();
-      if(youWon){me.points+=10;me.wins++;}
-      else{me.points=Math.max(0,me.points-5);me.losses++;}
+      compIncrement();
+      if(youWon){me.points+=10;me.wins++;}else{me.points=Math.max(0,me.points-5);me.losses++;}
       const u=DB.users.find(x=>x.id===me.id);
       if(u){u.points=me.points;u.wins=me.wins;u.losses=me.losses;dbSave();}
       updTB();showToast(youWon?'+10 '+t('pts'):'−5 '+t('pts'));
-    } else if(G.mode==='competitive'&&me&&!youWon){
-      // count loss game too
-      incrementCompGames();
     }
   }else if(status==='stalemate'){
     ti.textContent='Draw';em.textContent='🤝';de.textContent=t('stale');
-    if(G.mode==='competitive'&&me) incrementCompGames();
+    if(G.mode==='competitive'&&me)compIncrement();
   }else{
     ti.textContent='Draw';em.textContent='🤝';de.textContent='Draw agreed.';
-    if(G.mode==='competitive'&&me) incrementCompGames();
+    if(G.mode==='competitive'&&me)compIncrement();
   }
   om('mGO');
 }
-
 function offerDraw(){if(confirm(t('draw')+'?'))endGame('draw');}
 function resignG(){
   if(confirm(t('resign')+'?')){
@@ -1598,8 +1541,7 @@ function resignG(){
     document.getElementById('goEm').textContent='🏳';
     document.getElementById('goDe').textContent=t('bl');
     if(G.mode==='competitive'&&me){
-      incrementCompGames();
-      me.points=Math.max(0,me.points-5);me.losses++;
+      compIncrement();me.points=Math.max(0,me.points-5);me.losses++;
       const u=DB.users.find(x=>x.id===me.id);if(u){u.points=me.points;u.losses=me.losses;dbSave();}
       updTB();showToast('−5 '+t('pts'));
     }
@@ -1611,10 +1553,11 @@ function goHome(){cm('mGO');showSect('home');}
 
 // ═══ PROMOTION ═══
 function showPromoM(color,cb){
+  document.getElementById('mPMH').textContent='Promote Pawn';
   const keys=color==='w'?['wQ','wR','wB','wN']:['bQ','bR','bB','bN'];
   document.getElementById('promoPcs').innerHTML=keys.map(k=>`
     <div class="pp" onclick="selPromo('${k[1]}')">
-      <img src="${getPieceSrc(k)}" style="width:48px;height:48px"/>
+      <img src="${getPSrc(k)}" style="width:48px;height:48px"/>
     </div>`).join('');
   G.prCb=cb;om('mPM');
 }
@@ -1630,12 +1573,9 @@ function showToast(msg,err){
 
 // ═══ INIT ═══
 dbLoad();
-updTB();
-renderFL();
-updRQ();
-showSect('home');
+updTB();renderFL();updRQ();showSect('home');
+if(me)startSync();
 
-// Save session on page unload
 window.addEventListener('beforeunload',()=>{
   if(me){const u=DB.users.find(x=>x.id===me.id);if(u){u.lastSeen=Date.now();dbSave();}}
 });
