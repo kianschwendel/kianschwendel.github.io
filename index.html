@@ -4,302 +4,325 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChessGrinder</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --gold:#C9A84C;--gold-light:#E8C97A;--gold-dark:#8B6914;
-  --white:#F5F0E8;--dark:#0D0D0D;--dark2:#141414;--dark3:#1C1C1C;--dark4:#252525;--dark5:#2E2E2E;
-  --board-light:#F0D9B5;--board-dark:#8B6343;--muted:#888;--sidebar-w:280px;--cell:82px;
-  --fs:15px; /* base font size */
+  --gold:#C9A84C;--gold-l:#E8C97A;--gold-d:#8B6914;
+  --white:#F5F0E8;--dark:#0D0D0D;--d2:#141414;--d3:#1C1C1C;--d4:#252525;--d5:#2E2E2E;
+  --bl:#F0D9B5;--bd:#8B6343;--mu:#777;--sw:280px;--cell:82px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;font-size:var(--fs);min-height:100vh;overflow-x:hidden;line-height:1.5;}
+html,body{height:100%;}
+body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;min-height:100vh;overflow-x:hidden;line-height:1.5;}
 
 /* ── MODALS ── */
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
 .ov.on{display:flex;}
-.modal{background:var(--dark3);border:1px solid var(--gold-dark);border-radius:14px;padding:32px;width:430px;max-width:95vw;position:relative;max-height:90vh;overflow-y:auto;}
-.modal h2{font-family:'Cinzel',serif;color:var(--gold);margin-bottom:18px;font-size:1.25rem;text-align:center;letter-spacing:0.05em;}
-.modal input,.modal textarea{width:100%;background:var(--dark5);border:1px solid #333;border-radius:9px;padding:11px 14px;color:var(--white);font-family:'Inter',sans-serif;font-size:0.95rem;margin-bottom:10px;transition:border-color 0.2s;resize:none;}
-.modal input:focus,.modal textarea:focus{outline:none;border-color:var(--gold-dark);}
+.modal{background:var(--d3);border:1px solid var(--gold-d);border-radius:14px;padding:30px;width:420px;max-width:95vw;position:relative;max-height:88vh;overflow-y:auto;}
+.modal h2{font-family:'Cinzel',serif;color:var(--gold);margin-bottom:16px;font-size:1.2rem;text-align:center;letter-spacing:0.05em;}
+.modal input,.modal textarea{width:100%;background:var(--d5);border:1px solid #333;border-radius:9px;padding:11px 14px;color:var(--white);font-size:0.95rem;margin-bottom:10px;transition:border-color 0.2s;resize:none;font-family:'Inter',sans-serif;}
+.modal input:focus,.modal textarea:focus{outline:none;border-color:var(--gold-d);}
 .modal input::placeholder,.modal textarea::placeholder{color:#555;}
-.btn{display:inline-block;padding:11px 24px;border-radius:9px;font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700;letter-spacing:0.07em;cursor:pointer;border:none;transition:all 0.2s;text-align:center;}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);width:100%;}
-.btn-gold:hover{background:linear-gradient(135deg,var(--gold-light),var(--gold));transform:translateY(-1px);}
-.btn-outline{background:transparent;border:1px solid var(--gold-dark);color:var(--gold);width:100%;margin-top:8px;}
-.btn-outline:hover{background:rgba(201,168,76,0.1);}
-.btn-red{background:transparent;border:1px solid #922;color:#e55;width:100%;margin-top:8px;}
-.btn-red:hover{background:rgba(153,34,34,0.15);}
+.btn{display:inline-block;padding:10px 22px;border-radius:9px;font-family:'Cinzel',serif;font-size:0.8rem;font-weight:700;letter-spacing:0.07em;cursor:pointer;border:none;transition:all 0.2s;text-align:center;}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);width:100%;}
+.btn-g:hover{background:linear-gradient(135deg,var(--gold-l),var(--gold));transform:translateY(-1px);}
+.btn-o{background:transparent;border:1px solid var(--gold-d);color:var(--gold);width:100%;margin-top:8px;}
+.btn-o:hover{background:rgba(201,168,76,0.1);}
+.btn-r{background:transparent;border:1px solid #922;color:#e55;width:100%;margin-top:8px;}
+.btn-r:hover{background:rgba(153,34,34,0.15);}
 .btn-sm{padding:5px 12px;font-size:0.72rem;width:auto;border-radius:7px;}
 .mc{position:absolute;top:12px;right:14px;background:none;border:none;color:#555;font-size:1.2rem;cursor:pointer;}
 .mc:hover{color:var(--white);}
-.ms{text-align:center;margin-top:11px;font-size:0.9rem;color:var(--muted);}
+.ms{text-align:center;margin-top:11px;font-size:0.9rem;color:var(--mu);}
 .ms a{color:var(--gold);cursor:pointer;}
-.ferr{font-size:0.78rem;color:#e55;margin:-6px 0 9px;display:none;}
-.ferr.on{display:block;}
+.fe{font-size:0.78rem;color:#e55;margin:-6px 0 9px;display:none;}
+.fe.on{display:block;}
 
 /* ── LAYOUT ── */
 #app{display:flex;min-height:100vh;}
 
 /* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar-w);background:var(--dark2);border-right:1px solid #1e1e1e;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:10;}
-.logo{padding:20px 18px 16px;border-bottom:1px solid #1e1e1e;cursor:pointer;}
+.sidebar{width:var(--sw);background:var(--d2);border-right:1px solid #1e1e1e;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:20;transition:width 0.25s ease;}
+.sidebar.collapsed{width:54px;}
+.sidebar.collapsed .logo-text,.sidebar.collapsed .logo-tagline,.sidebar.collapsed .nav-label,
+.sidebar.collapsed .nav-item span:not(.icon),.sidebar.collapsed .fl-lbl,.sidebar.collapsed .fl-add,
+.sidebar.collapsed .req-btn span:not(:first-child),.sidebar.collapsed .fname,.sidebar.collapsed .ftag,
+.sidebar.collapsed .fbtns,.sidebar.collapsed .legal-links,.sidebar.collapsed .copy-line,
+.sidebar.collapsed .req-badge{display:none!important;}
+.sidebar.collapsed .logo{padding:14px 12px;}
+.sidebar.collapsed .logo-icon{display:block;}
+.sidebar.collapsed .nav-item{justify-content:center;padding:10px 0;}
+.sidebar.collapsed .friend-item{justify-content:center;padding:7px 0;}
+.sidebar.collapsed .fl-head{justify-content:center;}
+.sidebar.collapsed .sdiv{margin:4px 8px;}
+.sidebar.collapsed .collapse-btn{right:-14px;}
+.logo-icon{display:none;font-size:1.4rem;}
+.collapse-btn{position:absolute;top:22px;right:-14px;width:26px;height:26px;border-radius:50%;background:var(--d3);border:1px solid #2e2e2e;color:var(--mu);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;z-index:30;transition:all 0.2s;}
+.collapse-btn:hover{border-color:var(--gold-d);color:var(--gold);}
+
+.logo{padding:18px 17px 15px;border-bottom:1px solid #1e1e1e;cursor:pointer;position:relative;}
 .logo:hover .logo-chess,.logo:hover .logo-grinder{opacity:0.85;}
-.logo-text{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:900;letter-spacing:0.03em;user-select:none;}
-.logo-chess{color:var(--white);}
-.logo-grinder{color:var(--gold);}
-.logo-tagline{font-size:0.72rem;color:#444;margin-top:3px;letter-spacing:0.14em;text-transform:uppercase;}
-.nav-sect{padding:14px 12px 6px;}
-.nav-lbl{font-size:0.68rem;color:#555;letter-spacing:0.2em;text-transform:uppercase;padding:0 10px;margin-bottom:5px;font-family:'Cinzel',serif;font-weight:700;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;transition:all 0.14s;font-size:1rem;font-weight:600;color:#aaa;border:none;background:none;width:100%;text-align:left;}
-.nav-item:hover{background:var(--dark4);color:var(--white);}
+.logo-text{font-family:'Cinzel',serif;font-size:1.45rem;font-weight:900;letter-spacing:0.03em;user-select:none;}
+.logo-chess{color:var(--white);}.logo-grinder{color:var(--gold);}
+.logo-tagline{font-size:0.66rem;color:#444;margin-top:3px;letter-spacing:0.14em;text-transform:uppercase;}
+.nav-label{font-size:0.66rem;color:#555;letter-spacing:0.2em;text-transform:uppercase;padding:0 9px;margin-bottom:4px;font-family:'Cinzel',serif;font-weight:700;}
+.nav-sect{padding:13px 11px 5px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:9px;cursor:pointer;transition:all 0.14s;font-size:1rem;font-weight:600;color:#aaa;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:var(--d4);color:var(--white);}
 .nav-item.active{background:rgba(201,168,76,0.1);color:var(--gold);border-left:2px solid var(--gold);}
 .nav-item .icon{font-size:1rem;width:18px;text-align:center;flex-shrink:0;}
-.sdiv{height:1px;background:#1e1e1e;margin:5px 13px;}
+.sdiv{height:1px;background:#1e1e1e;margin:4px 12px;}
 
-/* ── FRIENDS SIDEBAR ── */
-.friends-sec{padding:8px 12px;flex:1;overflow-y:auto;display:flex;flex-direction:column;}
-.friends-sec::-webkit-scrollbar{width:3px;}
-.friends-sec::-webkit-scrollbar-thumb{background:#252525;}
-.fl-head{display:flex;align-items:center;justify-content:space-between;padding:0 10px;margin-bottom:6px;}
-.fl-lbl{font-size:0.72rem;color:#888;letter-spacing:0.18em;text-transform:uppercase;font-family:'Cinzel',serif;font-weight:700;}
-.fl-add{background:none;border:none;color:var(--gold);cursor:pointer;font-size:1.05rem;padding:0 3px;}
-.req-btn{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:600;color:#aaa;border:none;background:none;width:100%;text-align:left;margin-bottom:4px;transition:background 0.14s;}
-.req-btn:hover{background:var(--dark4);color:var(--white);}
-.req-badge{background:var(--gold-dark);color:var(--dark);border-radius:10px;padding:1px 7px;font-size:0.7rem;font-weight:700;font-family:'Cinzel',serif;}
-.friend-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;margin-bottom:2px;transition:background 0.14s;}
-.friend-item:hover{background:var(--dark4);}
-.fav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:var(--gold-light);font-family:'Cinzel',serif;flex-shrink:0;position:relative;cursor:pointer;background:linear-gradient(135deg,var(--gold-dark),#181818);}
-.dot-on{position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#4CAF50;border:2px solid var(--dark2);}
-.dot-off{position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#555;border:2px solid var(--dark2);}
+/* ── FRIENDS SECTION ── */
+.friends-wrap{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;}
+.fl-head{display:flex;align-items:center;justify-content:space-between;padding:8px 11px 5px;}
+.fl-lbl{font-size:0.66rem;color:#888;letter-spacing:0.18em;text-transform:uppercase;font-family:'Cinzel',serif;font-weight:700;}
+.fl-add{background:none;border:none;color:var(--gold);cursor:pointer;font-size:1rem;padding:0 2px;}
+.req-btn{display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:8px;cursor:pointer;font-size:0.88rem;font-weight:600;color:#aaa;border:none;background:none;width:100%;text-align:left;transition:background 0.14s;margin:0 0 3px;}
+.req-btn:hover{background:var(--d4);color:var(--white);}
+.req-badge{background:var(--gold-d);color:var(--dark);border-radius:10px;padding:1px 7px;font-size:0.68rem;font-weight:700;font-family:'Cinzel',serif;}
+.flist-scroll{flex:1;overflow-y:auto;padding:0 11px 4px;}
+.flist-scroll::-webkit-scrollbar{width:3px;}
+.flist-scroll::-webkit-scrollbar-thumb{background:#252525;}
+.friend-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:9px;margin-bottom:2px;transition:background 0.14s;}
+.friend-item:hover{background:var(--d4);}
+.fav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.76rem;font-weight:700;color:var(--gold-l);font-family:'Cinzel',serif;flex-shrink:0;position:relative;cursor:pointer;background:linear-gradient(135deg,var(--gold-d),#181818);}
+.dot-on{position:absolute;bottom:-1px;right:-1px;width:7px;height:7px;border-radius:50%;background:#4CAF50;border:2px solid var(--d2);}
+.dot-off{position:absolute;bottom:-1px;right:-1px;width:7px;height:7px;border-radius:50%;background:#555;border:2px solid var(--d2);}
 .finfo{flex:1;min-width:0;cursor:pointer;}
-.fname{font-size:0.88rem;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ftag{font-size:0.7rem;color:var(--muted);}
+.fname{font-size:0.86rem;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ftag{font-size:0.65rem;color:var(--mu);}
 .fbtns{display:flex;gap:3px;flex-shrink:0;}
-.fib{width:24px;height:24px;border-radius:6px;background:none;border:1px solid #2a2a2a;color:var(--muted);cursor:pointer;font-size:0.78rem;display:flex;align-items:center;justify-content:center;transition:all 0.14s;padding:0;}
-.fib:hover{border-color:var(--gold-dark);color:var(--gold);}
+.fib{width:22px;height:22px;border-radius:5px;background:none;border:1px solid #2a2a2a;color:var(--mu);cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.14s;padding:0;}
+.fib:hover{border-color:var(--gold-d);color:var(--gold);}
 .fib.rem:hover{border-color:#922;color:#e55;}
 
+/* ── SIDEBAR BOTTOM ── */
+.sidebar-bottom{padding:8px 12px 10px;border-top:1px solid #1e1e1e;flex-shrink:0;}
+.legal-links{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.legal-link{font-size:0.7rem;color:#555;cursor:pointer;text-decoration:none;transition:color 0.14s;}
+.legal-link:hover{color:var(--gold);}
+.copy-line{font-size:0.65rem;color:#3a3a3a;}
+
 /* ── TOPBAR ── */
-.main{flex:1;margin-left:var(--sidebar-w);display:flex;flex-direction:column;min-height:100vh;}
-.topbar{height:58px;background:var(--dark2);border-bottom:1px solid #1e1e1e;display:flex;align-items:center;justify-content:flex-end;padding:0 22px;gap:10px;position:sticky;top:0;z-index:5;}
+.main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;min-height:100vh;transition:margin-left 0.25s ease;}
+.main.collapsed{margin-left:54px;}
+.topbar{height:56px;background:var(--d2);border-bottom:1px solid #1e1e1e;display:flex;align-items:center;justify-content:flex-end;padding:0 22px;gap:10px;position:sticky;top:0;z-index:5;}
 .lang-sel{position:relative;}
-.lang-btn{display:flex;align-items:center;gap:6px;background:var(--dark4);border:1px solid #252525;border-radius:9px;padding:7px 12px;color:var(--white);cursor:pointer;font-size:0.9rem;transition:border-color 0.2s;}
-.lang-btn:hover{border-color:var(--gold-dark);}
-.lang-flag{font-size:1.1rem;}
-.lang-dd{position:absolute;top:calc(100% + 7px);right:0;background:var(--dark3);border:1px solid #252525;border-radius:11px;overflow:hidden;min-width:165px;display:none;box-shadow:0 14px 44px rgba(0,0,0,0.7);z-index:100;max-height:320px;overflow-y:auto;}
+.lang-btn{display:flex;align-items:center;gap:6px;background:var(--d4);border:1px solid #252525;border-radius:9px;padding:7px 12px;color:var(--white);cursor:pointer;font-size:0.88rem;transition:border-color 0.2s;}
+.lang-btn:hover{border-color:var(--gold-d);}
+.lang-dd{position:absolute;top:calc(100%+7px);right:0;background:var(--d3);border:1px solid #252525;border-radius:11px;overflow:hidden;min-width:162px;display:none;box-shadow:0 14px 44px rgba(0,0,0,0.7);z-index:100;max-height:310px;overflow-y:auto;}
 .lang-dd.on{display:block;}
-.lang-opt{display:flex;align-items:center;gap:9px;padding:10px 15px;cursor:pointer;transition:background 0.12s;font-size:0.9rem;}
-.lang-opt:hover{background:var(--dark5);}
+.lang-opt{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;transition:background 0.12s;font-size:0.88rem;}
+.lang-opt:hover{background:var(--d5);}
 .lang-opt.sel{color:var(--gold);}
-.prof-btn{display:flex;align-items:center;gap:9px;background:var(--dark4);border:1px solid #252525;border-radius:9px;padding:7px 12px;cursor:pointer;transition:border-color 0.2s;}
-.prof-btn:hover{border-color:var(--gold-dark);}
-.pav-sm{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),#181818);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:var(--gold-light);flex-shrink:0;}
-.pname-sm{font-size:0.86rem;font-weight:600;color:var(--white);font-family:'Cinzel',serif;}
-.ptag-sm{font-size:0.68rem;color:var(--muted);}
+.prof-btn{display:flex;align-items:center;gap:9px;background:var(--d4);border:1px solid #252525;border-radius:9px;padding:6px 11px;cursor:pointer;transition:border-color 0.2s;}
+.prof-btn:hover{border-color:var(--gold-d);}
+.pav-sm{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--gold-l);flex-shrink:0;}
+.pn-sm{font-size:0.84rem;font-weight:600;color:var(--white);font-family:'Cinzel',serif;}
+.pt-sm{font-size:0.65rem;color:var(--mu);}
 .auth-bts{display:flex;gap:7px;}
-.ab{padding:7px 15px;border-radius:9px;font-family:'Cinzel',serif;font-size:0.76rem;font-weight:700;letter-spacing:0.06em;cursor:pointer;border:none;transition:all 0.2s;}
+.ab{padding:7px 14px;border-radius:9px;font-family:'Cinzel',serif;font-size:0.74rem;font-weight:700;letter-spacing:0.06em;cursor:pointer;border:none;transition:all 0.2s;}
 .ab.li{background:transparent;border:1px solid #333;color:var(--white);}
-.ab.li:hover{border-color:var(--gold-dark);color:var(--gold);}
-.ab.re{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);}
-.ab.re:hover{background:linear-gradient(135deg,var(--gold-light),var(--gold));}
+.ab.li:hover{border-color:var(--gold-d);color:var(--gold);}
+.ab.re{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);}
 
 /* ── CONTENT ── */
 .content{flex:1;padding:26px 30px;display:flex;gap:22px;align-items:flex-start;justify-content:center;}
 
 /* ── BOARD ── */
 .game-area{display:flex;gap:20px;align-items:flex-start;justify-content:center;width:100%;}
-.board-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
-.chess-board{display:grid;grid-template-columns:repeat(8,var(--cell));border:3px solid var(--gold-dark);border-radius:3px;box-shadow:0 0 50px rgba(201,168,76,0.1),0 24px 70px rgba(0,0,0,0.8);overflow:hidden;user-select:none;}
+.board-wrap{flex-shrink:0;}
+.chess-board{display:grid;grid-template-columns:repeat(8,var(--cell));border:3px solid var(--gold-d);border-radius:3px;box-shadow:0 0 50px rgba(201,168,76,0.08),0 24px 70px rgba(0,0,0,0.8);overflow:hidden;user-select:none;}
 .cell{width:var(--cell);height:var(--cell);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
-.cell.lt{background:var(--board-light);}
-.cell.dk{background:var(--board-dark);}
-.cell.sel{background:rgba(201,168,76,0.55)!important;}
-.cell.pm::after{content:'';position:absolute;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,0.17);pointer-events:none;z-index:2;}
-.cell.cm::after{content:'';position:absolute;inset:5px;border-radius:3px;border:4px solid rgba(0,0,0,0.2);pointer-events:none;z-index:2;}
-.cell.lm{background:rgba(201,168,76,0.18)!important;}
-.cell.ck{background:rgba(220,50,50,0.5)!important;}
+.cell.lt{background:var(--bl);}
+.cell.dk{background:var(--bd);}
+.cell.sel-c{background:rgba(201,168,76,0.55)!important;}
+.cell.pm-c::after{content:'';position:absolute;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,0.17);pointer-events:none;z-index:2;}
+.cell.cm-c::after{content:'';position:absolute;inset:4px;border-radius:3px;border:4px solid rgba(0,0,0,0.22);pointer-events:none;z-index:2;}
+.cell.lm-c{background:rgba(201,168,76,0.18)!important;}
+.cell.ck-c{background:rgba(220,50,50,0.5)!important;}
 .cell:hover{filter:brightness(1.08);}
 .piece-img{width:calc(var(--cell) - 4px);height:calc(var(--cell) - 4px);display:block;pointer-events:none;}
-.rc{width:17px;height:var(--cell);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#555;font-family:'Cinzel',serif;font-weight:700;}
-.fc{width:var(--cell);height:15px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#555;font-family:'Cinzel',serif;font-weight:700;}
+.rc{width:16px;height:var(--cell);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#555;font-family:'Cinzel',serif;font-weight:700;}
+.fc{width:var(--cell);height:14px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#555;font-family:'Cinzel',serif;font-weight:700;}
 
 /* ── GAME INFO ── */
-.ginfo{width:262px;flex-shrink:0;display:flex;flex-direction:column;gap:11px;}
-.pcard{background:var(--dark3);border:1px solid #1e1e1e;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:11px;transition:border-color 0.3s;}
-.pcard.at{border-color:var(--gold-dark);}
-.pcav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-weight:700;font-size:0.9rem;flex-shrink:0;}
+.ginfo{width:256px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;}
+.pcard{background:var(--d3);border:1px solid #1e1e1e;border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:10px;transition:border-color 0.3s;}
+.pcard.at{border-color:var(--gold-d);}
+.pcav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-weight:700;font-size:0.88rem;flex-shrink:0;}
 .pcav.wp{background:var(--white);color:var(--dark);}
-.pcav.bp{background:#181818;color:var(--gold);border:1px solid #2e2e2e;}
-.pcav.lrr{background:linear-gradient(135deg,#152015,#060606);border:2px solid #3a5a3a;font-size:1.25rem;}
+.pcav.bp{background:#1a1a1a;color:var(--gold);border:1px solid #2e2e2e;}
+.pcav.lrr{background:linear-gradient(135deg,#152015,#060606);border:2px solid #3a5a3a;font-size:1.2rem;}
 .pcinfo{flex:1;}
-.pcname{font-family:'Cinzel',serif;font-size:0.86rem;font-weight:700;}
-.pctag{font-size:0.7rem;color:var(--muted);}
-.turn-ind{font-size:0.65rem;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;}
-.scard{background:var(--dark3);border:1px solid #1e1e1e;border-radius:12px;padding:12px;text-align:center;}
-.stxt{font-family:'Cinzel',serif;font-size:0.92rem;color:var(--gold);margin-bottom:3px;font-weight:700;}
-.ssub{font-size:0.8rem;color:var(--muted);}
-.mhist{background:var(--dark3);border:1px solid #1e1e1e;border-radius:12px;padding:12px;flex:1;}
-.mhist h4{font-family:'Cinzel',serif;font-size:0.68rem;color:#555;margin-bottom:8px;letter-spacing:0.14em;font-weight:700;}
-.mlist{max-height:155px;overflow-y:auto;}
-.mlist::-webkit-scrollbar{width:3px;}
-.mlist::-webkit-scrollbar-thumb{background:#252525;}
-.mrow{display:flex;gap:4px;margin-bottom:2px;font-size:0.8rem;}
-.mnum{color:#555;width:20px;font-family:'Cinzel',serif;font-size:0.68rem;}
-.mw,.mb{flex:1;padding:2px 4px;border-radius:3px;color:var(--white);}
-.mw:hover,.mb:hover{background:var(--dark5);}
+.pcn{font-family:'Cinzel',serif;font-size:0.84rem;font-weight:700;}
+.pct{font-size:0.68rem;color:var(--mu);}
+.ti{font-size:0.62rem;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;}
+.sc{background:var(--d3);border:1px solid #1e1e1e;border-radius:12px;padding:11px;text-align:center;}
+.st{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold);margin-bottom:3px;font-weight:700;}
+.ss{font-size:0.76rem;color:var(--mu);}
+.mh{background:var(--d3);border:1px solid #1e1e1e;border-radius:12px;padding:11px;flex:1;}
+.mh h4{font-family:'Cinzel',serif;font-size:0.65rem;color:#555;margin-bottom:7px;letter-spacing:0.14em;font-weight:700;}
+.ml{max-height:148px;overflow-y:auto;}
+.ml::-webkit-scrollbar{width:3px;}
+.ml::-webkit-scrollbar-thumb{background:#252525;}
+.mr{display:flex;gap:4px;margin-bottom:2px;font-size:0.78rem;}
+.mn{color:#555;width:19px;font-family:'Cinzel',serif;font-size:0.65rem;}
+.mw,.mb{flex:1;padding:2px 4px;border-radius:3px;}
+.mw:hover,.mb:hover{background:var(--d5);}
 .gctrl{display:flex;gap:5px;}
-.gbtn{flex:1;padding:8px;border-radius:8px;background:var(--dark4);border:1px solid #252525;color:#aaa;cursor:pointer;font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;transition:all 0.18s;text-align:center;}
-.gbtn:hover{border-color:var(--gold-dark);color:var(--gold);}
+.gbtn{flex:1;padding:8px;border-radius:8px;background:var(--d4);border:1px solid #252525;color:#aaa;cursor:pointer;font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;transition:all 0.18s;text-align:center;}
+.gbtn:hover{border-color:var(--gold-d);color:var(--gold);}
 .gbtn.dng:hover{border-color:#922;color:#e55;}
 
 /* ── HOME ── */
-.home-wrap{width:100%;max-width:640px;}
-.hw-hero{margin-bottom:26px;}
-.hw-ey{font-size:0.72rem;color:#444;font-family:'Cinzel',serif;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:9px;}
-.hw-ti{font-family:'Cinzel',serif;font-size:2rem;font-weight:900;color:var(--white);line-height:1.1;margin-bottom:9px;}
-.hw-ti span{color:var(--gold);}
-.hw-sub{font-size:1rem;color:var(--muted);line-height:1.6;}
-.stats-bar{display:flex;gap:8px;margin-bottom:22px;}
-.sc{background:var(--dark3);border:1px solid #1e1e1e;border-radius:10px;padding:12px 14px;flex:1;text-align:center;}
-.sn{font-family:'Cinzel',serif;font-size:1.25rem;font-weight:700;color:var(--gold);}
-.sl{font-size:0.74rem;color:var(--muted);margin-top:2px;}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.mgrid-full{grid-column:1/-1;}
-.mcard{background:var(--dark3);border:1px solid #1e1e1e;border-radius:12px;padding:20px 17px;cursor:pointer;transition:all 0.18s;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;}
-.mcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.05),transparent);opacity:0;transition:opacity 0.18s;}
-.mcard:hover{border-color:var(--gold-dark);transform:translateY(-2px);box-shadow:0 8px 26px rgba(0,0,0,0.5);}
-.mcard:hover::before{opacity:1;}
-.mc-icon{font-size:1.65rem;}
-.mc-title{font-family:'Cinzel',serif;font-size:0.96rem;font-weight:700;color:var(--gold);}
-.mc-desc{font-size:0.86rem;color:var(--muted);line-height:1.5;}
-.mc-arr{position:absolute;bottom:14px;right:14px;color:#252525;font-size:0.88rem;transition:color 0.18s,transform 0.18s;}
-.mcard:hover .mc-arr{color:var(--gold-dark);transform:translateX(3px);}
+.hw{width:100%;max-width:630px;}
+.hey{font-size:0.7rem;color:#444;font-family:'Cinzel',serif;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:8px;}
+.hti{font-family:'Cinzel',serif;font-size:2rem;font-weight:900;color:var(--white);line-height:1.1;margin-bottom:8px;}
+.hti span{color:var(--gold);}
+.hsub{font-size:0.97rem;color:var(--mu);line-height:1.6;margin-bottom:22px;}
+.sbar{display:flex;gap:8px;margin-bottom:20px;}
+.schip{background:var(--d3);border:1px solid #1e1e1e;border-radius:10px;padding:11px 13px;flex:1;text-align:center;}
+.sn{font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700;color:var(--gold);}
+.sl{font-size:0.7rem;color:var(--mu);margin-top:2px;}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mg-full{grid-column:1/-1;}
+.mc2{background:var(--d3);border:1px solid #1e1e1e;border-radius:12px;padding:18px 15px;cursor:pointer;transition:all 0.18s;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden;}
+.mc2::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.04),transparent);opacity:0;transition:opacity 0.18s;}
+.mc2:hover{border-color:var(--gold-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.5);}
+.mc2:hover::before{opacity:1;}
+.mc2-ic{font-size:1.6rem;}.mc2-t{font-family:'Cinzel',serif;font-size:0.93rem;font-weight:700;color:var(--gold);}
+.mc2-d{font-size:0.84rem;color:var(--mu);line-height:1.45;}
+.mc2-ar{position:absolute;bottom:13px;right:13px;color:#252525;font-size:0.84rem;transition:color 0.18s,transform 0.18s;}
+.mc2:hover .mc2-ar{color:var(--gold-d);transform:translateX(3px);}
 
 /* ── LB ── */
-.lbtbl{width:100%;border-collapse:collapse;}
-.lbtbl th{font-family:'Cinzel',serif;font-size:0.68rem;color:#444;letter-spacing:0.14em;text-align:left;padding:7px 13px;border-bottom:1px solid #1e1e1e;font-weight:700;}
-.lbtbl td{padding:10px 13px;border-bottom:1px solid #181818;font-size:0.9rem;}
-.lbtbl tr:hover td{background:var(--dark4);}
-.lbr{font-family:'Cinzel',serif;font-weight:700;color:var(--muted);}
+.lbt{width:100%;border-collapse:collapse;}
+.lbt th{font-family:'Cinzel',serif;font-size:0.65rem;color:#444;letter-spacing:0.14em;text-align:left;padding:6px 12px;border-bottom:1px solid #1e1e1e;font-weight:700;}
+.lbt td{padding:9px 12px;border-bottom:1px solid #181818;font-size:0.88rem;}
+.lbt tr:hover td{background:var(--d4);}
+.lbr{font-family:'Cinzel',serif;font-weight:700;color:var(--mu);}
 .lbr.g{color:#FFD700;}.lbr.s{color:#C0C0C0;}.lbr.b{color:#CD7F32;}
 .lbp{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;}
-.lby{color:var(--gold-light);}
+.lby{color:var(--gold-l);}
 
 /* ── WAITING ── */
-.wait-area{text-align:center;max-width:460px;}
-.wspin{width:50px;height:50px;border:3px solid var(--dark5);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
+.wa{text-align:center;max-width:440px;}
+.wspin{width:48px;height:48px;border:3px solid var(--d5);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 18px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.wt{font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:8px;font-weight:700;}
-.ws{color:var(--muted);margin-bottom:20px;font-size:0.92rem;}
+.wt{font-family:'Cinzel',serif;font-size:1.25rem;color:var(--gold);margin-bottom:7px;font-weight:700;}
+.ws{color:var(--mu);margin-bottom:18px;font-size:0.9rem;}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:20px;right:20px;background:var(--dark3);border:1px solid var(--gold-dark);border-radius:10px;padding:12px 18px;font-size:0.9rem;color:var(--white);transform:translateY(70px);opacity:0;transition:all 0.26s;z-index:2000;max-width:280px;}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--d3);border:1px solid var(--gold-d);border-radius:10px;padding:11px 17px;font-size:0.88rem;color:var(--white);transform:translateY(66px);opacity:0;transition:all 0.26s;z-index:2000;max-width:270px;}
 .toast.on{transform:translateY(0);opacity:1;}
 .toast.err{border-color:#922;}
 
 /* ── MISC ── */
-.ptitle{font-family:'Cinzel',serif;font-size:1.6rem;color:var(--white);margin-bottom:4px;font-weight:700;}
-.ptitle span{color:var(--gold);}
-.psub{color:var(--muted);margin-bottom:20px;font-size:0.92rem;}
-.sect{width:100%;max-width:680px;}
-.sr-wrap{margin-top:9px;max-height:200px;overflow-y:auto;}
-.sr-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;transition:background 0.14s;}
-.sr-item:hover{background:var(--dark5);}
-.sr-info{flex:1;}
-.sr-name{font-size:0.9rem;font-weight:600;}
-.sr-tag{font-size:0.7rem;color:var(--muted);}
-.send-btn{background:none;border:1px solid var(--gold-dark);color:var(--gold);border-radius:7px;padding:4px 11px;font-size:0.72rem;cursor:pointer;font-family:'Cinzel',serif;font-weight:700;}
-.send-btn:hover{background:rgba(201,168,76,0.1);}
-.promo-pieces{display:flex;gap:10px;justify-content:center;margin-top:13px;}
-.promo-p{width:58px;height:58px;cursor:pointer;border:2px solid transparent;border-radius:8px;transition:all 0.18s;display:flex;align-items:center;justify-content:center;}
-.promo-p:hover{border-color:var(--gold);background:var(--dark5);}
-.promo-p img{width:50px;height:50px;}
+.ptit{font-family:'Cinzel',serif;font-size:1.55rem;color:var(--white);margin-bottom:4px;font-weight:700;}
+.ptit span{color:var(--gold);}
+.psub{color:var(--mu);margin-bottom:18px;font-size:0.9rem;}
+.sect{width:100%;max-width:660px;}
+.sr-wrap{margin-top:8px;max-height:195px;overflow-y:auto;}
+.sri{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;transition:background 0.14s;}
+.sri:hover{background:var(--d5);}
+.sri-n{font-size:0.88rem;font-weight:600;}
+.sri-t{font-size:0.68rem;color:var(--mu);}
+.sb{background:none;border:1px solid var(--gold-d);color:var(--gold);border-radius:7px;padding:4px 10px;font-size:0.7rem;cursor:pointer;font-family:'Cinzel',serif;font-weight:700;}
+.sb:hover{background:rgba(201,168,76,0.1);}
+.promo-ps{display:flex;gap:10px;justify-content:center;margin-top:12px;}
+.pp{width:56px;height:56px;cursor:pointer;border:2px solid transparent;border-radius:8px;transition:all 0.18s;display:flex;align-items:center;justify-content:center;}
+.pp:hover{border-color:var(--gold);background:var(--d5);}
+.pp img{width:48px;height:48px;}
 .gor{font-size:2.8rem;text-align:center;margin:10px 0 6px;}
-.god{text-align:center;color:var(--muted);margin-bottom:16px;font-size:0.9rem;}
+.god{text-align:center;color:var(--mu);margin-bottom:15px;font-size:0.88rem;}
 
-/* ── PROFILE MODAL ── */
-.pmav{width:78px;height:78px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),#181818);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.8rem;font-weight:700;color:var(--gold-light);margin:0 auto 12px;cursor:pointer;border:2px solid var(--gold-dark);transition:border-color 0.2s;}
+/* ── PROFILE ── */
+.pmav{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.75rem;font-weight:700;color:var(--gold-l);margin:0 auto 11px;cursor:pointer;border:2px solid var(--gold-d);transition:border-color 0.2s;}
 .pmav:hover{border-color:var(--gold);}
-.avpick{display:none;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 12px;padding:10px;background:var(--dark5);border-radius:9px;}
-.avo{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;border:2px solid transparent;transition:all 0.18s;background:var(--dark4);}
+.avpick{display:none;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 11px;padding:9px;background:var(--d5);border-radius:9px;}
+.avo{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.15rem;cursor:pointer;border:2px solid transparent;transition:all 0.18s;background:var(--d4);}
 .avo:hover{border-color:var(--gold);}
-.pstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:12px 0;}
-.ps{background:var(--dark5);border-radius:9px;padding:9px;text-align:center;}
+.pst{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:11px 0;}
+.ps{background:var(--d5);border-radius:9px;padding:9px;text-align:center;}
 .psn{font-family:'Cinzel',serif;font-size:1.15rem;color:var(--gold);font-weight:700;}
-.psl{font-size:0.7rem;color:var(--muted);margin-top:2px;}
-.cc{font-size:0.68rem;color:var(--muted);text-align:right;margin-top:-7px;margin-bottom:9px;}
-.prof-meta{font-size:0.82rem;color:var(--muted);margin-bottom:10px;display:flex;flex-direction:column;gap:4px;}
-.prof-meta span{display:flex;align-items:center;gap:6px;}
+.psl{font-size:0.68rem;color:var(--mu);margin-top:2px;}
+.cc{font-size:0.66rem;color:var(--mu);text-align:right;margin-top:-7px;margin-bottom:8px;}
+.pmeta{font-size:0.82rem;color:var(--mu);margin-bottom:9px;display:flex;flex-direction:column;gap:4px;}
 
 /* ── FRIEND PROFILE ── */
-.fpav{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),#181818);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 10px;border:2px solid var(--gold-dark);}
-.fpbio{font-size:0.9rem;color:var(--muted);text-align:center;margin-bottom:12px;font-style:italic;min-height:18px;}
+.fpav{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 10px;border:2px solid var(--gold-d);}
+.fpbio{font-size:0.88rem;color:var(--mu);text-align:center;margin-bottom:11px;font-style:italic;min-height:17px;}
 
 /* ── DM ── */
-.dm-msgs{max-height:170px;overflow-y:auto;margin:8px 0;display:flex;flex-direction:column;gap:6px;}
-.dm-m{padding:7px 11px;border-radius:8px;font-size:0.86rem;max-width:80%;}
-.dm-m.mine{background:rgba(201,168,76,0.13);border:1px solid var(--gold-dark);align-self:flex-end;}
-.dm-m.theirs{background:var(--dark5);align-self:flex-start;}
-.dm-row{display:flex;gap:7px;}
+.dm-msgs{max-height:165px;overflow-y:auto;margin:8px 0;display:flex;flex-direction:column;gap:5px;}
+.dm-m{padding:7px 11px;border-radius:8px;font-size:0.85rem;max-width:80%;}
+.dm-m.mine{background:rgba(201,168,76,0.12);border:1px solid var(--gold-d);align-self:flex-end;}
+.dm-m.theirs{background:var(--d5);align-self:flex-start;}
+.dm-row{display:flex;gap:6px;}
 .dm-row input{flex:1;margin-bottom:0;}
-.dm-send{background:var(--gold-dark);border:none;border-radius:8px;color:var(--dark);padding:0 14px;cursor:pointer;font-size:0.95rem;font-weight:700;}
+.dm-send{background:var(--gold-d);border:none;border-radius:8px;color:var(--dark);padding:0 13px;cursor:pointer;font-size:0.92rem;font-weight:700;}
 .dm-send:hover{background:var(--gold);}
 
-/* ── MISC ── */
-.pts-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(201,168,76,0.07);border:1px solid #252525;border-radius:18px;padding:4px 12px;font-family:'Cinzel',serif;font-size:0.8rem;color:var(--gold);font-weight:700;}
-.on-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;color:#4CAF50;font-weight:600;}
+/* ── CONFIRM ── */
+.confirm-btns{display:flex;gap:10px;margin-top:6px;}
+.confirm-btns .btn{flex:1;margin:0;}
+
+/* ── LEGAL ── */
+.legal-body{font-size:0.9rem;color:var(--mu);min-height:80px;padding:10px 0;}
+
+.pts-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(201,168,76,0.07);border:1px solid #252525;border-radius:18px;padding:3px 11px;font-family:'Cinzel',serif;font-size:0.78rem;color:var(--gold);font-weight:700;}
+.on-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.76rem;color:#4CAF50;font-weight:600;}
 .on-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#4CAF50;flex-shrink:0;}
-.ouc{background:var(--dark3);border:1px solid #1e1e1e;border-radius:11px;padding:13px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all 0.18s;}
-.ouc:hover{border-color:var(--gold-dark);transform:translateX(3px);}
-.ouc-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),#181818);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ouc-info{flex:1;}
-.ouc-name{font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700;color:var(--white);}
-.ouc-tag{font-size:0.72rem;color:var(--muted);}
-.ouc-pts{font-size:0.76rem;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;}
-.chal-badge{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border-radius:7px;padding:5px 12px;font-size:0.72rem;font-family:'Cinzel',serif;font-weight:700;}
+.ouc{background:var(--d3);border:1px solid #1e1e1e;border-radius:11px;padding:12px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.18s;margin-bottom:8px;}
+.ouc:hover{border-color:var(--gold-d);transform:translateX(3px);}
+.ouc-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ouc-n{font-family:'Cinzel',serif;font-size:0.88rem;font-weight:700;}
+.ouc-t{font-size:0.7rem;color:var(--mu);}
+.ouc-p{font-size:0.74rem;color:var(--gold);font-family:'Cinzel',serif;font-weight:700;}
+.cb{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);border-radius:7px;padding:5px 12px;font-size:0.7rem;font-family:'Cinzel',serif;font-weight:700;}
 
 /* ── REQ LIST ── */
-.req-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:var(--dark4);}
+.req-i{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:10px;margin-bottom:5px;background:var(--d4);}
 .req-info{flex:1;}
-.req-name{font-size:0.9rem;font-weight:600;color:var(--white);}
-.req-tag{font-size:0.72rem;color:var(--muted);}
-.req-acts{display:flex;gap:6px;}
+.req-n{font-size:0.88rem;font-weight:600;}
+.req-t{font-size:0.68rem;color:var(--mu);}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
 <!-- LOGIN -->
-<div class="ov" id="mLogin"><div class="modal">
-  <button class="mc" onclick="cm('mLogin')">✕</button>
-  <h2 id="mLoginH">Welcome Back</h2>
-  <input type="text" id="lUser" placeholder="Username" autocomplete="off"/>
-  <div class="ferr" id="lErr"></div>
-  <input type="password" id="lPass" placeholder="Password"/>
-  <button class="btn btn-gold" onclick="doLogin()">Sign In</button>
-  <div class="ms">No account? <a onclick="swm('mLogin','mReg')">Create one</a></div>
+<div class="ov" id="mL"><div class="modal">
+  <button class="mc" onclick="cm('mL')">✕</button>
+  <h2>Welcome Back</h2>
+  <input type="text" id="lU" placeholder="Username" autocomplete="off"/>
+  <div class="fe" id="lE"></div>
+  <input type="password" id="lP" placeholder="Password"/>
+  <button class="btn btn-g" onclick="doLogin()">Sign In</button>
+  <div class="ms">No account? <a onclick="swm('mL','mR')">Create one</a></div>
 </div></div>
 
 <!-- REGISTER -->
-<div class="ov" id="mReg"><div class="modal">
-  <button class="mc" onclick="cm('mReg')">✕</button>
+<div class="ov" id="mR"><div class="modal">
+  <button class="mc" onclick="cm('mR')">✕</button>
   <h2>Join ChessGrinder</h2>
-  <input type="text" id="rUser" placeholder="Username (5–16 chars)" maxlength="16" autocomplete="off"/>
-  <div class="ferr" id="rUErr"></div>
-  <input type="email" id="rEmail" placeholder="Email" autocomplete="off"/>
-  <div class="ferr" id="rEErr"></div>
-  <input type="password" id="rPass" placeholder="Password (min 6 chars)"/>
-  <div class="ferr" id="rPErr"></div>
-  <button class="btn btn-gold" onclick="doReg()">Create Account</button>
-  <div class="ms">Already have an account? <a onclick="swm('mReg','mLogin')">Sign in</a></div>
+  <input type="text" id="rU" placeholder="Username (5–16 chars)" maxlength="16" autocomplete="off"/>
+  <div class="fe" id="rUE"></div>
+  <input type="email" id="rEm" placeholder="Email" autocomplete="off"/>
+  <div class="fe" id="rEE"></div>
+  <input type="password" id="rP" placeholder="Password (min 6 chars)"/>
+  <div class="fe" id="rPE"></div>
+  <button class="btn btn-g" onclick="doReg()">Create Account</button>
+  <div class="ms">Already have an account? <a onclick="swm('mR','mL')">Sign in</a></div>
 </div></div>
 
 <!-- MY PROFILE -->
-<div class="ov" id="mProf"><div class="modal">
-  <button class="mc" onclick="cm('mProf')">✕</button>
-  <h2 id="mProfH">My Profile</h2>
-  <div class="pmav" id="pmAv" onclick="toggleAvPick()"></div>
+<div class="ov" id="mPr"><div class="modal">
+  <button class="mc" onclick="cm('mPr')">✕</button>
+  <h2 id="mPrH">My Profile</h2>
+  <div class="pmav" id="pmAv" onclick="toggleAv()"></div>
   <div class="avpick" id="avPick">
     <div class="avo" onclick="setAv('♟')">♟</div><div class="avo" onclick="setAv('👑')">👑</div>
     <div class="avo" onclick="setAv('🦁')">🦁</div><div class="avo" onclick="setAv('🐉')">🐉</div>
@@ -307,13 +330,13 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
     <div class="avo" onclick="setAv('🔥')">🔥</div><div class="avo" onclick="setAv('💎')">💎</div>
     <div class="avo" onclick="setAv('🌙')">🌙</div><div class="avo" onclick="setAv('⚡')">⚡</div>
   </div>
-  <div class="pstats" id="pmStats"></div>
-  <div class="prof-meta" id="pmMeta"></div>
-  <input type="text" id="pmName" placeholder="Display name (5–16 chars)" maxlength="16"/>
-  <textarea id="pmBio" placeholder="Bio (max 30 chars)" maxlength="30" rows="2"></textarea>
-  <div class="cc"><span id="bioCC">0</span>/30</div>
-  <button class="btn btn-gold" id="pmSaveBtn" onclick="saveProf()">Save Changes</button>
-  <button class="btn btn-red" onclick="doLogout()">Sign Out</button>
+  <div class="pst" id="pmSt"></div>
+  <div class="pmeta" id="pmMeta"></div>
+  <input type="text" id="pmN" placeholder="Display name (5–16 chars)" maxlength="16"/>
+  <textarea id="pmB" placeholder="Bio (max 30 chars)" maxlength="30" rows="2"></textarea>
+  <div class="cc"><span id="bCC">0</span>/30</div>
+  <button class="btn btn-g" id="pmSvBtn" onclick="saveProf()">Save Changes</button>
+  <button class="btn btn-r" onclick="doLogout()">Sign Out</button>
 </div></div>
 
 <!-- FRIEND PROFILE -->
@@ -321,44 +344,54 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
   <button class="mc" onclick="cm('mFP')">✕</button>
   <h2>Player Profile</h2>
   <div class="fpav" id="fpAv"></div>
-  <div style="text-align:center;margin-bottom:3px"><span style="font-family:'Cinzel',serif;font-size:1rem;font-weight:700" id="fpName"></span></div>
-  <div style="text-align:center;font-size:0.72rem;color:var(--muted);margin-bottom:8px" id="fpTag"></div>
+  <div style="text-align:center;margin-bottom:3px"><span style="font-family:'Cinzel',serif;font-size:0.97rem;font-weight:700" id="fpN"></span></div>
+  <div style="text-align:center;font-size:0.7rem;color:var(--mu);margin-bottom:8px" id="fpTg"></div>
   <div class="fpbio" id="fpBio"></div>
-  <div class="pstats" id="fpStats"></div>
-  <div class="prof-meta" id="fpMeta"></div>
-  <button class="btn btn-gold" style="margin-top:4px" onclick="cm('mFP')">Close</button>
+  <div class="pst" id="fpSt"></div>
+  <div class="pmeta" id="fpMeta"></div>
+  <button class="btn btn-g" style="margin-top:4px" onclick="cm('mFP')">Close</button>
 </div></div>
 
-<!-- SEND FRIEND REQUEST -->
-<div class="ov" id="mAddF"><div class="modal">
-  <button class="mc" onclick="cm('mAddF')">✕</button>
+<!-- ADD FRIEND -->
+<div class="ov" id="mAF"><div class="modal">
+  <button class="mc" onclick="cm('mAF')">✕</button>
   <h2>Find Players</h2>
-  <input type="text" id="fsearch" placeholder="Search by username or #tag..." oninput="searchP()"/>
-  <div class="sr-wrap" id="sResults"></div>
+  <input type="text" id="fs" placeholder="Search by username or #tag..." oninput="searchP()"/>
+  <div class="sr-wrap" id="sR"></div>
 </div></div>
 
 <!-- FRIEND REQUESTS -->
-<div class="ov" id="mReqs"><div class="modal">
-  <button class="mc" onclick="cm('mReqs')">✕</button>
+<div class="ov" id="mRQ"><div class="modal">
+  <button class="mc" onclick="cm('mRQ')">✕</button>
   <h2>Friend Requests</h2>
-  <div id="reqList"></div>
+  <div id="rqList"></div>
+</div></div>
+
+<!-- CONFIRM REMOVE FRIEND -->
+<div class="ov" id="mCF"><div class="modal" style="max-width:360px">
+  <h2>Remove Friend?</h2>
+  <p style="text-align:center;color:var(--mu);font-size:0.92rem;margin-bottom:18px" id="cfTxt">Are you sure you want to remove this friend?</p>
+  <div class="confirm-btns">
+    <button class="btn btn-r" onclick="confirmRemove()">Remove</button>
+    <button class="btn btn-o" onclick="cm('mCF')">Cancel</button>
+  </div>
 </div></div>
 
 <!-- DM -->
 <div class="ov" id="mDM"><div class="modal">
   <button class="mc" onclick="cm('mDM')">✕</button>
-  <h2 id="dmTitle">Message</h2>
-  <div class="dm-msgs" id="dmMsgs"></div>
+  <h2 id="dmTi">Message</h2>
+  <div class="dm-msgs" id="dmMs"></div>
   <div class="dm-row">
-    <input type="text" id="dmInp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendDm()"/>
+    <input type="text" id="dmIn" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendDm()"/>
     <button class="dm-send" onclick="sendDm()">➤</button>
   </div>
 </div></div>
 
 <!-- PROMOTION -->
-<div class="ov" id="mPromo"><div class="modal" style="text-align:center">
+<div class="ov" id="mPM"><div class="modal" style="text-align:center">
   <h2>Promote Pawn</h2>
-  <div class="promo-pieces" id="promoPieces"></div>
+  <div class="promo-ps" id="promoPcs"></div>
 </div></div>
 
 <!-- GAME OVER -->
@@ -366,40 +399,69 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
   <h2 id="goTi">Game Over</h2>
   <div class="gor" id="goEm">🏆</div>
   <p class="god" id="goDe"></p>
-  <button class="btn btn-gold" id="goPA" onclick="playAgain()">Play Again</button>
-  <button class="btn btn-outline" id="goBM" onclick="goHome()">Back to Menu</button>
+  <button class="btn btn-g" id="goPA" onclick="playAgain()">Play Again</button>
+  <button class="btn btn-o" id="goBM" onclick="goHome()">Back to Menu</button>
+</div></div>
+
+<!-- LEGAL MODALS -->
+<div class="ov" id="mPriv"><div class="modal">
+  <button class="mc" onclick="cm('mPriv')">✕</button>
+  <h2>Privacy Policy</h2>
+  <div class="legal-body">Content coming soon.</div>
+</div></div>
+<div class="ov" id="mTos"><div class="modal">
+  <button class="mc" onclick="cm('mTos')">✕</button>
+  <h2>Terms of Service</h2>
+  <div class="legal-body">Content coming soon.</div>
+</div></div>
+<div class="ov" id="mImp"><div class="modal">
+  <button class="mc" onclick="cm('mImp')">✕</button>
+  <h2>Impressum</h2>
+  <div class="legal-body">Content coming soon.</div>
 </div></div>
 
 <div id="app">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
+    <button class="collapse-btn" id="colBtn" onclick="toggleSidebar()" title="Toggle sidebar">◀</button>
     <div class="logo" onclick="showSect('home')">
+      <span class="logo-icon">♟</span>
       <div class="logo-text"><span class="logo-chess">Chess</span><span class="logo-grinder">Grinder</span></div>
       <div class="logo-tagline" id="lgTag">Master the board</div>
     </div>
     <div class="nav-sect">
-      <div class="nav-lbl" id="nvPlay">Play</div>
-      <button class="nav-item active" id="nav-home" onclick="showSect('home')"><span class="icon">⌂</span><span id="nvHome">Home</span></button>
-      <button class="nav-item" id="nav-solo" onclick="showSect('solo')"><span class="icon">🤖</span><span id="nvSolo">Solo</span></button>
-      <button class="nav-item" id="nav-pvp" onclick="showSect('pvp')"><span class="icon">👥</span><span id="nvPvP">PvP</span></button>
-      <button class="nav-item" id="nav-competitive" onclick="showSect('competitive')"><span class="icon">🏆</span><span id="nvComp">Competitive</span></button>
+      <div class="nav-label" id="nvPl">Play</div>
+      <button class="nav-item active" id="nav-home" onclick="showSect('home')"><span class="icon">⌂</span><span id="nvHm">Home</span></button>
+      <button class="nav-item" id="nav-solo" onclick="showSect('solo')"><span class="icon">🤖</span><span id="nvSo">Solo</span></button>
+      <button class="nav-item" id="nav-pvp" onclick="showSect('pvp')"><span class="icon">👥</span><span id="nvPV">PvP</span></button>
+      <button class="nav-item" id="nav-competitive" onclick="showSect('competitive')"><span class="icon">🏆</span><span id="nvCo">Competitive</span></button>
     </div>
     <div class="sdiv"></div>
-    <div class="friends-sec">
+    <div class="friends-wrap">
       <div class="fl-head">
-        <span class="fl-lbl" id="nvFriends">Friends</span>
-        <button class="fl-add" onclick="reqAuth(openAddF)">＋</button>
+        <span class="fl-lbl" id="nvFr">Friends</span>
+        <button class="fl-add" onclick="rA(openAF)">＋</button>
       </div>
-      <button class="req-btn" id="reqsBtn" onclick="reqAuth(openReqs)" style="display:none">
-        <span>📩</span><span id="reqsBtnTxt">Friend Requests</span><span class="req-badge" id="reqCount" style="display:none">0</span>
+      <button class="req-btn" id="rqBtn" onclick="rA(openRQ)" style="display:none">
+        <span>📩</span><span id="rqTxt">Friend Requests</span><span class="req-badge" id="rqCnt" style="display:none">0</span>
       </button>
-      <div id="fList"></div>
+      <div class="flist-scroll" id="fList"></div>
+    </div>
+    <div class="sdiv"></div>
+    <div class="sidebar-bottom">
+      <div class="legal-links">
+        <span class="legal-link" onclick="om('mPriv')">Privacy</span>
+        <span class="legal-link" onclick="om('mTos')">Terms</span>
+        <span class="legal-link" onclick="om('mImp')">Impressum</span>
+      </div>
+      <div class="copy-line">© 2026 ChessGrinder. All rights reserved.</div>
     </div>
   </aside>
-  <main class="main">
+
+  <main class="main" id="mainEl">
     <div class="topbar">
       <div class="lang-sel">
         <button class="lang-btn" onclick="toggleLang()">
-          <span class="lang-flag" id="lgFlag">🇬🇧</span><span id="lgName">English</span><span style="color:#444;font-size:0.62rem">▾</span>
+          <span id="lgFl">🇬🇧</span><span id="lgNm">English</span><span style="color:#444;font-size:0.6rem">▾</span>
         </button>
         <div class="lang-dd" id="lgDD">
           <div class="lang-opt sel" onclick="setLang('en','🇬🇧','English')">🇬🇧 English</div>
@@ -415,336 +477,307 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
           <div class="lang-opt" onclick="setLang('sv','🇸🇪','Svenska')">🇸🇪 Svenska</div>
         </div>
       </div>
-      <div id="tbAuth"></div>
+      <div id="tbA"></div>
     </div>
     <div class="content" id="mainC"></div>
   </main>
 </div>
 
 <script>
-// ═══ TRANSLATIONS ═══
+// ═══ TRANSLATIONS (compact) ═══
 const TR={
   en:{tag:'Master the board',play:'Play',home:'Home',solo:'Solo',pvp:'PvP',comp:'Competitive',friends:'Friends',freqs:'Friend Requests',
-    eyebrow:'Ready to play?',htit:'Your move,',hspan:'Champion.',hsub:'Choose a game mode and sharpen your strategy.',
-    wins:'Wins',losses:'Losses',pts:'Points',frnds:'Friends',joined:'Joined',lastOn:'Last online',
-    soloT:'Solo',soloD:"Larry never lost a game he didn't want to lose. Prove him wrong.",
-    pvpT:'PvP',pvpD:'Challenge online players and dominate.',
-    compT:'Competitive',compD:'Climb the ladder. Win +10 pts. Lose −5 pts.',
+    ey:'Ready to play?',ht:'Your move,',hs:'Champion.',hb:'Choose a game mode and sharpen your strategy.',
+    wins:'Wins',losses:'Losses',pts:'Points',frnds:'Friends',joined:'Joined',lastOn:'Last seen',
+    sT:'Solo',sD:"Larry never lost a game he didn't want to lose. Prove him wrong.",
+    pT:'PvP',pD:'Challenge online players and dominate.',
+    cT:'Competitive',cD:'Climb the ladder. Win +10 pts. Lose −5 pts.',
     wm:'White to move',bm:'Black to move',ip:'Game in progress',
     draw:'½ Draw',resign:'⚑ Resign',exit:'✕ Exit',
     fm:'Find Match',fo:'Finding Opponent…',sp:'Searching for an online player',cancel:'Cancel',
-    mh:'MOVE HISTORY',si:'Sign In',reg:'Register',
-    profile:'My Profile',save:'Save Changes',dname:'Display name (5–16)',bio:'Bio',so:'Sign Out',
-    pa:'Play Again',bm2:'Back to Menu',
-    cm:'Checkmate!',stale:'Stalemate!',resigned:'You Resigned',bl:'Better luck next time!',wb:'wins by checkmate!',
-    np:'No online players found.',on:'Online Now',wl:'W/L',pvpD2:'Challenge an online player:',
+    mh:'MOVE HISTORY',si:'Sign In',reg:'Register',profile:'My Profile',save:'Save Changes',dname:'Display name',bio:'Bio',so:'Sign Out',
+    pa:'Play Again',bm2:'Back to Menu',cm:'Checkmate!',stale:'Stalemate!',res:'You Resigned',bl:'Better luck next time!',wb:'wins by checkmate!',
+    np:'No online players found.',on:'Online Now',wl:'W/L',pD2:'Challenge an online player:',
     days:'days ago',today:'today',yesterday:'yesterday',
-    reqSent:'Request sent!',alreadyF:'Already friends!',alreadySent:'Request already sent.',
-    accept:'Accept',decline:'Decline',noReqs:'No pending requests.',
+    rSent:'Request sent!',alF:'Already friends!',alS:'Request already sent.',
+    acc:'Accept',dec:'Decline',noRQ:'No pending requests.',
+    rmConf:'Are you sure you want to remove',as:'as a friend?',
   },
   de:{tag:'Meistere das Brett',play:'Spielen',home:'Startseite',solo:'Solo',pvp:'PvP',comp:'Wettkampf',friends:'Freunde',freqs:'Freundschaftsanfragen',
-    eyebrow:'Bereit?',htit:'Dein Zug,',hspan:'Champion.',hsub:'Wähle einen Modus.',
+    ey:'Bereit?',ht:'Dein Zug,',hs:'Champion.',hb:'Wähle einen Modus.',
     wins:'Siege',losses:'Niederlagen',pts:'Punkte',frnds:'Freunde',joined:'Beigetreten',lastOn:'Zuletzt online',
-    soloT:'Solo',soloD:'Larry hat noch nie verloren, was er nicht verlieren wollte.',
-    pvpT:'PvP',pvpD:'Fordere Online-Spieler heraus.',
-    compT:'Wettkampf',compD:'Sieg +10 Pkt. Niederlage −5 Pkt.',
+    sT:'Solo',sD:'Larry hat noch nie verloren, was er nicht verlieren wollte.',
+    pT:'PvP',pD:'Fordere Online-Spieler heraus.',
+    cT:'Wettkampf',cD:'Sieg +10 Pkt. Niederlage −5 Pkt.',
     wm:'Weiß am Zug',bm:'Schwarz am Zug',ip:'Spiel läuft',
     draw:'½ Remis',resign:'⚑ Aufgeben',exit:'✕ Verlassen',
     fm:'Suchen',fo:'Suche läuft…',sp:'Suche Online-Spieler',cancel:'Abbrechen',
-    mh:'ZUGHISTORIE',si:'Anmelden',reg:'Registrieren',
-    profile:'Mein Profil',save:'Speichern',dname:'Anzeigename (5–16)',bio:'Bio',so:'Abmelden',
-    pa:'Nochmal',bm2:'Zurück',
-    cm:'Schachmatt!',stale:'Patt!',resigned:'Aufgegeben',bl:'Beim nächsten Mal!',wb:'gewinnt!',
-    np:'Keine Online-Spieler.',on:'Jetzt online',wl:'S/N',pvpD2:'Fordere einen Spieler heraus:',
+    mh:'ZUGHISTORIE',si:'Anmelden',reg:'Registrieren',profile:'Mein Profil',save:'Speichern',dname:'Anzeigename',bio:'Bio',so:'Abmelden',
+    pa:'Nochmal',bm2:'Zurück',cm:'Schachmatt!',stale:'Patt!',res:'Aufgegeben',bl:'Beim nächsten Mal!',wb:'gewinnt!',
+    np:'Keine Online-Spieler.',on:'Jetzt online',wl:'S/N',pD2:'Fordere einen Spieler heraus:',
     days:'Tage her',today:'heute',yesterday:'gestern',
-    reqSent:'Anfrage gesendet!',alreadyF:'Bereits befreundet!',alreadySent:'Anfrage bereits gesendet.',
-    accept:'Annehmen',decline:'Ablehnen',noReqs:'Keine ausstehenden Anfragen.',
+    rSent:'Anfrage gesendet!',alF:'Bereits befreundet!',alS:'Anfrage bereits gesendet.',
+    acc:'Annehmen',dec:'Ablehnen',noRQ:'Keine ausstehenden Anfragen.',
+    rmConf:'Möchtest du wirklich',as:'als Freund entfernen?',
   },
-  es:{tag:'Domina el tablero',play:'Jugar',home:'Inicio',solo:'Solo',pvp:'PvP',comp:'Competitivo',friends:'Amigos',freqs:'Solicitudes',
-    eyebrow:'¿Listo?',htit:'Tu turno,',hspan:'Campeón.',hsub:'Elige un modo.',
+  es:{tag:'Domina el tablero',play:'Jugar',home:'Inicio',solo:'Solo',pvp:'PvP',comp:'Competitivo',friends:'Amigos',freqs:'Solicitudes de amistad',
+    ey:'¿Listo?',ht:'Tu turno,',hs:'Campeón.',hb:'Elige un modo.',
     wins:'Victorias',losses:'Derrotas',pts:'Puntos',frnds:'Amigos',joined:'Unido',lastOn:'Última vez online',
-    soloT:'Solo',soloD:'Larry nunca perdió lo que no quiso perder.',
-    pvpT:'PvP',pvpD:'Desafía a jugadores online.',
-    compT:'Competitivo',compD:'Gana +10. Pierde −5.',
-    wm:'Turno blancas',bm:'Turno negras',ip:'En curso',
+    sT:'Solo',sD:'Larry nunca perdió lo que no quiso perder.',pT:'PvP',pD:'Desafía jugadores online.',
+    cT:'Competitivo',cD:'Gana +10. Pierde −5.',wm:'Blancas mueven',bm:'Negras mueven',ip:'En curso',
     draw:'½ Tablas',resign:'⚑ Rendirse',exit:'✕ Salir',
     fm:'Buscar',fo:'Buscando…',sp:'Buscando jugador',cancel:'Cancelar',
-    mh:'HISTORIAL',si:'Entrar',reg:'Registrarse',
-    profile:'Mi perfil',save:'Guardar',dname:'Nombre (5–16)',bio:'Bio',so:'Salir',
-    pa:'De nuevo',bm2:'Volver',
-    cm:'¡Jaque mate!',stale:'Ahogado.',resigned:'Te rendiste',bl:'¡Mejor suerte!',wb:'gana.',
-    np:'Sin jugadores.',on:'En línea',wl:'V/D',pvpD2:'Desafía a alguien:',
+    mh:'HISTORIAL',si:'Entrar',reg:'Registrarse',profile:'Mi perfil',save:'Guardar',dname:'Nombre',bio:'Bio',so:'Salir',
+    pa:'De nuevo',bm2:'Volver',cm:'¡Jaque mate!',stale:'Ahogado.',res:'Te rendiste',bl:'¡Mejor suerte!',wb:'gana.',
+    np:'Sin jugadores.',on:'En línea',wl:'V/D',pD2:'Desafía a alguien:',
     days:'días',today:'hoy',yesterday:'ayer',
-    reqSent:'¡Solicitud enviada!',alreadyF:'Ya son amigos.',alreadySent:'Ya enviada.',
-    accept:'Aceptar',decline:'Rechazar',noReqs:'Sin solicitudes.',
+    rSent:'¡Solicitud enviada!',alF:'Ya son amigos.',alS:'Ya enviada.',acc:'Aceptar',dec:'Rechazar',noRQ:'Sin solicitudes.',
+    rmConf:'¿Seguro que quieres eliminar a',as:'como amigo?',
   },
-  fr:{tag:"Maîtrisez l'échiquier",play:'Jouer',home:'Accueil',solo:'Solo',pvp:'PvP',comp:'Compétitif',friends:'Amis',freqs:'Demandes d\'amis',
-    eyebrow:'Prêt ?',htit:'À vous,',hspan:'Champion.',hsub:'Choisissez un mode.',
+  fr:{tag:"Maîtrisez l'échiquier",play:'Jouer',home:'Accueil',solo:'Solo',pvp:'PvP',comp:'Compétitif',friends:'Amis',freqs:"Demandes d'amis",
+    ey:'Prêt ?',ht:'À vous,',hs:'Champion.',hb:'Choisissez un mode.',
     wins:'Victoires',losses:'Défaites',pts:'Points',frnds:'Amis',joined:'Inscrit',lastOn:'Dernière connexion',
-    soloT:'Solo',soloD:"Larry n'a jamais perdu ce qu'il ne voulait pas perdre.",
-    pvpT:'PvP',pvpD:'Défiez des joueurs en ligne.',
-    compT:'Compétitif',compD:'Victoire +10. Défaite −5.',
-    wm:'Blancs jouent',bm:'Noirs jouent',ip:'En cours',
+    sT:'Solo',sD:"Larry n'a jamais perdu ce qu'il ne voulait pas perdre.",pT:'PvP',pD:'Défiez des joueurs en ligne.',
+    cT:'Compétitif',cD:'Victoire +10. Défaite −5.',wm:'Blancs jouent',bm:'Noirs jouent',ip:'En cours',
     draw:'½ Nulle',resign:'⚑ Abandonner',exit:'✕ Quitter',
     fm:'Chercher',fo:'Recherche…',sp:"Recherche d'adversaire",cancel:'Annuler',
-    mh:'HISTORIQUE',si:'Connexion',reg:"S'inscrire",
-    profile:'Mon profil',save:'Enregistrer',dname:'Nom (5–16)',bio:'Bio',so:'Déconnexion',
-    pa:'Rejouer',bm2:'Retour',
-    cm:'Échec et mat !',stale:'Pat !',resigned:'Abandon',bl:'Meilleure chance !',wb:'gagne.',
-    np:'Aucun joueur.',on:'En ligne',wl:'V/D',pvpD2:'Défiez un joueur :',
+    mh:'HISTORIQUE',si:'Connexion',reg:"S'inscrire",profile:'Mon profil',save:'Enregistrer',dname:'Nom',bio:'Bio',so:'Déconnexion',
+    pa:'Rejouer',bm2:'Retour',cm:'Échec et mat !',stale:'Pat !',res:'Abandon',bl:'Meilleure chance !',wb:'gagne.',
+    np:'Aucun joueur.',on:'En ligne',wl:'V/D',pD2:'Défiez un joueur :',
     days:'jours',today:"aujourd'hui",yesterday:'hier',
-    reqSent:'Demande envoyée !',alreadyF:'Déjà amis.',alreadySent:'Déjà envoyée.',
-    accept:'Accepter',decline:'Refuser',noReqs:'Aucune demande.',
+    rSent:'Demande envoyée !',alF:'Déjà amis.',alS:'Déjà envoyée.',acc:'Accepter',dec:'Refuser',noRQ:'Aucune demande.',
+    rmConf:'Supprimer',as:'de vos amis ?',
   },
   ru:{tag:'Мастер доски',play:'Играть',home:'Главная',solo:'Соло',pvp:'PvP',comp:'Соревнование',friends:'Друзья',freqs:'Заявки в друзья',
-    eyebrow:'Готов?',htit:'Ваш ход,',hspan:'Чемпион.',hsub:'Выберите режим.',
-    wins:'Победы',losses:'Поражения',pts:'Очки',frnds:'Друзья',joined:'Зарегистрирован',lastOn:'Последний раз онлайн',
-    soloT:'Соло',soloD:'Ларри не проигрывает то, что не хочет.',
-    pvpT:'PvP',pvpD:'Бросьте вызов игрокам онлайн.',
-    compT:'Соревнование',compD:'Победа +10. Поражение −5.',
-    wm:'Ход белых',bm:'Ход чёрных',ip:'Игра идёт',
+    ey:'Готов?',ht:'Ваш ход,',hs:'Чемпион.',hb:'Выберите режим.',
+    wins:'Победы',losses:'Поражения',pts:'Очки',frnds:'Друзья',joined:'Зарегистрирован',lastOn:'Последний онлайн',
+    sT:'Соло',sD:'Ларри не проигрывает то, что не хочет.',pT:'PvP',pD:'Вызовите игроков онлайн.',
+    cT:'Соревнование',cD:'Победа +10. Поражение −5.',wm:'Ход белых',bm:'Ход чёрных',ip:'Игра идёт',
     draw:'½ Ничья',resign:'⚑ Сдаться',exit:'✕ Выйти',
     fm:'Найти',fo:'Поиск…',sp:'Ищем игрока',cancel:'Отмена',
-    mh:'ИСТОРИЯ',si:'Войти',reg:'Регистрация',
-    profile:'Профиль',save:'Сохранить',dname:'Имя (5–16)',bio:'Био',so:'Выйти',
-    pa:'Снова',bm2:'Назад',
-    cm:'Шах и мат!',stale:'Пат!',resigned:'Сдались',bl:'Удачи!',wb:'побеждает!',
-    np:'Нет игроков.',on:'Онлайн',wl:'П/П',pvpD2:'Вызовите игрока:',
+    mh:'ИСТОРИЯ',si:'Войти',reg:'Регистрация',profile:'Профиль',save:'Сохранить',dname:'Имя',bio:'Био',so:'Выйти',
+    pa:'Снова',bm2:'Назад',cm:'Шах и мат!',stale:'Пат!',res:'Сдались',bl:'Удачи!',wb:'побеждает!',
+    np:'Нет игроков.',on:'Онлайн',wl:'П/П',pD2:'Вызовите игрока:',
     days:'дней назад',today:'сегодня',yesterday:'вчера',
-    reqSent:'Заявка отправлена!',alreadyF:'Уже друзья.',alreadySent:'Уже отправлена.',
-    accept:'Принять',decline:'Отклонить',noReqs:'Нет заявок.',
+    rSent:'Заявка отправлена!',alF:'Уже друзья.',alS:'Уже отправлена.',acc:'Принять',dec:'Отклонить',noRQ:'Нет заявок.',
+    rmConf:'Удалить',as:'из друзей?',
   },
   ar:{tag:'أتقن الرقعة',play:'العب',home:'الرئيسية',solo:'منفرد',pvp:'PvP',comp:'تنافسي',friends:'أصدقاء',freqs:'طلبات الصداقة',
-    eyebrow:'مستعد؟',htit:'دورك،',hspan:'بطل.',hsub:'اختر وضع اللعب.',
-    wins:'انتصارات',losses:'خسائر',pts:'نقاط',frnds:'أصدقاء',joined:'انضم',lastOn:'آخر ظهور',
-    soloT:'منفرد',soloD:'لاري لم يخسر ما لم يُرد خسارته.',
-    pvpT:'PvP',pvpD:'تحدّ لاعبين عبر الإنترنت.',
-    compT:'تنافسي',compD:'فوز +10. خسارة −5.',
-    wm:'دور الأبيض',bm:'دور الأسود',ip:'جارية',
-    draw:'½ تعادل',resign:'⚑ استسلام',exit:'✕ خروج',
-    fm:'بحث',fo:'جارٍ…',sp:'نبحث عن لاعب',cancel:'إلغاء',
-    mh:'السجل',si:'دخول',reg:'تسجيل',
-    profile:'الملف',save:'حفظ',dname:'الاسم (5–16)',bio:'نبذة',so:'خروج',
-    pa:'مجدداً',bm2:'رجوع',
-    cm:'كش مات!',stale:'تعادل!',resigned:'استسلمت',bl:'حظاً أوفر!',wb:'يفوز!',
-    np:'لا يوجد لاعبون.',on:'متصل',wl:'ف/خ',pvpD2:'تحدّ لاعباً:',
-    days:'أيام',today:'اليوم',yesterday:'أمس',
-    reqSent:'تم الإرسال!',alreadyF:'أصدقاء مسبقاً.',alreadySent:'تم الإرسال مسبقاً.',
-    accept:'قبول',decline:'رفض',noReqs:'لا طلبات.',
+    ey:'مستعد؟',ht:'دورك،',hs:'بطل.',hb:'اختر وضع اللعب.',wins:'انتصارات',losses:'خسائر',pts:'نقاط',frnds:'أصدقاء',joined:'انضم',lastOn:'آخر ظهور',
+    sT:'منفرد',sD:'لاري لم يخسر ما لم يُرد.',pT:'PvP',pD:'تحدّ لاعبين.',cT:'تنافسي',cD:'فوز +10. خسارة −5.',
+    wm:'دور الأبيض',bm:'دور الأسود',ip:'جارية',draw:'½ تعادل',resign:'⚑ استسلام',exit:'✕ خروج',
+    fm:'بحث',fo:'جارٍ…',sp:'نبحث',cancel:'إلغاء',mh:'السجل',si:'دخول',reg:'تسجيل',profile:'الملف',save:'حفظ',dname:'الاسم',bio:'نبذة',so:'خروج',
+    pa:'مجدداً',bm2:'رجوع',cm:'كش مات!',stale:'تعادل!',res:'استسلمت',bl:'حظاً أوفر!',wb:'يفوز!',
+    np:'لا يوجد لاعبون.',on:'متصل',wl:'ف/خ',pD2:'تحدّ لاعباً:',days:'أيام',today:'اليوم',yesterday:'أمس',
+    rSent:'تم الإرسال!',alF:'أصدقاء مسبقاً.',alS:'تم مسبقاً.',acc:'قبول',dec:'رفض',noRQ:'لا طلبات.',rmConf:'إزالة',as:'من الأصدقاء؟',
   },
   hi:{tag:'बोर्ड पर महारत',play:'खेलें',home:'होम',solo:'एकल',pvp:'PvP',comp:'प्रतिस्पर्धी',friends:'दोस्त',freqs:'मित्र अनुरोध',
-    eyebrow:'तैयार?',htit:'आपकी चाल,',hspan:'चैंपियन।',hsub:'एक मोड चुनें।',
-    wins:'जीत',losses:'हार',pts:'अंक',frnds:'दोस्त',joined:'शामिल हुए',lastOn:'अंतिम बार ऑनलाइन',
-    soloT:'एकल',soloD:'लैरी ने वो मैच नहीं हारा जो वो नहीं हारना चाहता था।',
-    pvpT:'PvP',pvpD:'ऑनलाइन खिलाड़ियों को चुनौती दें।',
-    compT:'प्रतिस्पर्धी',compD:'जीत +10। हार −5।',
-    wm:'सफ़ेद की बारी',bm:'काले की बारी',ip:'जारी है',
-    draw:'½ ड्रॉ',resign:'⚑ हार',exit:'✕ बाहर',
-    fm:'खोजें',fo:'खोज…',sp:'खिलाड़ी खोज रहे हैं',cancel:'रद्द',
-    mh:'इतिहास',si:'साइन इन',reg:'पंजीकरण',
-    profile:'प्रोफ़ाइल',save:'सहेजें',dname:'नाम (5–16)',bio:'बायो',so:'साइन आउट',
-    pa:'फिर खेलें',bm2:'वापस',
-    cm:'शह और मात!',stale:'पैट!',resigned:'हार मानी',bl:'शुभकामनाएं!',wb:'जीत!',
-    np:'कोई ऑनलाइन नहीं।',on:'ऑनलाइन',wl:'जी/ह',pvpD2:'चुनौती दें:',
-    days:'दिन पहले',today:'आज',yesterday:'कल',
-    reqSent:'अनुरोध भेजा!',alreadyF:'पहले से दोस्त।',alreadySent:'पहले से भेजा।',
-    accept:'स्वीकार',decline:'अस्वीकार',noReqs:'कोई अनुरोध नहीं।',
+    ey:'तैयार?',ht:'आपकी चाल,',hs:'चैंपियन।',hb:'एक मोड चुनें।',wins:'जीत',losses:'हार',pts:'अंक',frnds:'दोस्त',joined:'शामिल हुए',lastOn:'अंतिम बार ऑनलाइन',
+    sT:'एकल',sD:'लैरी ने वो मैच नहीं हारा।',pT:'PvP',pD:'ऑनलाइन खिलाड़ियों को चुनौती दें।',cT:'प्रतिस्पर्धी',cD:'जीत +10। हार −5।',
+    wm:'सफ़ेद की बारी',bm:'काले की बारी',ip:'जारी है',draw:'½ ड्रॉ',resign:'⚑ हार',exit:'✕ बाहर',
+    fm:'खोजें',fo:'खोज…',sp:'खिलाड़ी खोज',cancel:'रद्द',mh:'इतिहास',si:'साइन इन',reg:'पंजीकरण',profile:'प्रोफ़ाइल',save:'सहेजें',dname:'नाम',bio:'बायो',so:'साइन आउट',
+    pa:'फिर खेलें',bm2:'वापस',cm:'शह और मात!',stale:'पैट!',res:'हार मानी',bl:'शुभकामनाएं!',wb:'जीत!',
+    np:'कोई ऑनलाइन नहीं।',on:'ऑनलाइन',wl:'जी/ह',pD2:'चुनौती दें:',days:'दिन पहले',today:'आज',yesterday:'कल',
+    rSent:'अनुरोध भेजा!',alF:'पहले से दोस्त।',alS:'पहले से भेजा।',acc:'स्वीकार',dec:'अस्वीकार',noRQ:'कोई अनुरोध नहीं।',rmConf:'हटाएं',as:'को दोस्तों से?',
   },
-  pt:{tag:'Domine o tabuleiro',play:'Jogar',home:'Início',solo:'Solo',pvp:'PvP',comp:'Competitivo',friends:'Amigos',freqs:'Solicitações',
-    eyebrow:'Pronto?',htit:'Sua vez,',hspan:'Campeão.',hsub:'Escolha um modo.',
-    wins:'Vitórias',losses:'Derrotas',pts:'Pontos',frnds:'Amigos',joined:'Entrou em',lastOn:'Visto por último',
-    soloT:'Solo',soloD:'Larry nunca perdeu o que não queria perder.',
-    pvpT:'PvP',pvpD:'Desafie jogadores online.',
-    compT:'Competitivo',compD:'Ganhe +10. Perca −5.',
-    wm:'Brancas jogam',bm:'Pretas jogam',ip:'Em andamento',
-    draw:'½ Empate',resign:'⚑ Desistir',exit:'✕ Sair',
-    fm:'Buscar',fo:'Buscando…',sp:'Procurando jogador',cancel:'Cancelar',
-    mh:'HISTÓRICO',si:'Entrar',reg:'Cadastrar',
-    profile:'Meu perfil',save:'Salvar',dname:'Nome (5–16)',bio:'Bio',so:'Sair',
-    pa:'Jogar de novo',bm2:'Voltar',
-    cm:'Xeque-mate!',stale:'Empate!',resigned:'Desistiu',bl:'Boa sorte!',wb:'vence!',
-    np:'Nenhum jogador online.',on:'Online agora',wl:'V/D',pvpD2:'Desafie alguém:',
-    days:'dias atrás',today:'hoje',yesterday:'ontem',
-    reqSent:'Solicitação enviada!',alreadyF:'Já são amigos.',alreadySent:'Já enviada.',
-    accept:'Aceitar',decline:'Recusar',noReqs:'Sem solicitações.',
-  },
-  ur:{tag:'بورڈ پر مہارت',play:'کھیلیں',home:'ہوم',solo:'سولو',pvp:'PvP',comp:'مسابقتی',friends:'دوست',freqs:'دوستی کی درخواستیں',
-    eyebrow:'تیار؟',htit:'آپ کی باری،',hspan:'چیمپیئن۔',hsub:'ایک موڈ چنیں۔',
-    wins:'جیت',losses:'ہار',pts:'پوائنٹس',frnds:'دوست',joined:'شامل ہوئے',lastOn:'آخری بار آن لائن',
-    soloT:'سولو',soloD:'لیری نے وہ میچ نہیں ہارا جو وہ نہیں ہارنا چاہتا تھا۔',
-    pvpT:'PvP',pvpD:'آن لائن کھلاڑیوں کو چیلنج کریں۔',
-    compT:'مسابقتی',compD:'جیت +10۔ ہار −5۔',
-    wm:'سفید کی باری',bm:'سیاہ کی باری',ip:'جاری ہے',
-    draw:'½ ڈرا',resign:'⚑ ہار',exit:'✕ باہر',
-    fm:'تلاش',fo:'تلاش جاری…',sp:'کھلاڑی تلاش',cancel:'منسوخ',
-    mh:'تاریخ',si:'سائن ان',reg:'رجسٹر',
-    profile:'پروفائل',save:'محفوظ',dname:'نام (5–16)',bio:'بایو',so:'سائن آؤٹ',
-    pa:'دوبارہ',bm2:'واپس',
-    cm:'شہ مات!',stale:'ڈرا!',resigned:'ہار مانی',bl:'اگلی بار کامیابی!',wb:'جیت!',
-    np:'کوئی آن لائن نہیں۔',on:'آن لائن',wl:'ج/ہ',pvpD2:'چیلنج کریں:',
-    days:'دن پہلے',today:'آج',yesterday:'کل',
-    reqSent:'درخواست بھیجی!',alreadyF:'پہلے سے دوست۔',alreadySent:'پہلے سے بھیجی۔',
-    accept:'قبول',decline:'رد',noReqs:'کوئی درخواست نہیں۔',
-  },
-  fa:{tag:'تسلط بر صفحه',play:'بازی',home:'خانه',solo:'تکی',pvp:'PvP',comp:'رقابتی',friends:'دوستان',freqs:'درخواست‌های دوستی',
-    eyebrow:'آماده؟',htit:'نوبت توست،',hspan:'قهرمان.',hsub:'یک حالت انتخاب کن.',
-    wins:'برد',losses:'باخت',pts:'امتیاز',frnds:'دوستان',joined:'عضو از',lastOn:'آخرین آنلاین',
-    soloT:'تکی',soloD:'لری هرگز نباخت آنچه نمی‌خواست ببازد.',
-    pvpT:'PvP',pvpD:'با بازیکنان آنلاین رقابت کن.',
-    compT:'رقابتی',compD:'برد +10. باخت −5.',
-    wm:'نوبت سفید',bm:'نوبت سیاه',ip:'در جریان',
-    draw:'½ مساوی',resign:'⚑ تسلیم',exit:'✕ خروج',
-    fm:'جستجو',fo:'در حال جستجو…',sp:'دنبال بازیکن',cancel:'لغو',
-    mh:'تاریخچه',si:'ورود',reg:'ثبت‌نام',
-    profile:'پروفایل من',save:'ذخیره',dname:'نام (5–16)',bio:'بیو',so:'خروج',
-    pa:'دوباره بازی',bm2:'برگشت',
-    cm:'کیش و مات!',stale:'مات مساوی!',resigned:'تسلیم',bl:'موفق باشی!',wb:'برنده شد!',
-    np:'بازیکنی نیست.',on:'آنلاین',wl:'ب/ب',pvpD2:'چالش بده:',
-    days:'روز پیش',today:'امروز',yesterday:'دیروز',
-    reqSent:'درخواست ارسال شد!',alreadyF:'از قبل دوست هستید.',alreadySent:'قبلاً ارسال شده.',
-    accept:'قبول',decline:'رد',noReqs:'درخواستی نیست.',
+  pt:{tag:'Domine o tabuleiro',play:'Jogar',home:'Início',solo:'Solo',pvp:'PvP',comp:'Competitivo',friends:'Amigos',freqs:'Solicitações de amizade',
+    ey:'Pronto?',ht:'Sua vez,',hs:'Campeão.',hb:'Escolha um modo.',wins:'Vitórias',losses:'Derrotas',pts:'Pontos',frnds:'Amigos',joined:'Entrou',lastOn:'Visto por último',
+    sT:'Solo',sD:'Larry nunca perdeu o que não queria.',pT:'PvP',pD:'Desafie jogadores.',cT:'Competitivo',cD:'Ganhe +10. Perca −5.',
+    wm:'Brancas jogam',bm:'Pretas jogam',ip:'Em andamento',draw:'½ Empate',resign:'⚑ Desistir',exit:'✕ Sair',
+    fm:'Buscar',fo:'Buscando…',sp:'Procurando jogador',cancel:'Cancelar',mh:'HISTÓRICO',si:'Entrar',reg:'Cadastrar',profile:'Meu perfil',save:'Salvar',dname:'Nome',bio:'Bio',so:'Sair',
+    pa:'De novo',bm2:'Voltar',cm:'Xeque-mate!',stale:'Empate!',res:'Desistiu',bl:'Boa sorte!',wb:'vence!',
+    np:'Nenhum jogador.',on:'Online agora',wl:'V/D',pD2:'Desafie alguém:',days:'dias atrás',today:'hoje',yesterday:'ontem',
+    rSent:'Enviada!',alF:'Já são amigos.',alS:'Já enviada.',acc:'Aceitar',dec:'Recusar',noRQ:'Sem solicitações.',rmConf:'Remover',as:'dos amigos?',
   },
   sv:{tag:'Bemästra brädet',play:'Spela',home:'Hem',solo:'Solo',pvp:'PvP',comp:'Tävling',friends:'Vänner',freqs:'Vänförfrågningar',
-    eyebrow:'Redo?',htit:'Din tur,',hspan:'Mästare.',hsub:'Välj ett läge.',
-    wins:'Vinster',losses:'Förluster',pts:'Poäng',frnds:'Vänner',joined:'Gick med',lastOn:'Senast online',
-    soloT:'Solo',soloD:'Larry förlorade aldrig vad han inte ville förlora.',
-    pvpT:'PvP',pvpD:'Utmana online-spelare.',
-    compT:'Tävling',compD:'Vinst +10. Förlust −5.',
-    wm:'Vit spelar',bm:'Svart spelar',ip:'Pågår',
-    draw:'½ Remi',resign:'⚑ Ge upp',exit:'✕ Avsluta',
-    fm:'Hitta',fo:'Söker…',sp:'Söker spelare',cancel:'Avbryt',
-    mh:'DRAG',si:'Logga in',reg:'Registrera',
-    profile:'Min profil',save:'Spara',dname:'Namn (5–16)',bio:'Bio',so:'Logga ut',
-    pa:'Spela igen',bm2:'Tillbaka',
-    cm:'Schack matt!',stale:'Patt!',resigned:'Gav upp',bl:'Lycka till!',wb:'vinner!',
-    np:'Inga spelare online.',on:'Online nu',wl:'V/F',pvpD2:'Utmana en spelare:',
-    days:'dagar sedan',today:'idag',yesterday:'igår',
-    reqSent:'Förfrågan skickad!',alreadyF:'Redan vänner.',alreadySent:'Redan skickad.',
-    accept:'Acceptera',decline:'Neka',noReqs:'Inga förfrågningar.',
-  }
+    ey:'Redo?',ht:'Din tur,',hs:'Mästare.',hb:'Välj ett läge.',wins:'Vinster',losses:'Förluster',pts:'Poäng',frnds:'Vänner',joined:'Gick med',lastOn:'Senast online',
+    sT:'Solo',sD:'Larry förlorade aldrig vad han inte ville.',pT:'PvP',pD:'Utmana spelare online.',cT:'Tävling',cD:'Vinst +10. Förlust −5.',
+    wm:'Vit spelar',bm:'Svart spelar',ip:'Pågår',draw:'½ Remi',resign:'⚑ Ge upp',exit:'✕ Avsluta',
+    fm:'Hitta',fo:'Söker…',sp:'Söker spelare',cancel:'Avbryt',mh:'DRAG',si:'Logga in',reg:'Registrera',profile:'Min profil',save:'Spara',dname:'Namn',bio:'Bio',so:'Logga ut',
+    pa:'Spela igen',bm2:'Tillbaka',cm:'Schack matt!',stale:'Patt!',res:'Gav upp',bl:'Lycka till!',wb:'vinner!',
+    np:'Inga spelare.',on:'Online nu',wl:'V/F',pD2:'Utmana en spelare:',days:'dagar sedan',today:'idag',yesterday:'igår',
+    rSent:'Skickad!',alF:'Redan vänner.',alS:'Redan skickad.',acc:'Acceptera',dec:'Neka',noRQ:'Inga förfrågningar.',rmConf:'Ta bort',as:'från vänner?',
+  },
+  ur:{tag:'بورڈ پر مہارت',play:'کھیلیں',home:'ہوم',solo:'سولو',pvp:'PvP',comp:'مسابقتی',friends:'دوست',freqs:'دوستی کی درخواستیں',
+    ey:'تیار؟',ht:'آپ کی باری،',hs:'چیمپیئن۔',hb:'ایک موڈ چنیں۔',wins:'جیت',losses:'ہار',pts:'پوائنٹس',frnds:'دوست',joined:'شامل ہوئے',lastOn:'آخری بار آن لائن',
+    sT:'سولو',sD:'لیری نے وہ میچ نہیں ہارا جو وہ نہیں ہارنا چاہتا تھا۔',pT:'PvP',pD:'آن لائن چیلنج کریں۔',cT:'مسابقتی',cD:'جیت +10۔ ہار −5۔',
+    wm:'سفید کی باری',bm:'سیاہ کی باری',ip:'جاری ہے',draw:'½ ڈرا',resign:'⚑ ہار',exit:'✕ باہر',
+    fm:'تلاش',fo:'تلاش…',sp:'کھلاڑی تلاش',cancel:'منسوخ',mh:'تاریخ',si:'سائن ان',reg:'رجسٹر',profile:'پروفائل',save:'محفوظ',dname:'نام',bio:'بایو',so:'سائن آؤٹ',
+    pa:'دوبارہ',bm2:'واپس',cm:'شہ مات!',stale:'ڈرا!',res:'ہار مانی',bl:'اگلی بار!',wb:'جیت!',
+    np:'کوئی آن لائن نہیں۔',on:'آن لائن',wl:'ج/ہ',pD2:'چیلنج کریں:',days:'دن پہلے',today:'آج',yesterday:'کل',
+    rSent:'بھیجی!',alF:'پہلے سے دوست۔',alS:'پہلے بھیجی۔',acc:'قبول',dec:'رد',noRQ:'کوئی درخواست نہیں۔',rmConf:'ہٹائیں',as:'کو دوستوں سے؟',
+  },
+  fa:{tag:'تسلط بر صفحه',play:'بازی',home:'خانه',solo:'تکی',pvp:'PvP',comp:'رقابتی',friends:'دوستان',freqs:'درخواست‌های دوستی',
+    ey:'آماده؟',ht:'نوبت توست،',hs:'قهرمان.',hb:'یک حالت انتخاب کن.',wins:'برد',losses:'باخت',pts:'امتیاز',frnds:'دوستان',joined:'عضو از',lastOn:'آخرین آنلاین',
+    sT:'تکی',sD:'لری هرگز نباخت آنچه نمی‌خواست.',pT:'PvP',pD:'با بازیکنان آنلاین رقابت کن.',cT:'رقابتی',cD:'برد +10. باخت −5.',
+    wm:'نوبت سفید',bm:'نوبت سیاه',ip:'در جریان',draw:'½ مساوی',resign:'⚑ تسلیم',exit:'✕ خروج',
+    fm:'جستجو',fo:'در حال جستجو…',sp:'دنبال بازیکن',cancel:'لغو',mh:'تاریخچه',si:'ورود',reg:'ثبت‌نام',profile:'پروفایل من',save:'ذخیره',dname:'نام',bio:'بیو',so:'خروج',
+    pa:'دوباره',bm2:'برگشت',cm:'کیش و مات!',stale:'مات مساوی!',res:'تسلیم',bl:'موفق باشی!',wb:'برنده شد!',
+    np:'بازیکنی نیست.',on:'آنلاین',wl:'ب/ب',pD2:'چالش بده:',days:'روز پیش',today:'امروز',yesterday:'دیروز',
+    rSent:'ارسال شد!',alF:'از قبل دوست.',alS:'قبلاً ارسال شده.',acc:'قبول',dec:'رد',noRQ:'درخواستی نیست.',rmConf:'حذف',as:'از دوستان؟',
+  },
 };
 let lang='en';
 function t(k){return(TR[lang]&&TR[lang][k])||TR.en[k]||k;}
 
-// ═══ DATABASE ═══
+// ═══ DATABASE + SESSION PERSISTENCE ═══
 let DB={users:[],friends:{},requests:{},msgs:{}};
-function dbLoad(){try{const s=localStorage.getItem('cg_db2');if(s)DB=JSON.parse(s);DB.users.forEach(u=>{u.online=false;});}catch(e){}}
-function dbSave(){try{localStorage.setItem('cg_db2',JSON.stringify(DB));}catch(e){}}
-function uid(){return Date.now()+'_'+Math.random().toString(36).slice(2,8);}
+let me=null;
+let sidebarCollapsed=false;
+
+function dbLoad(){
+  try{
+    const s=localStorage.getItem('cg_db3');
+    if(s)DB=JSON.parse(s);
+    // Restore session
+    const sid=localStorage.getItem('cg_session');
+    if(sid){
+      const u=DB.users.find(x=>x.id===sid);
+      if(u){me={...u};u.online=true;}
+    }
+    // Mark all offline except current session
+    DB.users.forEach(u=>{if(u.id!==me?.id)u.online=false;});
+    if(me){const u=DB.users.find(x=>x.id===me.id);if(u)u.online=true;}
+    dbSave();
+  }catch(e){console.warn('DB load error',e);}
+}
+
+function dbSave(){
+  try{localStorage.setItem('cg_db3',JSON.stringify(DB));}catch(e){}
+}
+
+function sessionSave(){
+  if(me)localStorage.setItem('cg_session',me.id);
+  else localStorage.removeItem('cg_session');
+}
+
+function genID(){return Date.now()+'_'+Math.random().toString(36).slice(2,8);}
 function genTag(){let g;do{g='#'+String(Math.floor(Math.random()*9000000)+1000000);}while(DB.users.find(u=>u.tag===g));return g;}
-function fmtDate(ts){const d=new Date(ts);return d.toLocaleDateString();}
-function fmtOnline(ts){if(!ts)return t('today');const now=Date.now(),diff=Math.floor((now-ts)/(1000*60*60*24));if(diff===0)return t('today');if(diff===1)return t('yesterday');return diff+' '+t('days');}
+function fmtDate(ts){if(!ts)return'—';return new Date(ts).toLocaleDateString();}
+function fmtSeen(ts){if(!ts)return t('today');const d=Math.floor((Date.now()-ts)/(864e5));if(d===0)return t('today');if(d===1)return t('yesterday');return d+' '+t('days');}
 
 // ═══ AUTH ═══
-let me=null;
-
 function doLogin(){
-  const u=document.getElementById('lUser').value.trim(),p=document.getElementById('lPass').value;
-  const e=document.getElementById('lErr');e.classList.remove('on');
+  const u=document.getElementById('lU').value.trim(),p=document.getElementById('lP').value;
+  const e=document.getElementById('lE');e.classList.remove('on');
   if(!u||!p){e.textContent='Please fill in all fields.';e.classList.add('on');return;}
   const usr=DB.users.find(x=>x.name.toLowerCase()===u.toLowerCase());
   if(!usr){e.textContent='Username not found.';e.classList.add('on');return;}
   if(usr.password!==p){e.textContent='Incorrect password.';e.classList.add('on');return;}
   usr.online=true;usr.lastSeen=Date.now();dbSave();
-  me={...usr};cm('mLogin');updateTB();renderFL();updateReqBtn();
+  me={...usr};sessionSave();
+  cm('mL');updTB();renderFL();updRQ();
   showToast('Welcome back, '+usr.name+'!');
 }
 
 function doReg(){
-  const u=document.getElementById('rUser').value.trim();
-  const em=document.getElementById('rEmail').value.trim();
-  const p=document.getElementById('rPass').value;
-  const eu=document.getElementById('rUErr'),ee=document.getElementById('rEErr'),ep=document.getElementById('rPErr');
+  const u=document.getElementById('rU').value.trim();
+  const em=document.getElementById('rEm').value.trim();
+  const p=document.getElementById('rP').value;
+  const eu=document.getElementById('rUE'),ee=document.getElementById('rEE'),ep=document.getElementById('rPE');
   [eu,ee,ep].forEach(x=>x.classList.remove('on'));
   let ok=true;
   if(u.length<5||u.length>16){eu.textContent='Username must be 5–16 characters.';eu.classList.add('on');ok=false;}
   else if(DB.users.find(x=>x.name.toLowerCase()===u.toLowerCase())){eu.textContent='Username already taken.';eu.classList.add('on');ok=false;}
   if(!em||!/\S+@\S+\.\S+/.test(em)){ee.textContent='Valid email required.';ee.classList.add('on');ok=false;}
-  else if(DB.users.find(x=>x.email===em)){ee.textContent='Email already in use.';ee.classList.add('on');ok=false;}
+  else if(DB.users.find(x=>x.email===em)){ee.textContent='Email already registered.';ee.classList.add('on');ok=false;}
   if(p.length<6){ep.textContent='Password must be at least 6 characters.';ep.classList.add('on');ok=false;}
   if(!ok)return;
-  const tag=genTag(),id=uid(),now=Date.now();
+  const id=genID(),tag=genTag(),now=Date.now();
   const nu={id,name:u,tag,email:em,password:p,points:0,wins:0,losses:0,avatar:'♟',bio:'',online:true,joined:now,lastSeen:now};
   DB.users.push(nu);DB.friends[id]=[];DB.requests[id]=[];dbSave();
-  me={...nu};cm('mReg');updateTB();renderFL();updateReqBtn();
-  showToast('Welcome, '+u+'! Tag: '+tag);
+  me={...nu};sessionSave();
+  cm('mR');updTB();renderFL();updRQ();
+  showToast('Welcome, '+u+'! Your tag: '+tag);
 }
 
 function doLogout(){
   if(me){const u=DB.users.find(x=>x.id===me.id);if(u){u.online=false;u.lastSeen=Date.now();dbSave();}}
-  me=null;cm('mProf');updateTB();renderFL();updateReqBtn();showToast('Signed out.');showSect('home');
+  me=null;sessionSave();
+  cm('mPr');updTB();renderFL();updRQ();
+  showSect('home');showToast('Signed out.');
 }
 
-function reqAuth(cb){if(!me){om('mLogin');return;}cb();}
+function rA(cb){if(!me){om('mL');return;}cb();}
+function avH(user,sz){return`<span style="font-size:${Math.round(sz*.52)}px;line-height:1">${user?.avatar||'♟'}</span>`;}
 
-function avHTML(user,sz){return`<span style="font-size:${Math.round(sz*0.52)}px;line-height:1">${user?.avatar||'♟'}</span>`;}
-
-function updateTB(){
-  const el=document.getElementById('tbAuth');
+function updTB(){
+  const el=document.getElementById('tbA');
   if(me){
     el.innerHTML=`<div style="display:flex;align-items:center;gap:9px">
       <div class="pts-badge">⚡ ${me.points} ${t('pts')}</div>
       <div class="prof-btn" onclick="openProf()">
-        <div class="pav-sm">${avHTML(me,28)}</div>
-        <div><div class="pname-sm">${me.name}</div><div class="ptag-sm">${me.tag}</div></div>
+        <div class="pav-sm">${avH(me,26)}</div>
+        <div><div class="pn-sm">${me.name}</div><div class="pt-sm">${me.tag}</div></div>
       </div></div>`;
   }else{
-    el.innerHTML=`<div class="auth-bts"><button class="ab li" onclick="om('mLogin')">${t('si')}</button><button class="ab re" onclick="om('mReg')">${t('reg')}</button></div>`;
+    el.innerHTML=`<div class="auth-bts"><button class="ab li" onclick="om('mL')">${t('si')}</button><button class="ab re" onclick="om('mR')">${t('reg')}</button></div>`;
   }
 }
 
+// ═══ SIDEBAR COLLAPSE ═══
+function toggleSidebar(){
+  sidebarCollapsed=!sidebarCollapsed;
+  const sb=document.getElementById('sidebar');
+  const mn=document.getElementById('mainEl');
+  const btn=document.getElementById('colBtn');
+  sb.classList.toggle('collapsed',sidebarCollapsed);
+  mn.classList.toggle('collapsed',sidebarCollapsed);
+  btn.textContent=sidebarCollapsed?'▶':'◀';
+}
+
 // ═══ PROFILE ═══
-document.getElementById('pmBio').addEventListener('input',function(){document.getElementById('bioCC').textContent=this.value.length;});
+document.getElementById('pmB').addEventListener('input',function(){document.getElementById('bCC').textContent=this.value.length;});
 
 function openProf(){
   if(!me)return;
-  document.getElementById('mProfH').textContent=t('profile');
-  document.getElementById('pmSaveBtn').textContent=t('save');
-  document.getElementById('pmName').placeholder=t('dname');
-  document.getElementById('pmBio').placeholder=t('bio')+' (max 30)';
-  document.getElementById('pmName').value=me.name;
-  document.getElementById('pmBio').value=me.bio||'';
-  document.getElementById('bioCC').textContent=(me.bio||'').length;
-  document.getElementById('pmAv').innerHTML=avHTML(me,78);
+  document.getElementById('mPrH').textContent=t('profile');
+  document.getElementById('pmSvBtn').textContent=t('save');
+  document.getElementById('pmN').placeholder=t('dname')+' (5–16)';
+  document.getElementById('pmN').value=me.name;
+  document.getElementById('pmB').value=me.bio||'';
+  document.getElementById('bCC').textContent=(me.bio||'').length;
+  document.getElementById('pmAv').innerHTML=avH(me,76);
   document.getElementById('avPick').style.display='none';
-  const fcount=(DB.friends[me.id]||[]).length;
-  document.getElementById('pmStats').innerHTML=`
+  const fc=(DB.friends[me.id]||[]).length;
+  document.getElementById('pmSt').innerHTML=`
     <div class="ps"><div class="psn">${me.wins}</div><div class="psl">${t('wins')}</div></div>
     <div class="ps"><div class="psn">${me.losses}</div><div class="psl">${t('losses')}</div></div>
     <div class="ps"><div class="psn" style="color:var(--gold)">${me.points}</div><div class="psl">${t('pts')}</div></div>`;
   document.getElementById('pmMeta').innerHTML=`
-    <span>📅 ${t('joined')}: ${fmtDate(me.joined||Date.now())}</span>
-    <span>👥 ${t('frnds')}: ${fcount}</span>`;
-  om('mProf');
+    <span>📅 ${t('joined')}: ${fmtDate(me.joined)}</span>
+    <span>👥 ${t('frnds')}: ${fc}</span>`;
+  om('mPr');
 }
 
-function toggleAvPick(){const el=document.getElementById('avPick');el.style.display=el.style.display==='flex'?'none':'flex';}
-function setAv(e){me.avatar=e;document.getElementById('pmAv').innerHTML=avHTML(me,78);document.getElementById('avPick').style.display='none';const u=DB.users.find(x=>x.id===me.id);if(u){u.avatar=e;dbSave();}}
+function toggleAv(){const el=document.getElementById('avPick');el.style.display=el.style.display==='flex'?'none':'flex';}
+function setAv(e){me.avatar=e;document.getElementById('pmAv').innerHTML=avH(me,76);document.getElementById('avPick').style.display='none';const u=DB.users.find(x=>x.id===me.id);if(u){u.avatar=e;dbSave();}}
 
 function saveProf(){
-  const n=document.getElementById('pmName').value.trim().slice(0,16);
+  const n=document.getElementById('pmN').value.trim().slice(0,16);
   if(n.length<5){showToast('Name must be 5–16 characters',true);return;}
   if(DB.users.find(u=>u.name.toLowerCase()===n.toLowerCase()&&u.id!==me.id)){showToast('Username already taken',true);return;}
-  me.name=n;me.bio=document.getElementById('pmBio').value.trim().slice(0,30);
-  const u=DB.users.find(x=>x.id===me.id);if(u){u.name=n;u.bio=me.bio;u.avatar=me.avatar;dbSave();}
-  cm('mProf');updateTB();renderFL();showToast('Profile updated!');
+  me.name=n;me.bio=document.getElementById('pmB').value.trim().slice(0,30);
+  const u=DB.users.find(x=>x.id===me.id);
+  if(u){u.name=n;u.bio=me.bio;u.avatar=me.avatar;dbSave();}
+  cm('mPr');updTB();renderFL();showToast('Profile updated!');
 }
 
 function openFP(uid){
   const f=DB.users.find(x=>x.id===uid);if(!f)return;
-  document.getElementById('fpAv').innerHTML=avHTML(f,76);
-  document.getElementById('fpName').textContent=f.name;
-  document.getElementById('fpTag').textContent=f.tag;
+  document.getElementById('fpAv').innerHTML=avH(f,74);
+  document.getElementById('fpN').textContent=f.name;
+  document.getElementById('fpTg').textContent=f.tag;
   document.getElementById('fpBio').textContent=f.bio||'No bio yet.';
   const fc=(DB.friends[f.id]||[]).length;
-  document.getElementById('fpStats').innerHTML=`
+  document.getElementById('fpSt').innerHTML=`
     <div class="ps"><div class="psn">${f.wins}</div><div class="psl">${t('wins')}</div></div>
     <div class="ps"><div class="psn">${f.losses}</div><div class="psl">${t('losses')}</div></div>
     <div class="ps"><div class="psn" style="color:var(--gold)">${f.points}</div><div class="psl">${t('pts')}</div></div>`;
   document.getElementById('fpMeta').innerHTML=`
-    <span>📅 ${t('joined')}: ${fmtDate(f.joined||Date.now())}</span>
+    <span>📅 ${t('joined')}: ${fmtDate(f.joined)}</span>
     <span>👥 ${t('frnds')}: ${fc}</span>
-    <span>🕐 ${t('lastOn')}: ${fmtOnline(f.lastSeen)}</span>`;
+    <span>🕐 ${t('lastOn')}: ${fmtSeen(f.lastSeen)}</span>`;
   om('mFP');
 }
 
@@ -755,128 +788,127 @@ function swm(a,b){cm(a);om(b);}
 document.querySelectorAll('.ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');}));
 
 // ═══ FRIEND REQUESTS ═══
-function getFriends(){return(DB.friends[me?.id]||[]);}
-function getReqs(){return(DB.requests[me?.id]||[]);}// incoming request sender IDs
+function getFs(){return DB.friends[me?.id]||[];}
+function getRQs(){return DB.requests[me?.id]||[];}
 
-function sendFriendReq(toId){
+let pendingRemoveId=null;
+function askRemoveFriend(uid){
+  const f=DB.users.find(x=>x.id===uid);
+  if(!f)return;
+  pendingRemoveId=uid;
+  document.getElementById('cfTxt').textContent=`${t('rmConf')} "${f.name}" ${t('as')}`;
+  om('mCF');
+}
+function confirmRemove(){
+  if(!pendingRemoveId)return;
+  const uid=pendingRemoveId;pendingRemoveId=null;
+  DB.friends[me.id]=(DB.friends[me.id]||[]).filter(x=>x!==uid);
+  DB.friends[uid]=(DB.friends[uid]||[]).filter(x=>x!==me.id);
+  dbSave();renderFL();cm('mCF');showToast('Friend removed.');
+}
+
+function sendFReq(toId){
   if(!me)return;
-  if(getFriends().includes(toId)){showToast(t('alreadyF'));return;}
+  if(getFs().includes(toId)){showToast(t('alF'));return;}
   if(!DB.requests[toId])DB.requests[toId]=[];
-  if(DB.requests[toId].includes(me.id)){showToast(t('alreadySent'));return;}
-  DB.requests[toId].push(me.id);
-  dbSave();showToast(t('reqSent'));searchP();
+  if(DB.requests[toId].includes(me.id)){showToast(t('alS'));return;}
+  DB.requests[toId].push(me.id);dbSave();showToast(t('rSent'));searchP();
 }
 
-function acceptReq(fromId){
+function acceptRQ(fid){
   if(!me)return;
-  DB.requests[me.id]=(DB.requests[me.id]||[]).filter(x=>x!==fromId);
+  DB.requests[me.id]=(DB.requests[me.id]||[]).filter(x=>x!==fid);
   if(!DB.friends[me.id])DB.friends[me.id]=[];
-  if(!DB.friends[fromId])DB.friends[fromId]=[];
-  if(!DB.friends[me.id].includes(fromId))DB.friends[me.id].push(fromId);
-  if(!DB.friends[fromId].includes(me.id))DB.friends[fromId].push(me.id);
-  dbSave();renderFL();renderReqs();updateReqBtn();
-  const f=DB.users.find(x=>x.id===fromId);
-  showToast('Added '+(f?.name||'player')+' as friend!');
+  if(!DB.friends[fid])DB.friends[fid]=[];
+  if(!DB.friends[me.id].includes(fid))DB.friends[me.id].push(fid);
+  if(!DB.friends[fid].includes(me.id))DB.friends[fid].push(me.id);
+  dbSave();renderFL();renderRQ();updRQ();
+  const f=DB.users.find(x=>x.id===fid);showToast('Added '+(f?.name||'player')+'!');
 }
 
-function declineReq(fromId){
+function declineRQ(fid){
   if(!me)return;
-  DB.requests[me.id]=(DB.requests[me.id]||[]).filter(x=>x!==fromId);
-  dbSave();renderReqs();updateReqBtn();
+  DB.requests[me.id]=(DB.requests[me.id]||[]).filter(x=>x!==fid);
+  dbSave();renderRQ();updRQ();
 }
 
-function removeFriend(fid){
-  if(!me)return;
-  DB.friends[me.id]=(DB.friends[me.id]||[]).filter(x=>x!==fid);
-  DB.friends[fid]=(DB.friends[fid]||[]).filter(x=>x!==me.id);
-  dbSave();renderFL();showToast('Friend removed.');
-}
-
-function updateReqBtn(){
-  const btn=document.getElementById('reqsBtn');
-  const cnt=document.getElementById('reqCount');
-  const lbl=document.getElementById('reqsBtnTxt');
+function updRQ(){
+  const btn=document.getElementById('rqBtn');
+  const cnt=document.getElementById('rqCnt');
+  const lbl=document.getElementById('rqTxt');
   if(!me){btn.style.display='none';return;}
   btn.style.display='flex';
   lbl.textContent=t('freqs');
-  const n=getReqs().length;
+  const n=getRQs().length;
   cnt.style.display=n>0?'inline':'none';
   cnt.textContent=n;
 }
 
-function openAddF(){
-  document.getElementById('fsearch').value='';
-  document.getElementById('sResults').innerHTML='';
-  om('mAddF');
-}
+function openAF(){document.getElementById('fs').value='';document.getElementById('sR').innerHTML='';om('mAF');}
+function openRQ(){renderRQ();om('mRQ');}
 
-function openReqs(){
-  renderReqs();om('mReqs');
-}
-
-function renderReqs(){
-  const reqs=getReqs();
-  const el=document.getElementById('reqList');
-  if(!reqs.length){el.innerHTML=`<p style="color:var(--muted);text-align:center;padding:16px;font-size:0.9rem">${t('noReqs')}</p>`;return;}
+function renderRQ(){
+  const reqs=getRQs();
+  const el=document.getElementById('rqList');
+  if(!reqs.length){el.innerHTML=`<p style="color:var(--mu);text-align:center;padding:14px;font-size:0.88rem">${t('noRQ')}</p>`;return;}
   el.innerHTML=reqs.map(fid=>{
     const f=DB.users.find(x=>x.id===fid);if(!f)return'';
-    return`<div class="req-item">
-      <div class="fav">${avHTML(f,30)}</div>
-      <div class="req-info"><div class="req-name">${f.name}</div><div class="req-tag">${f.tag}</div></div>
-      <div class="req-acts">
-        <button class="btn btn-sm btn-gold" onclick="acceptReq('${fid}')">${t('accept')}</button>
-        <button class="btn btn-sm btn-outline" onclick="declineReq('${fid}')">${t('decline')}</button>
+    return`<div class="req-i">
+      <div class="fav">${avH(f,28)}</div>
+      <div class="req-info"><div class="req-n">${f.name}</div><div class="req-t">${f.tag}</div></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm btn-g" onclick="acceptRQ('${fid}')">${t('acc')}</button>
+        <button class="btn btn-sm btn-o" onclick="declineRQ('${fid}')">${t('dec')}</button>
       </div>
     </div>`;
   }).join('');
 }
 
 function searchP(){
-  const q=document.getElementById('fsearch').value.toLowerCase().trim();
-  const res=document.getElementById('sResults');
+  const q=document.getElementById('fs').value.toLowerCase().trim();
+  const res=document.getElementById('sR');
   if(!q){res.innerHTML='';return;}
   const found=DB.users.filter(u=>u.id!==me?.id&&(u.name.toLowerCase().includes(q)||u.tag.toLowerCase().includes(q)));
-  if(!found.length){res.innerHTML='<p style="color:var(--muted);padding:7px;font-size:0.88rem">No players found</p>';return;}
-  const myF=getFriends();const myReqs=DB.requests;
+  if(!found.length){res.innerHTML='<p style="color:var(--mu);padding:7px;font-size:0.86rem">No players found</p>';return;}
+  const myF=getFs();
   res.innerHTML=found.map(u=>{
-    const isFriend=myF.includes(u.id);
-    const sentReq=(myReqs[u.id]||[]).includes(me.id);
-    const label=isFriend?'✓ Friends':sentReq?'Sent':'Send Request';
-    return`<div class="sr-item">
-      <div class="fav" style="width:32px;height:32px">${avHTML(u,32)}</div>
-      <div class="sr-info"><div class="sr-name">${u.name}</div><div class="sr-tag">${u.tag} · ${u.points} pts</div></div>
-      ${!isFriend&&!sentReq?`<button class="send-btn" onclick="sendFriendReq('${u.id}')">${label}</button>`:`<span style="font-size:0.78rem;color:var(--muted)">${label}</span>`}
+    const isFr=myF.includes(u.id);
+    const sent=(DB.requests[u.id]||[]).includes(me.id);
+    return`<div class="sri">
+      <div class="fav" style="width:30px;height:30px">${avH(u,30)}</div>
+      <div style="flex:1"><div class="sri-n">${u.name}</div><div class="sri-t">${u.tag} · ${u.points} pts</div></div>
+      ${!isFr&&!sent?`<button class="sb" onclick="sendFReq('${u.id}')">Send Request</button>`:`<span style="font-size:0.76rem;color:var(--mu)">${isFr?'✓ Friends':'Sent'}</span>`}
     </div>`;
   }).join('');
 }
 
 // ═══ FRIENDS LIST ═══
-let dmTargetId=null,dmHist={};
+let dmTId=null,dmH={};
 
 function openDM(uid){
   const f=DB.users.find(x=>x.id===uid);if(!f)return;
-  dmTargetId=uid;
+  dmTId=uid;
   const k=me.id+'_'+uid;
-  if(!dmHist[k])dmHist[k]=[{from:'them',text:'Hey! Ready to play? 👑'}];
-  document.getElementById('dmTitle').textContent=f.name;
+  if(!dmH[k])dmH[k]=[{from:'them',text:'Hey! Ready to play? 👑'}];
+  document.getElementById('dmTi').textContent=f.name;
   renderDM();om('mDM');
 }
 
 function renderDM(){
-  const k=me.id+'_'+dmTargetId;
-  const el=document.getElementById('dmMsgs');
-  el.innerHTML=(dmHist[k]||[]).map(m=>`<div class="dm-m ${m.from==='me'?'mine':'theirs'}">${m.text}</div>`).join('');
+  const k=me.id+'_'+dmTId;
+  const el=document.getElementById('dmMs');
+  el.innerHTML=(dmH[k]||[]).map(m=>`<div class="dm-m ${m.from==='me'?'mine':'theirs'}">${m.text}</div>`).join('');
   el.scrollTop=el.scrollHeight;
 }
 
 function sendDm(){
-  const inp=document.getElementById('dmInp'),txt=inp.value.trim();
-  if(!txt||!dmTargetId)return;
-  const k=me.id+'_'+dmTargetId;
-  if(!dmHist[k])dmHist[k]=[];
-  dmHist[k].push({from:'me',text:txt});inp.value='';renderDM();
+  const inp=document.getElementById('dmIn'),txt=inp.value.trim();
+  if(!txt||!dmTId)return;
+  const k=me.id+'_'+dmTId;
+  if(!dmH[k])dmH[k]=[];
+  dmH[k].push({from:'me',text:txt});inp.value='';renderDM();
   const r=['Nice! ♟','GG!','Ready! 🎯','Let\'s go! ⚔️','Good luck! 🏆'];
-  setTimeout(()=>{dmHist[k].push({from:'them',text:r[Math.floor(Math.random()*r.length)]});renderDM();},700+Math.random()*600);
+  setTimeout(()=>{dmH[k].push({from:'them',text:r[Math.floor(Math.random()*r.length)]});renderDM();},700+Math.random()*600);
 }
 
 function chalFriend(uid){
@@ -888,21 +920,18 @@ function chalFriend(uid){
 
 function renderFL(){
   const el=document.getElementById('fList');
-  if(!me){el.innerHTML='<p style="color:#333;font-size:0.82rem;padding:6px 10px">Sign in to see friends</p>';return;}
-  const ids=getFriends();
-  if(!ids.length){el.innerHTML='<p style="color:#444;font-size:0.82rem;padding:6px 10px">No friends yet.</p>';return;}
+  if(!me){el.innerHTML='<p style="color:#333;font-size:0.82rem;padding:5px 9px">Sign in to see friends</p>';return;}
+  const ids=getFs();
+  if(!ids.length){el.innerHTML='<p style="color:#3a3a3a;font-size:0.82rem;padding:5px 9px">No friends yet.</p>';return;}
   const fs=ids.map(id=>DB.users.find(u=>u.id===id)).filter(Boolean);
   el.innerHTML=fs.map(f=>`
     <div class="friend-item">
-      <div class="fav" onclick="openFP('${f.id}')" title="${f.name}">${avHTML(f,30)}<div class="${f.online?'dot-on':'dot-off'}"></div></div>
-      <div class="finfo" onclick="openFP('${f.id}')">
-        <div class="fname">${f.name}</div>
-        <div class="ftag">${f.tag}</div>
-      </div>
+      <div class="fav" onclick="openFP('${f.id}')">${avH(f,28)}<div class="${f.online?'dot-on':'dot-off'}"></div></div>
+      <div class="finfo" onclick="openFP('${f.id}')"><div class="fname">${f.name}</div><div class="ftag">${f.tag}</div></div>
       <div class="fbtns">
         <button class="fib" onclick="openDM('${f.id}')" title="Message">💬</button>
         <button class="fib" onclick="chalFriend('${f.id}')" title="Challenge">⚔️</button>
-        <button class="fib rem" onclick="removeFriend('${f.id}')" title="Remove">✕</button>
+        <button class="fib rem" onclick="askRemoveFriend('${f.id}')" title="Remove">✕</button>
       </div>
     </div>`).join('');
 }
@@ -911,8 +940,8 @@ function renderFL(){
 function toggleLang(){document.getElementById('lgDD').classList.toggle('on');}
 function setLang(code,flag,name){
   lang=code;
-  document.getElementById('lgFlag').textContent=flag;
-  document.getElementById('lgName').textContent=name;
+  document.getElementById('lgFl').textContent=flag;
+  document.getElementById('lgNm').textContent=name;
   document.getElementById('lgDD').classList.remove('on');
   document.querySelectorAll('.lang-opt').forEach(o=>o.classList.remove('sel'));
   event.currentTarget.classList.add('sel');
@@ -922,49 +951,47 @@ document.addEventListener('click',e=>{if(!e.target.closest('.lang-sel'))document
 
 function applyLang(){
   document.getElementById('lgTag').textContent=t('tag');
-  document.getElementById('nvPlay').textContent=t('play');
-  document.getElementById('nvHome').textContent=t('home');
-  document.getElementById('nvSolo').textContent=t('solo');
-  document.getElementById('nvPvP').textContent=t('pvp');
-  document.getElementById('nvComp').textContent=t('comp');
-  document.getElementById('nvFriends').textContent=t('friends');
-  updateReqBtn();updateTB();renderFL();
+  document.getElementById('nvPl').textContent=t('play');
+  document.getElementById('nvHm').textContent=t('home');
+  document.getElementById('nvSo').textContent=t('solo');
+  document.getElementById('nvPV').textContent=t('pvp');
+  document.getElementById('nvCo').textContent=t('comp');
+  document.getElementById('nvFr').textContent=t('friends');
+  updRQ();updTB();renderFL();
   const c=document.getElementById('mainC');
-  if(curSect==='home')renderHome(c);
-  else if(curSect==='competitive')renderComp(c);
-  else if(curSect==='pvp')renderPvP(c);
-  const st=document.getElementById('statusT');if(st)st.textContent=G.turn==='w'?t('wm'):t('bm');
+  if(curS==='home')renderHome(c);
+  else if(curS==='competitive')renderComp(c);
+  else if(curS==='pvp')renderPvP(c);
+  const st=document.getElementById('stT');if(st)st.textContent=G.turn==='w'?t('wm'):t('bm');
 }
 
 // ═══ SECTIONS ═══
-let curSect='home';
+let curS='home';
 function showSect(s){
-  curSect=s;
+  curS=s;
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const nav=document.getElementById('nav-'+s);if(nav)nav.classList.add('active');
   const c=document.getElementById('mainC');
   if(s==='home')renderHome(c);
-  else if(s==='solo')reqAuth(()=>{document.getElementById('nav-solo').classList.add('active');startGame('solo',c);});
-  else if(s==='pvp')reqAuth(()=>{document.getElementById('nav-pvp').classList.add('active');renderPvP(c);});
-  else if(s==='competitive')reqAuth(()=>{document.getElementById('nav-competitive').classList.add('active');renderComp(c);});
+  else if(s==='solo')rA(()=>{document.getElementById('nav-solo').classList.add('active');startGame('solo',c);});
+  else if(s==='pvp')rA(()=>{document.getElementById('nav-pvp').classList.add('active');renderPvP(c);});
+  else if(s==='competitive')rA(()=>{document.getElementById('nav-competitive').classList.add('active');renderComp(c);});
 }
 
 function renderHome(c){
-  c.innerHTML=`<div class="home-wrap">
-    <div class="hw-hero">
-      <div class="hw-ey">${t('eyebrow')}</div>
-      <div class="hw-ti">${t('htit')} <span>${t('hspan')}</span></div>
-      <div class="hw-sub">${t('hsub')}</div>
-    </div>
-    ${me?`<div class="stats-bar">
-      <div class="sc"><div class="sn">${me.wins}</div><div class="sl">${t('wins')}</div></div>
-      <div class="sc"><div class="sn">${me.losses}</div><div class="sl">${t('losses')}</div></div>
-      <div class="sc"><div class="sn" style="color:var(--gold)">${me.points}</div><div class="sl">${t('pts')}</div></div>
+  c.innerHTML=`<div class="hw">
+    <div class="hey">${t('ey')}</div>
+    <div class="hti">${t('ht')} <span>${t('hs')}</span></div>
+    <div class="hsub">${t('hb')}</div>
+    ${me?`<div class="sbar">
+      <div class="schip"><div class="sn">${me.wins}</div><div class="sl">${t('wins')}</div></div>
+      <div class="schip"><div class="sn">${me.losses}</div><div class="sl">${t('losses')}</div></div>
+      <div class="schip"><div class="sn" style="color:var(--gold)">${me.points}</div><div class="sl">${t('pts')}</div></div>
     </div>`:''}
-    <div class="mgrid">
-      <div class="mcard" onclick="showSect('solo')"><div class="mc-icon">🤖</div><div class="mc-title">${t('soloT')}</div><div class="mc-desc">${t('soloD')}</div><div class="mc-arr">→</div></div>
-      <div class="mcard" onclick="showSect('pvp')"><div class="mc-icon">👥</div><div class="mc-title">${t('pvpT')}</div><div class="mc-desc">${t('pvpD')}</div><div class="mc-arr">→</div></div>
-      <div class="mcard mgrid-full" onclick="showSect('competitive')"><div class="mc-icon">🏆</div><div class="mc-title">${t('compT')}</div><div class="mc-desc">${t('compD')}</div><div class="mc-arr">→</div></div>
+    <div class="mg">
+      <div class="mc2" onclick="showSect('solo')"><div class="mc2-ic">🤖</div><div class="mc2-t">${t('sT')}</div><div class="mc2-d">${t('sD')}</div><div class="mc2-ar">→</div></div>
+      <div class="mc2" onclick="showSect('pvp')"><div class="mc2-ic">👥</div><div class="mc2-t">${t('pT')}</div><div class="mc2-d">${t('pD')}</div><div class="mc2-ar">→</div></div>
+      <div class="mc2 mg-full" onclick="showSect('competitive')"><div class="mc2-ic">🏆</div><div class="mc2-t">${t('cT')}</div><div class="mc2-d">${t('cD')}</div><div class="mc2-ar">→</div></div>
     </div>
   </div>`;
 }
@@ -973,32 +1000,26 @@ function getOnline(){return DB.users.filter(u=>u.id!==me?.id&&u.online);}
 
 function renderPvP(c){
   const online=getOnline();
-  const myF=getFriends();
-  const fo=online.filter(u=>myF.includes(u.id));
-  const oo=online.filter(u=>!myF.includes(u.id));
-  const all=[...fo,...oo];
+  const myF=getFs();
+  const all=[...online.filter(u=>myF.includes(u.id)),...online.filter(u=>!myF.includes(u.id))];
   c.innerHTML=`<div class="sect">
-    <div class="ptitle"><span>${t('pvpT')}</span></div>
-    <div class="psub">${t('pvpD2')}</div>
+    <div class="ptit"><span>${t('pT')}</span></div>
+    <div class="psub">${t('pD2')}</div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><div class="on-badge">${all.length} ${t('on')}</div></div>
-    ${all.length?`<div style="display:flex;flex-direction:column;gap:8px">${all.map(u=>`
-      <div class="ouc" onclick="startOnlinePvP('${u.id}')">
-        <div class="ouc-av">${avHTML(u,40)}</div>
-        <div class="ouc-info">
-          <div class="ouc-name">${u.name}${myF.includes(u.id)?' ★':''}</div>
-          <div class="ouc-tag">${u.tag}</div>
-          <div class="ouc-pts">${u.points} pts · W${u.wins}/L${u.losses}</div>
-        </div>
-        <div class="chal-badge">⚔ ${t('pvpT')}</div>
-      </div>`).join('')}</div>`:`<div style="text-align:center;padding:40px 0;color:var(--muted)">
+    ${all.length?`<div>${all.map(u=>`
+      <div class="ouc" onclick="startOPvP('${u.id}')">
+        <div class="ouc-av">${avH(u,38)}</div>
+        <div style="flex:1"><div class="ouc-n">${u.name}${myF.includes(u.id)?' ★':''}</div><div class="ouc-t">${u.tag}</div><div class="ouc-p">${u.points} pts · W${u.wins}/L${u.losses}</div></div>
+        <div class="cb">⚔ ${t('pT')}</div>
+      </div>`).join('')}</div>`:`<div style="text-align:center;padding:36px 0;color:var(--mu)">
         <div style="font-size:2.4rem;margin-bottom:12px">👥</div>
-        <div style="font-family:'Cinzel',serif;font-size:0.94rem;color:var(--gold);margin-bottom:8px">${t('np')}</div>
-        <div style="font-size:0.86rem">Register a second account in another browser tab to test PvP.</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold);margin-bottom:8px">${t('np')}</div>
+        <div style="font-size:0.84rem">Register a second account in another browser tab to test PvP.</div>
       </div>`}
   </div>`;
 }
 
-function startOnlinePvP(uid){
+function startOPvP(uid){
   const opp=DB.users.find(x=>x.id===uid);if(!opp)return;
   showToast('Challenge sent to '+opp.name+'!');
   setTimeout(()=>{showToast(opp.name+' accepted!');setTimeout(()=>startGame('pvp',document.getElementById('mainC'),opp.name),600);},1200);
@@ -1008,19 +1029,18 @@ function renderComp(c){
   const sorted=[...DB.users].sort((a,b)=>b.points-a.points);
   const rc=i=>i===0?'g':i===1?'s':i===2?'b':'';
   const rs=i=>i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
-  const online=getOnline();
   c.innerHTML=`<div class="sect">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:10px;flex-wrap:wrap">
-      <div><div class="ptitle">${t('compT')} <span>Ladder</span></div><div class="psub">${t('compD')}</div></div>
-      <button class="btn btn-gold" style="width:auto;padding:9px 22px;flex-shrink:0" onclick="startMM()">${t('fm')}</button>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:15px;gap:9px;flex-wrap:wrap">
+      <div><div class="ptit">${t('cT')} <span>Ladder</span></div><div class="psub">${t('cD')}</div></div>
+      <button class="btn btn-g" style="width:auto;padding:8px 20px;flex-shrink:0" onclick="startMM()">${t('fm')}</button>
     </div>
-    <table class="lbtbl">
+    <table class="lbt">
       <thead><tr><th>RANK</th><th>PLAYER</th><th>TAG</th><th>${t('wl')}</th><th>${t('pts').toUpperCase()}</th></tr></thead>
       <tbody>${sorted.map((u,i)=>`<tr>
         <td><span class="lbr ${rc(i)}">${rs(i)}</span></td>
-        <td class="${me&&u.id===me.id?'lby':''}">${u.online?'🟢 ':''}<b style="font-family:'Cinzel',serif;font-size:0.86rem">${u.name}</b>${me&&u.id===me.id?' (You)':''}</td>
-        <td style="color:var(--muted);font-size:0.78rem">${u.tag}</td>
-        <td style="color:var(--muted)">${u.wins}/${u.losses}</td>
+        <td class="${me&&u.id===me.id?'lby':''}">${u.online?'🟢 ':''}<b style="font-family:'Cinzel',serif;font-size:0.84rem">${u.name}</b>${me&&u.id===me.id?' (You)':''}</td>
+        <td style="color:var(--mu);font-size:0.76rem">${u.tag}</td>
+        <td style="color:var(--mu)">${u.wins}/${u.losses}</td>
         <td><span class="lbp">${u.points}</span></td>
       </tr>`).join('')}</tbody>
     </table>
@@ -1031,13 +1051,13 @@ function startMM(){
   const online=getOnline();
   const c=document.getElementById('mainC');
   if(!online.length){
-    c.innerHTML=`<div class="wait-area"><div style="font-size:2.4rem;margin-bottom:16px">🔍</div>
-      <div class="wt">${t('np')}</div><div class="ws">No other players are online right now.</div>
-      <button class="btn btn-outline" style="width:auto;margin:0 auto;display:block" onclick="renderComp(document.getElementById('mainC'))">${t('cancel')}</button>
+    c.innerHTML=`<div class="wa"><div style="font-size:2.4rem;margin-bottom:14px">🔍</div>
+      <div class="wt">${t('np')}</div><div class="ws">No other players online right now.</div>
+      <button class="btn btn-o" style="width:auto;margin:0 auto;display:block" onclick="renderComp(document.getElementById('mainC'))">${t('cancel')}</button>
     </div>`;return;
   }
-  c.innerHTML=`<div class="wait-area"><div class="wspin"></div><div class="wt">${t('fo')}</div><div class="ws">${t('sp')}</div>
-    <button class="btn btn-outline" style="width:auto;margin:0 auto;display:block" onclick="renderComp(document.getElementById('mainC'))">${t('cancel')}</button>
+  c.innerHTML=`<div class="wa"><div class="wspin"></div><div class="wt">${t('fo')}</div><div class="ws">${t('sp')}</div>
+    <button class="btn btn-o" style="width:auto;margin:0 auto;display:block" onclick="renderComp(document.getElementById('mainC'))">${t('cancel')}</button>
   </div>`;
   setTimeout(()=>{
     const opp=online[Math.floor(Math.random()*online.length)];
@@ -1046,36 +1066,82 @@ function startMM(){
   },2000);
 }
 
-// ═══════════════════════════════════════════
-// CHESS PIECES — Clean SVG from Wikimedia/Lichess standard
-// ═══════════════════════════════════════════
-const SV={
-  // WHITE pieces — white fill, black stroke
-  wK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#fff;stroke:#000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="M22.5 11.63V6M20 8h5" style="stroke-linejoin:miter"/><path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" style="stroke-linecap:butt;stroke-linejoin:miter"/><path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 6 10.5 6 10.5v7"/><path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" style="fill:none"/></g></svg>`,
-  wQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#fff;stroke:#000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="6" cy="12" r="2.75"/><circle cx="14" cy="9" r="2.75"/><circle cx="22.5" cy="8" r="2.75"/><circle cx="31" cy="9" r="2.75"/><circle cx="39" cy="12" r="2.75"/><path d="M9 26c8.5-8.5 15.5-4 16.5 0s7.5 8.5 16 0l-5-4L33 5l-6 8.5-3.5-9L20 13.5 14 5l-2.5 17z"/><path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-7 4-23 4-30 0z"/><path d="M11.5 30c3.5-1 18.5-1 22 0m-22 3.5c3.5-1 18.5-1 22 0" style="fill:none"/></g></svg>`,
-  wR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#fff;stroke:#000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="M9 39h27v-3H9v3zm3-3v-4h21v4H12zm-2-16v-9h25v9H10z" style="stroke-linecap:butt"/><path d="M11 14l3.5-3h15l3.5 3H11z" style="stroke-linecap:butt;stroke-linejoin:miter"/><path d="M14 11h3V8h-3v3zm9 0h3V8h-3v3z" style="stroke-linecap:butt"/><path d="M9 20h27" style="fill:none"/></g></svg>`,
-  wB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#fff;stroke:#000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><g style="stroke-linecap:butt"><path d="M9 36c3.4-1 10.1.4 13.5-2 3.4 2.4 10.1 1 13.5 2 0 0 1.7.5 3 2-.7 1-1.7 1-3 .5-3.4-1-10.1.5-13.5-1-3.4 1.5-10.1 0-13.5 1-1.4.5-2.3.5-3-.5 1.4-1.9 3-2 3-2z"/><path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z"/><path d="M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/></g><path d="M17.5 26h10M15 30h15" style="fill:none"/><path d="M22.5 15.5v5M20 18h5" style="fill:none;stroke-width:1"/></g></svg>`,
-  wN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#fff;stroke:#000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21"/><path d="M24 18c.38 5.12-4.8 5.79-7 10.5-.76 1.69-.5 3.9-2 4.5-1.21.59-4 .5-5.5 2.5-.13.9 1.5 2 1.5 2l-1 1.5c1 .5 4.5.5 5.5 0l.5-1.5h2c.5-1 .5-2 0-3l2-2.5c-3.5-2-2.5-11.5 1-15z"/><path d="M9.5 25.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" style="fill:#000"/><path d="M15 15.5a5 2.5 29 1 1-.1-.1z" style="fill:#000"/></g></svg>`,
-  wP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22.5 9a4 4 0 0 0 0 8 4 4 0 0 0 0-8zm-3 10c-3 1.3-5 4-5 7 0 1.5.5 3 1.4 4.1C13.5 31.3 11 34.7 11 39h23c0-4.3-2.5-7.7-4.9-8.9C30 29 30.5 27.5 30.5 26c0-3-2-5.7-5-7a5 5 0 0 0 1-3 5 5 0 0 0-10 0 5 5 0 0 0 1 3zm2.5 0h2a6.5 6.5 0 0 1 6.5 6 6 6 0 0 1-1.5 4h-12a6 6 0 0 1-1.5-4A6.5 6.5 0 0 1 22 19z" style="fill:#fff;stroke:#000;stroke-width:1.5;stroke-linecap:round"/></svg>`,
-  // BLACK pieces — dark fill, lighter stroke
-  bK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#1a1a1a;stroke:#888;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="M22.5 11.63V6M20 8h5" style="stroke-linejoin:miter;stroke:#ccc"/><path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" style="stroke-linecap:butt;stroke-linejoin:miter"/><path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 6 10.5 6 10.5v7"/><path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" style="fill:none;stroke:#777"/></g></svg>`,
-  bQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#1a1a1a;stroke:#888;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="6" cy="12" r="2.75"/><circle cx="14" cy="9" r="2.75"/><circle cx="22.5" cy="8" r="2.75"/><circle cx="31" cy="9" r="2.75"/><circle cx="39" cy="12" r="2.75"/><path d="M9 26c8.5-8.5 15.5-4 16.5 0s7.5 8.5 16 0l-5-4L33 5l-6 8.5-3.5-9L20 13.5 14 5l-2.5 17z"/><path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-7 4-23 4-30 0z"/><path d="M11.5 30c3.5-1 18.5-1 22 0m-22 3.5c3.5-1 18.5-1 22 0" style="fill:none;stroke:#777"/></g></svg>`,
-  bR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#1a1a1a;stroke:#888;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="M9 39h27v-3H9v3zm3-3v-4h21v4H12zm-2-16v-9h25v9H10z" style="stroke-linecap:butt"/><path d="M11 14l3.5-3h15l3.5 3H11z" style="stroke-linecap:butt;stroke-linejoin:miter"/><path d="M14 11h3V8h-3v3zm9 0h3V8h-3v3z" style="stroke-linecap:butt"/><path d="M9 20h27" style="fill:none"/></g></svg>`,
-  bB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#1a1a1a;stroke:#888;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><g style="stroke-linecap:butt"><path d="M9 36c3.4-1 10.1.4 13.5-2 3.4 2.4 10.1 1 13.5 2 0 0 1.7.5 3 2-.7 1-1.7 1-3 .5-3.4-1-10.1.5-13.5-1-3.4 1.5-10.1 0-13.5 1-1.4.5-2.3.5-3-.5 1.4-1.9 3-2 3-2z"/><path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z"/><path d="M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/></g><path d="M17.5 26h10M15 30h15" style="fill:none;stroke:#777"/><path d="M22.5 15.5v5M20 18h5" style="fill:none;stroke:#777;stroke-width:1"/></g></svg>`,
-  bN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g style="fill:#1a1a1a;stroke:#888;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21"/><path d="M24 18c.38 5.12-4.8 5.79-7 10.5-.76 1.69-.5 3.9-2 4.5-1.21.59-4 .5-5.5 2.5-.13.9 1.5 2 1.5 2l-1 1.5c1 .5 4.5.5 5.5 0l.5-1.5h2c.5-1 .5-2 0-3l2-2.5c-3.5-2-2.5-11.5 1-15z"/><path d="M9.5 25.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" style="fill:#ccc;stroke:#ccc"/><path d="M15 15.5a5 2.5 29 1 1-.1-.1z" style="fill:#ccc;stroke:none"/></g></svg>`,
-  bP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22.5 9a4 4 0 0 0 0 8 4 4 0 0 0 0-8zm-3 10c-3 1.3-5 4-5 7 0 1.5.5 3 1.4 4.1C13.5 31.3 11 34.7 11 39h23c0-4.3-2.5-7.7-4.9-8.9C30 29 30.5 27.5 30.5 26c0-3-2-5.7-5-7a5 5 0 0 0 1-3 5 5 0 0 0-10 0 5 5 0 0 0 1 3zm2.5 0h2a6.5 6.5 0 0 1 6.5 6 6 6 0 0 1-1.5 4h-12a6 6 0 0 1-1.5-4A6.5 6.5 0 0 1 22 19z" style="fill:#1a1a1a;stroke:#888;stroke-width:1.5;stroke-linecap:round"/></svg>`,
-};
+// ══════════════════════════════════════
+// CHESS PIECES — Clean, simple, solid SVG
+// Inspired by Chess.com style
+// White = light filled, Black = dark filled
+// ══════════════════════════════════════
+function makePieceSVG(type, isWhite) {
+  const fill = isWhite ? '#FFFFFF' : '#1C1C1C';
+  const stroke = isWhite ? '#222222' : '#999999';
+  const sw = '1.2';
+  const accent = isWhite ? '#EEEEEE' : '#444444';
 
-function mkPieceImg(p){
-  if(!SV[p])return null;
-  const img=document.createElement('img');
-  img.className='piece-img';
-  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(SV[p]);
-  img.draggable=false;
+  const shapes = {
+    P: `<ellipse cx="22.5" cy="34" rx="9" ry="4.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="19" y="28" width="7" height="7" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <ellipse cx="22.5" cy="19" rx="7" ry="7" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
+
+    R: `<rect x="9" y="33" width="27" height="5" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="11" y="22" width="23" height="11" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="13" y="13" width="19" height="10" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="9" y="10" width="5" height="6" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="18" y="10" width="9" height="6" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="31" y="10" width="5" height="6" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
+
+    N: `<ellipse cx="22.5" cy="35" rx="10" ry="3.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <path d="M16 32 C12 28 11 22 13 17 C15 12 20 8 25 7 C30 6 34 9 33 14 C32 18 27 20 26 24 C25 28 25 32 16 32Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <circle cx="19" cy="16" r="2" fill="${stroke}"/>
+        <path d="M22 22 C24 20 27 19 29 21" fill="none" stroke="${accent}" stroke-width="1.5"/>`,
+
+    B: `<ellipse cx="22.5" cy="35" rx="10" ry="3.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <path d="M22.5 8 C18 12 15 17 15 22 C15 28 18 31 22.5 32 C27 31 30 28 30 22 C30 17 27 12 22.5 8Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <circle cx="22.5" cy="10" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <line x1="15" y1="26" x2="30" y2="26" stroke="${accent}" stroke-width="1.2"/>
+        <line x1="22.5" y1="13" x2="22.5" y2="7" stroke="${stroke}" stroke-width="1"/>
+        <line x1="20" y1="9.5" x2="25" y2="9.5" stroke="${stroke}" stroke-width="1"/>`,
+
+    Q: `<ellipse cx="22.5" cy="35" rx="11" ry="4" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <path d="M13 28 C13 22 15 18 22.5 15 C30 18 32 22 32 28Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <circle cx="22.5" cy="10" r="3" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <circle cx="13" cy="14" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <circle cx="32" cy="14" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <circle cx="9" cy="20" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <circle cx="36" cy="20" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <path d="M9 20 L13 14 L22.5 10 L32 14 L36 20 L32 28 L13 28 Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
+
+    K: `<ellipse cx="22.5" cy="35" rx="11" ry="4" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <path d="M12 28 C12 20 16 16 22.5 14 C29 16 33 20 33 28Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="20" y="8" width="5" height="12" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <rect x="17" y="11" width="11" height="4" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
+        <path d="M12 28 L33 28" stroke="${accent}" stroke-width="1" fill="none"/>`,
+  };
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">${shapes[type]||''}</svg>`;
+}
+
+// Cache SVG data URLs
+const pieceCache = {};
+function getPieceSrc(code) {
+  if (pieceCache[code]) return pieceCache[code];
+  const isW = code[0] === 'w';
+  const type = code[1];
+  const svg = makePieceSVG(type, isW);
+  const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  pieceCache[code] = url;
+  return url;
+}
+
+function mkPImg(code) {
+  if (!code) return null;
+  const img = document.createElement('img');
+  img.className = 'piece-img';
+  img.src = getPieceSrc(code);
+  img.draggable = false;
   return img;
 }
 
-// ═══ GAME ═══
+// ═══ GAME STATE ═══
 function initB(){return[
   ['bR','bN','bB','bQ','bK','bB','bN','bR'],
   ['bP','bP','bP','bP','bP','bP','bP','bP'],
@@ -1088,12 +1154,11 @@ function initB(){return[
 ];}
 
 let G={b:null,turn:'w',sel:null,moves:[],lm:null,mode:null,opp:'',
-  cas:{wK:true,wRa:true,wRh:true,bK:true,bRa:true,bRh:true},
-  ep:null,promoCb:null,over:false,hm:0};
+  cas:{wK:1,wRa:1,wRh:1,bK:1,bRa:1,bRh:1},ep:null,prCb:null,over:false,hm:0};
 
 function startGame(mode,c,oppName){
   G={b:initB(),turn:'w',sel:null,moves:[],lm:null,mode,opp:oppName||(mode==='solo'?'Larry':'Opponent'),
-    cas:{wK:true,wRa:true,wRh:true,bK:true,bRa:true,bRh:true},ep:null,promoCb:null,over:false,hm:0};
+    cas:{wK:1,wRa:1,wRh:1,bK:1,bRa:1,bRh:1},ep:null,prCb:null,over:false,hm:0};
   openingUsed=null;
   renderGame(c);
 }
@@ -1105,19 +1170,21 @@ function renderGame(c){
     <div class="board-wrap">
       <div style="display:flex;align-items:flex-start">
         <div style="display:flex;flex-direction:column">${[8,7,6,5,4,3,2,1].map(r=>`<div class="rc">${r}</div>`).join('')}</div>
-        <div><div class="chess-board" id="board"></div>
-        <div style="display:flex">${'abcdefgh'.split('').map(f=>`<div class="fc">${f}</div>`).join('')}</div></div>
+        <div>
+          <div class="chess-board" id="board"></div>
+          <div style="display:flex">${'abcdefgh'.split('').map(f=>`<div class="fc">${f}</div>`).join('')}</div>
+        </div>
       </div>
     </div>
     <div class="ginfo">
       <div class="pcard"><div class="pcav ${isL?'lrr':'bp'}">${isL?'🤖':G.opp[0]?.toUpperCase()}</div>
-        <div class="pcinfo"><div class="pcname">${G.opp}</div><div class="pctag">${isL?'Bot · ~1800 Elo':'Online Player'}</div></div>
-        <div class="turn-ind" id="bTI" style="display:none">● Moving</div></div>
-      <div class="scard"><div class="stxt" id="statusT">${t('wm')}</div><div class="ssub">${t('ip')}</div></div>
+        <div class="pcinfo"><div class="pcn">${G.opp}</div><div class="pct">${isL?'Bot · ~1800 Elo':'Online Player'}</div></div>
+        <div class="ti" id="bTI" style="display:none">● Moving</div></div>
+      <div class="sc"><div class="st" id="stT">${t('wm')}</div><div class="ss">${t('ip')}</div></div>
       <div class="pcard"><div class="pcav wp">${pn[0]?.toUpperCase()}</div>
-        <div class="pcinfo"><div class="pcname">${pn}</div><div class="pctag">${pt}</div></div>
-        <div class="turn-ind" id="wTI">● Moving</div></div>
-      <div class="mhist"><h4>${t('mh')}</h4><div class="mlist" id="mList"></div></div>
+        <div class="pcinfo"><div class="pcn">${pn}</div><div class="pct">${pt}</div></div>
+        <div class="ti" id="wTI">● Moving</div></div>
+      <div class="mh"><h4>${t('mh')}</h4><div class="ml" id="mL"></div></div>
       <div class="gctrl">
         <button class="gbtn" onclick="offerDraw()">${t('draw')}</button>
         <button class="gbtn dng" onclick="resignG()">${t('resign')}</button>
@@ -1131,41 +1198,41 @@ function renderGame(c){
 function drawB(){
   const el=document.getElementById('board');if(!el)return;
   el.innerHTML='';
-  const pm=G.sel?lm(G.sel[0],G.sel[1]):[];
+  const pm=G.sel?lmoves(G.sel[0],G.sel[1]):[];
   for(let r=0;r<8;r++){
     for(let f=0;f<8;f++){
       const cell=document.createElement('div');
       cell.className='cell '+((r+f)%2===0?'lt':'dk');
-      if(G.sel&&G.sel[0]===r&&G.sel[1]===f)cell.classList.add('sel');
-      if(G.lm&&((G.lm.f[0]===r&&G.lm.f[1]===f)||(G.lm.t[0]===r&&G.lm.t[1]===f)))cell.classList.add('lm');
+      if(G.sel&&G.sel[0]===r&&G.sel[1]===f)cell.classList.add('sel-c');
+      if(G.lm&&((G.lm.f[0]===r&&G.lm.f[1]===f)||(G.lm.t[0]===r&&G.lm.t[1]===f)))cell.classList.add('lm-c');
       const isp=pm.some(m=>m[0]===r&&m[1]===f);
-      if(isp)cell.classList.add(G.b[r][f]&&G.b[r][f][0]!==G.turn?'cm':'pm');
-      if(G.b[r][f]===G.turn+'K'&&inChk(G.b,G.turn))cell.classList.add('ck');
-      const p=G.b[r][f];if(p){const img=mkPieceImg(p);if(img)cell.appendChild(img);}
-      cell.addEventListener('click',()=>clickCell(r,f));
+      if(isp)cell.classList.add(G.b[r][f]&&G.b[r][f][0]!==G.turn?'cm-c':'pm-c');
+      if(G.b[r][f]===G.turn+'K'&&inChk(G.b,G.turn))cell.classList.add('ck-c');
+      const p=G.b[r][f];if(p){const img=mkPImg(p);if(img)cell.appendChild(img);}
+      cell.addEventListener('click',()=>clkCell(r,f));
       el.appendChild(cell);
     }
   }
 }
 
-function clickCell(r,f){
+function clkCell(r,f){
   if(G.over)return;
   if(G.mode==='solo'&&G.turn==='b')return;
   const p=G.b[r][f];
   if(G.sel){
-    const[sr,sf]=G.sel,moves=lm(sr,sf);
-    if(moves.some(m=>m[0]===r&&m[1]===f)){mkMove(sr,sf,r,f);return;}
+    const[sr,sf]=G.sel,mv=lmoves(sr,sf);
+    if(mv.some(m=>m[0]===r&&m[1]===f)){mkMv(sr,sf,r,f);return;}
     if(p&&p[0]===G.turn){G.sel=[r,f];drawB();return;}
     G.sel=null;drawB();return;
   }
   if(p&&p[0]===G.turn){G.sel=[r,f];drawB();}
 }
 
-function mkMove(fr,ff,tr,tf,promo){
+function mkMv(fr,ff,tr,tf,promo){
   const piece=G.b[fr][ff],cap=G.b[tr][tf];
   const nb=G.b.map(r=>[...r]);
   if(piece[1]==='P'&&(tr===0||tr===7)){
-    if(!promo){showPromoM(G.turn,p=>mkMove(fr,ff,tr,tf,p));return;}
+    if(!promo){showPromoM(G.turn,p=>mkMv(fr,ff,tr,tf,p));return;}
     nb[tr][tf]=G.turn+promo;
   }else nb[tr][tf]=piece;
   nb[fr][ff]=null;
@@ -1173,34 +1240,29 @@ function mkMove(fr,ff,tr,tf,promo){
   if(piece[1]==='P'&&G.ep&&tr===G.ep[0]&&tf===G.ep[1])nb[fr][tf]=null;
   G.ep=null;
   if(piece[1]==='P'&&Math.abs(fr-tr)===2)G.ep=[(fr+tr)/2,tf];
-  if(piece==='wK')G.cas.wK=false;if(piece==='bK')G.cas.bK=false;
-  if(fr===7&&ff===0)G.cas.wRa=false;if(fr===7&&ff===7)G.cas.wRh=false;
-  if(fr===0&&ff===0)G.cas.bRa=false;if(fr===0&&ff===7)G.cas.bRh=false;
+  if(piece==='wK')G.cas.wK=0;if(piece==='bK')G.cas.bK=0;
+  if(fr===7&&ff===0)G.cas.wRa=0;if(fr===7&&ff===7)G.cas.wRh=0;
+  if(fr===0&&ff===0)G.cas.bRa=0;if(fr===0&&ff===7)G.cas.bRh=0;
   G.b=nb;G.lm={f:[fr,ff],t:[tr,tf]};G.sel=null;G.hm++;
   G.moves.push({c:G.turn,s:toAlg(piece,fr,ff,tr,tf,cap)});
   updMH();G.turn=G.turn==='w'?'b':'w';updTI();
-  const st=gStatus();if(st!=='playing'){endGame(st);return;}
+  const st=gStat();if(st!=='playing'){endGame(st);return;}
   drawB();
-  if(G.mode==='solo'&&G.turn==='b')setTimeout(larryM,350+Math.random()*550);
+  if(G.mode==='solo'&&G.turn==='b')setTimeout(larryM,340+Math.random()*530);
   else if((G.mode==='pvp'||G.mode==='competitive')&&G.turn==='b')setTimeout(simOpp,800+Math.random()*1100);
 }
 
-function simOpp(){if(G.over)return;const m=larryBest();if(m)mkMove(m.fr,m.ff,m.tr,m.tf);}
-
-function toAlg(p,fr,ff,tr,tf,cap){
-  const F='abcdefgh',cx=cap?'x':'';
-  if(p[1]==='P')return(cap?F[ff]+'x':'')+F[tf]+(8-tr);
-  return p[1]+cx+F[tf]+(8-tr);
-}
+function simOpp(){if(G.over)return;const m=larryBest();if(m)mkMv(m.fr,m.ff,m.tr,m.tf);}
+function toAlg(p,fr,ff,tr,tf,cap){const F='abcdefgh',cx=cap?'x':'';if(p[1]==='P')return(cap?F[ff]+'x':'')+F[tf]+(8-tr);return p[1]+cx+F[tf]+(8-tr);}
 
 function updMH(){
-  const el=document.getElementById('mList');if(!el)return;
-  let h='';for(let i=0;i<G.moves.length;i+=2){const n=Math.floor(i/2)+1,w=G.moves[i]?.s||'',b=G.moves[i+1]?.s||'';h+=`<div class="mrow"><span class="mnum">${n}.</span><span class="mw">${w}</span><span class="mb">${b}</span></div>`;}
+  const el=document.getElementById('mL');if(!el)return;
+  let h='';for(let i=0;i<G.moves.length;i+=2){const n=Math.floor(i/2)+1,w=G.moves[i]?.s||'',b=G.moves[i+1]?.s||'';h+=`<div class="mr"><span class="mn">${n}.</span><span class="mw">${w}</span><span class="mb">${b}</span></div>`;}
   el.innerHTML=h;el.scrollTop=el.scrollHeight;
 }
 
 function updTI(){
-  const wt=document.getElementById('wTI'),bt=document.getElementById('bTI'),st=document.getElementById('statusT');
+  const wt=document.getElementById('wTI'),bt=document.getElementById('bTI'),st=document.getElementById('stT');
   if(!wt||!bt||!st)return;
   if(G.turn==='w'){wt.style.display='block';bt.style.display='none';st.textContent=t('wm');}
   else{wt.style.display='none';bt.style.display='block';st.textContent=t('bm');}
@@ -1235,17 +1297,10 @@ function pseudoS(board,r,f){
   return mv;
 }
 
-function sqA(board,byC,r,f){
-  for(let rr=0;rr<8;rr++)for(let ff=0;ff<8;ff++){const p=board[rr][ff];if(!p||p[0]!==byC)continue;if(pseudoS(board,rr,ff).some(m=>m[0]===r&&m[1]===f))return true;}
-  return false;
-}
+function sqA(board,byC,r,f){for(let rr=0;rr<8;rr++)for(let ff=0;ff<8;ff++){const p=board[rr][ff];if(!p||p[0]!==byC)continue;if(pseudoS(board,rr,ff).some(m=>m[0]===r&&m[1]===f))return true;}return false;}
+function inChk(board,c){let kr,kf;for(let r=0;r<8;r++)for(let f=0;f<8;f++)if(board[r][f]===c+'K'){kr=r;kf=f;}return sqA(board,c==='w'?'b':'w',kr,kf);}
 
-function inChk(board,c){
-  let kr,kf;for(let r=0;r<8;r++)for(let f=0;f<8;f++)if(board[r][f]===c+'K'){kr=r;kf=f;}
-  return sqA(board,c==='w'?'b':'w',kr,kf);
-}
-
-function lm(r,f){
+function lmoves(r,f){
   const ps=pseudo(G.b,r,f),c=G.b[r][f][0];
   return ps.filter(([tr,tf])=>{
     const nb=G.b.map(row=>[...row]);
@@ -1261,12 +1316,11 @@ function allLM(board,color){
   return all;
 }
 
-function gStatus(){
+function gStat(){
   const legal=allLM(G.b,G.turn);
   if(!legal.length)return inChk(G.b,G.turn)?'checkmate':'stalemate';
   let ps=[];for(let r=0;r<8;r++)for(let f=0;f<8;f++)if(G.b[r][f])ps.push(G.b[r][f]);
-  if(ps.length===2)return'draw';
-  return'playing';
+  if(ps.length===2)return'draw';return'playing';
 }
 
 // ═══ LARRY AI ═══
@@ -1289,9 +1343,7 @@ function evalB(board){
     const p=board[r][f];if(!p)continue;
     const v=PV[p[1]]||0;
     const row=p[0]==='b'?r:7-r;
-    let pv=0;
-    if(p[1]==='K')pv=(eg?PST.Ke:PST.Km)[row]?.[f]||0;
-    else pv=(PST[p[1]]||[])[row]?.[f]||0;
+    let pv=p[1]==='K'?(eg?PST.Ke:PST.Km)[row]?.[f]||0:(PST[p[1]]||[])[row]?.[f]||0;
     sc+=p[0]==='b'?v+pv:-(v+pv);
   }
   return sc;
@@ -1299,29 +1351,29 @@ function evalB(board){
 
 function mmAB(board,depth,a,b,max,ep){
   if(depth===0)return evalB(board);
-  const c=max?'b':'w',savedEP=G.ep;G.ep=ep;
-  const mvs=allLM(board,c);G.ep=savedEP;
+  const c=max?'b':'w',sEP=G.ep;G.ep=ep;
+  const mvs=allLM(board,c);G.ep=sEP;
   if(!mvs.length)return inChk(board,c)?(max?-13000+depth:13000-depth):0;
   mvs.sort((x,y)=>{const ca=board[x.tr][x.tf]?PV[board[x.tr][x.tf][1]]||0:0,cb=board[y.tr][y.tf]?PV[board[y.tr][y.tf][1]]||0:0;return cb-ca;});
   if(max){
     let best=-Infinity;
     for(const m of mvs){
-      const nb=board.map(r=>[...r]);const pc=nb[m.fr][m.ff];const sEP=G.ep;
+      const nb=board.map(r=>[...r]);const pc=nb[m.fr][m.ff];const s2=G.ep;
       if(pc[1]==='P'&&G.ep&&m.tr===G.ep[0]&&m.tf===G.ep[1])nb[m.fr][m.tf]=null;
       const nEP=pc[1]==='P'&&Math.abs(m.fr-m.tr)===2?[(m.fr+m.tr)/2,m.tf]:null;
       if(pc[1]==='P'&&m.tr===7)nb[m.tr][m.tf]='bQ';else nb[m.tr][m.tf]=pc;nb[m.fr][m.ff]=null;
-      G.ep=nEP;const val=mmAB(nb,depth-1,a,b,false,nEP);G.ep=sEP;
+      G.ep=nEP;const val=mmAB(nb,depth-1,a,b,false,nEP);G.ep=s2;
       if(val>best)best=val;if(val>a)a=val;if(b<=a)break;
     }
     return best;
   }else{
     let best=Infinity;
     for(const m of mvs){
-      const nb=board.map(r=>[...r]);const pc=nb[m.fr][m.ff];const sEP=G.ep;
+      const nb=board.map(r=>[...r]);const pc=nb[m.fr][m.ff];const s2=G.ep;
       if(pc[1]==='P'&&G.ep&&m.tr===G.ep[0]&&m.tf===G.ep[1])nb[m.fr][m.tf]=null;
       const nEP=pc[1]==='P'&&Math.abs(m.fr-m.tr)===2?[(m.fr+m.tr)/2,m.tf]:null;
       if(pc[1]==='P'&&m.tr===0)nb[m.tr][m.tf]='wQ';else nb[m.tr][m.tf]=pc;nb[m.fr][m.ff]=null;
-      G.ep=nEP;const val=mmAB(nb,depth-1,a,b,true,nEP);G.ep=sEP;
+      G.ep=nEP;const val=mmAB(nb,depth-1,a,b,true,nEP);G.ep=s2;
       if(val<best)best=val;if(val<b)b=val;if(b<=a)break;
     }
     return best;
@@ -1340,57 +1392,45 @@ const OPENINGS=[
 ];
 let openingUsed=null;
 
-function getOBMove(){
+function getOBM(){
   if(!openingUsed)openingUsed=OPENINGS[Math.floor(Math.random()*OPENINGS.length)];
   const idx=G.moves.length;
   if(idx<openingUsed.length){
     const[fr,ff,tr,tf]=openingUsed[idx];
-    const legal=allLM(G.b,'b');
-    if(legal.find(m=>m.fr===fr&&m.ff===ff&&m.tr===tr&&m.tf===tf))return{fr,ff,tr,tf};
+    if(allLM(G.b,'b').find(m=>m.fr===fr&&m.ff===ff&&m.tr===tr&&m.tf===tf))return{fr,ff,tr,tf};
   }
   return null;
 }
 
 function larryBest(){
   const mvs=allLM(G.b,'b');if(!mvs.length)return null;
-  if(G.moves.length<16){const ob=getOBMove();if(ob)return ob;}
+  if(G.moves.length<16){const ob=getOBM();if(ob)return ob;}
   const depth=G.moves.length>32?2:3;
   const under=inChk(G.b,'b');
   const scored=[];
-  // Score all moves with minimax
   for(const m of mvs){
     const nb=G.b.map(r=>[...r]);const pc=nb[m.fr][m.ff];const sEP=G.ep;
     if(pc[1]==='P'&&G.ep&&m.tr===G.ep[0]&&m.tf===G.ep[1])nb[m.fr][m.tf]=null;
     const nEP=pc[1]==='P'&&Math.abs(m.fr-m.tr)===2?[(m.fr+m.tr)/2,m.tf]:null;
     if(pc[1]==='P'&&m.tr===7)nb[m.tr][m.tf]='bQ';else nb[m.tr][m.tf]=pc;nb[m.fr][m.ff]=null;
     G.ep=nEP;const score=mmAB(nb,depth-1,-Infinity,Infinity,false,nEP);G.ep=sEP;
-    // Penalise hanging pieces
     const hangs=sqA(nb,'w',m.tr,m.tf)&&(PV[pc[1]]||0)>150;
-    scored.push({...m,score:score-(hangs?120:0),pieceType:pc[1]});
+    scored.push({...m,score:score-(hangs?120:0),pt:pc[1]});
   }
   scored.sort((a,b)=>b.score-a.score);
-  const safe=scored.filter(m=>!m.hangs);
-  const pool=safe.length?safe:scored;
-
-  // Diversity: occasionally prefer different piece type
-  const lastPT=G.moves.length>0?null:null; // track last moved piece type
-  if(pool.length>1&&Math.random()<0.2){
-    const top=pool[0];
-    const alt=pool.slice(1).find(m=>m.pieceType!==top.pieceType&&top.score-m.score<50);
+  const safe=scored.filter(m=>!m.hangs),pool=safe.length?safe:scored;
+  if(pool.length>1&&Math.random()<0.22){
+    const alt=pool.slice(1).find(m=>m.pt!==pool[0].pt&&pool[0].score-m.score<50);
     if(alt)return alt;
   }
-
-  // Mistake injection
-  if(Math.random()<(under?0.03:0.06)&&pool.length>2){
-    return pool[1+Math.floor(Math.random()*Math.min(2,pool.length-1))];
-  }
-  const r=Math.random();
-  if(r<0.72||pool.length===1)return pool[0];
-  if(r<0.92||pool.length===2)return pool[1];
+  if(Math.random()<(under?0.03:0.06)&&pool.length>2)return pool[1+Math.floor(Math.random()*Math.min(2,pool.length-1))];
+  const rr=Math.random();
+  if(rr<0.72||pool.length===1)return pool[0];
+  if(rr<0.92||pool.length===2)return pool[1];
   return pool[Math.min(2,pool.length-1)];
 }
 
-function larryM(){if(G.over||G.turn!=='b')return;const m=larryBest();if(m)mkMove(m.fr,m.ff,m.tr,m.tf);}
+function larryM(){if(G.over||G.turn!=='b')return;const m=larryBest();if(m)mkMv(m.fr,m.ff,m.tr,m.tf);}
 
 // ═══ GAME EVENTS ═══
 function endGame(status){
@@ -1406,7 +1446,7 @@ function endGame(status){
       else{me.points=Math.max(0,me.points-5);me.losses++;}
       const u=DB.users.find(x=>x.id===me.id);
       if(u){u.points=me.points;u.wins=me.wins;u.losses=me.losses;dbSave();}
-      updateTB();showToast(youWon?'+10 '+t('pts'):'−5 '+t('pts'));
+      updTB();showToast(youWon?'+10 '+t('pts'):'−5 '+t('pts'));
     }
   }else if(status==='stalemate'){ti.textContent='Draw';em.textContent='🤝';de.textContent=t('stale');}
   else{ti.textContent='Draw';em.textContent='🤝';de.textContent='Draw agreed.';}
@@ -1417,13 +1457,13 @@ function offerDraw(){if(confirm(t('draw')+'?'))endGame('draw');}
 function resignG(){
   if(confirm(t('resign')+'?')){
     G.over=true;
-    document.getElementById('goTi').textContent=t('resigned');
+    document.getElementById('goTi').textContent=t('res');
     document.getElementById('goEm').textContent='🏳';
     document.getElementById('goDe').textContent=t('bl');
     if((G.mode==='competitive'||G.mode==='pvp')&&me){
       me.points=Math.max(0,me.points-5);me.losses++;
       const u=DB.users.find(x=>x.id===me.id);if(u){u.points=me.points;u.losses=me.losses;dbSave();}
-      updateTB();
+      updTB();
     }
     om('mGO');
   }
@@ -1431,16 +1471,16 @@ function resignG(){
 function playAgain(){cm('mGO');openingUsed=null;startGame(G.mode,document.getElementById('mainC'),G.opp);}
 function goHome(){cm('mGO');showSect('home');}
 
-// ═══ PROMO ═══
+// ═══ PROMOTION ═══
 function showPromoM(color,cb){
   const keys=color==='w'?['wQ','wR','wB','wN']:['bQ','bR','bB','bN'];
-  document.getElementById('promoPieces').innerHTML=keys.map(k=>`
-    <div class="promo-p" onclick="selPromo('${k[1]}')">
-      <img src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(SV[k])}" style="width:50px;height:50px"/>
+  document.getElementById('promoPcs').innerHTML=keys.map(k=>`
+    <div class="pp" onclick="selPromo('${k[1]}')">
+      <img src="${getPieceSrc(k)}" style="width:48px;height:48px"/>
     </div>`).join('');
-  G.promoCb=cb;om('mPromo');
+  G.prCb=cb;om('mPM');
 }
-function selPromo(tp){cm('mPromo');if(G.promoCb){G.promoCb(tp);G.promoCb=null;}}
+function selPromo(tp){cm('mPM');if(G.prCb){G.prCb(tp);G.prCb=null;}}
 
 // ═══ TOAST ═══
 let toastT;
@@ -1452,10 +1492,15 @@ function showToast(msg,err){
 
 // ═══ INIT ═══
 dbLoad();
-updateTB();
+updTB();
 renderFL();
-updateReqBtn();
+updRQ();
 showSect('home');
+
+// Save session on page unload
+window.addEventListener('beforeunload',()=>{
+  if(me){const u=DB.users.find(x=>x.id===me.id);if(u){u.lastSeen=Date.now();dbSave();}}
+});
 </script>
 </body>
 </html>
