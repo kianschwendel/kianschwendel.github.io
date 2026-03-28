@@ -471,7 +471,7 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
           <div class="lang-opt" onclick="setLang('ru','🇷🇺','Русский')">🇷🇺 Русский</div>
           <div class="lang-opt" onclick="setLang('ar','🇸🇦','العربية')">🇸🇦 العربية</div>
           <div class="lang-opt" onclick="setLang('hi','🇮🇳','हिन्दी')">🇮🇳 हिन्दी</div>
-          <div class="lang-opt" onclick="setLang('pt','🇧🇷','Português')">🇧🇷 Português</div>
+          <div class="lang-opt" onclick="setLang('pt','🇵🇹','Português')">🇵🇹 Português</div>
           <div class="lang-opt" onclick="setLang('ur','🇵🇰','اردو')">🇵🇰 اردو</div>
           <div class="lang-opt" onclick="setLang('fa','🇮🇷','فارسی')">🇮🇷 فارسی</div>
           <div class="lang-opt" onclick="setLang('sv','🇸🇪','Svenska')">🇸🇪 Svenska</div>
@@ -1025,20 +1025,66 @@ function startOPvP(uid){
   setTimeout(()=>{showToast(opp.name+' accepted!');setTimeout(()=>startGame('pvp',document.getElementById('mainC'),opp.name),600);},1200);
 }
 
+// ── Daily competitive game limit ──
+const MAX_COMP_GAMES = 20;
+
+function getTodayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+function getCompGamesLeft(){
+  if(!me) return MAX_COMP_GAMES;
+  const u = DB.users.find(x=>x.id===me.id);
+  if(!u) return MAX_COMP_GAMES;
+  const today = getTodayKey();
+  if(u.compDay !== today){
+    u.compDay = today;
+    u.compPlayed = 0;
+    dbSave();
+  }
+  return Math.max(0, MAX_COMP_GAMES - (u.compPlayed||0));
+}
+
+function incrementCompGames(){
+  if(!me) return;
+  const u = DB.users.find(x=>x.id===me.id);
+  if(!u) return;
+  const today = getTodayKey();
+  if(u.compDay !== today){ u.compDay = today; u.compPlayed = 0; }
+  u.compPlayed = (u.compPlayed||0) + 1;
+  me.compDay = u.compDay;
+  me.compPlayed = u.compPlayed;
+  dbSave();
+}
+
 function renderComp(c){
   const sorted=[...DB.users].sort((a,b)=>b.points-a.points);
   const rc=i=>i===0?'g':i===1?'s':i===2?'b':'';
   const rs=i=>i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+  const left = getCompGamesLeft();
+  const limitColor = left === 0 ? '#e55' : left <= 5 ? '#C9A84C' : '#4CAF50';
+
   c.innerHTML=`<div class="sect">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:15px;gap:9px;flex-wrap:wrap">
-      <div><div class="ptit">${t('cT')} <span>Ladder</span></div><div class="psub">${t('cD')}</div></div>
-      <button class="btn btn-g" style="width:auto;padding:8px 20px;flex-shrink:0" onclick="startMM()">${t('fm')}</button>
+    <div class="ptit">${t('cT')} <span>Ladder</span></div>
+    <div class="psub">${t('cD')}</div>
+
+    <div style="background:var(--d3);border:1px solid #1e1e1e;border-radius:14px;padding:28px;text-align:center;margin-bottom:22px">
+      <button class="btn btn-g" style="width:260px;padding:14px 28px;font-size:0.95rem;letter-spacing:0.1em;margin-bottom:10px" onclick="startMM()" ${left===0?'disabled':''}>
+        🔍 ${t('fm')}
+      </button>
+      <div style="font-size:0.82rem;color:${limitColor};font-weight:600">
+        ${left === 0
+          ? '⛔ Daily limit reached — resets at 00:00'
+          : `<span style="color:var(--mu)">Daily games remaining:</span> <span style="font-family:\'Cinzel\',serif">${left} / ${MAX_COMP_GAMES}</span>`}
+      </div>
     </div>
+
     <table class="lbt">
       <thead><tr><th>RANK</th><th>PLAYER</th><th>TAG</th><th>${t('wl')}</th><th>${t('pts').toUpperCase()}</th></tr></thead>
       <tbody>${sorted.map((u,i)=>`<tr>
         <td><span class="lbr ${rc(i)}">${rs(i)}</span></td>
-        <td class="${me&&u.id===me.id?'lby':''}">${u.online?'🟢 ':''}<b style="font-family:'Cinzel',serif;font-size:0.84rem">${u.name}</b>${me&&u.id===me.id?' (You)':''}</td>
+        <td class="${me&&u.id===me.id?'lby':''}">${u.online?'🟢 ':''}<b style="font-family:\'Cinzel\',serif;font-size:0.84rem">${u.name}</b>${me&&u.id===me.id?' (You)':''}</td>
         <td style="color:var(--mu);font-size:0.76rem">${u.tag}</td>
         <td style="color:var(--mu)">${u.wins}/${u.losses}</td>
         <td><span class="lbp">${u.points}</span></td>
@@ -1048,6 +1094,8 @@ function renderComp(c){
 }
 
 function startMM(){
+  const left = getCompGamesLeft();
+  if(left <= 0){ showToast('Daily limit reached! Resets at midnight.',true); return; }
   const online=getOnline();
   const c=document.getElementById('mainC');
   if(!online.length){
@@ -1066,67 +1114,146 @@ function startMM(){
   },2000);
 }
 
-// ══════════════════════════════════════
-// CHESS PIECES — Clean, simple, solid SVG
-// Inspired by Chess.com style
-// White = light filled, Black = dark filled
-// ══════════════════════════════════════
-function makePieceSVG(type, isWhite) {
-  const fill = isWhite ? '#FFFFFF' : '#1C1C1C';
-  const stroke = isWhite ? '#222222' : '#999999';
-  const sw = '1.2';
-  const accent = isWhite ? '#EEEEEE' : '#444444';
+// ══════════════════════════════════════════════════════════
+// CHESS PIECES — Detailed classic Staunton SVG
+// Fully hand-crafted paths matching traditional piece shapes
+// White: #fff fill, #000 stroke | Black: #1a1a1a fill, #bbb stroke
+// ══════════════════════════════════════════════════════════
+const PIECE_SVGS = {
+// ── PAWN ──
+wP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="22.5" cy="10.5" r="4.5"/>
+  <path d="M18 16c0-1 .5-2 1.5-2.5-1 .5-2.5 1.5-3.5 4s0 5 2 6.5l-4 7c-1 1.5-1.5 2.5-1.5 4h20c0-1.5-.5-2.5-1.5-4l-4-7c2-1.5 3-4 2-6.5s-2.5-3.5-3.5-4c1 .5 1.5 1.5 1.5 2.5z"/>
+  <path d="M11 39.5h23v-2H11v2z"/>
+</g></svg>`,
+bP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="22.5" cy="10.5" r="4.5"/>
+  <path d="M18 16c0-1 .5-2 1.5-2.5-1 .5-2.5 1.5-3.5 4s0 5 2 6.5l-4 7c-1 1.5-1.5 2.5-1.5 4h20c0-1.5-.5-2.5-1.5-4l-4-7c2-1.5 3-4 2-6.5s-2.5-3.5-3.5-4c1 .5 1.5 1.5 1.5 2.5z"/>
+  <path d="M11 39.5h23v-2H11v2z"/>
+</g></svg>`,
 
-  const shapes = {
-    P: `<ellipse cx="22.5" cy="34" rx="9" ry="4.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="19" y="28" width="7" height="7" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <ellipse cx="22.5" cy="19" rx="7" ry="7" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
+// ── ROOK ──
+wR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 39h27v-3H9v3z" stroke-linecap="butt"/>
+  <path d="M12 36v-4h21v4H12z" stroke-linecap="butt"/>
+  <path d="M12 32V19.5h21V32H12z" stroke-linecap="butt"/>
+  <path d="M14 19.5v-2.5h4v2.5M22 17v2.5M27 17v2.5h4v-2.5" stroke-linecap="butt"/>
+  <path d="M13 14l1.5-5.5h16L32 14H13z" stroke-linecap="round"/>
+  <path d="M9 12h27" fill="none" stroke-linecap="butt"/>
+  <rect x="13" y="9" width="4" height="3.5" rx="0.5"/>
+  <rect x="20.5" y="9" width="4" height="3.5" rx="0.5"/>
+  <rect x="28" y="9" width="4" height="3.5" rx="0.5"/>
+  <path d="M12 19.5h21" fill="none"/>
+  <path d="M12 32h21" fill="none"/>
+</g></svg>`,
+bR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 39h27v-3H9v3z" stroke-linecap="butt"/>
+  <path d="M12 36v-4h21v4H12z" stroke-linecap="butt"/>
+  <path d="M12 32V19.5h21V32H12z" stroke-linecap="butt"/>
+  <path d="M14 19.5v-2.5h4v2.5M22 17v2.5M27 17v2.5h4v-2.5" stroke-linecap="butt"/>
+  <path d="M13 14l1.5-5.5h16L32 14H13z" stroke-linecap="round"/>
+  <path d="M9 12h27" fill="none" stroke-linecap="butt"/>
+  <rect x="13" y="9" width="4" height="3.5" rx="0.5"/>
+  <rect x="20.5" y="9" width="4" height="3.5" rx="0.5"/>
+  <rect x="28" y="9" width="4" height="3.5" rx="0.5"/>
+  <path d="M12 19.5h21" fill="none" stroke="#888"/>
+  <path d="M12 32h21" fill="none" stroke="#888"/>
+</g></svg>`,
 
-    R: `<rect x="9" y="33" width="27" height="5" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="11" y="22" width="23" height="11" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="13" y="13" width="19" height="10" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="9" y="10" width="5" height="6" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="18" y="10" width="9" height="6" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="31" y="10" width="5" height="6" rx="1" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
+// ── KNIGHT ──
+wN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.5 39.5h26v-2h-26v2z" fill="#fff"/>
+  <path d="M11.5 37.5c0-4.5 9.5-5 9.5-5s5.5-1.5 8-8c0 0 .5 2.5 0 5-1.5 5-7 5-7 5l2 3" fill="#fff"/>
+  <path d="M11.5 37.5c0-4.5 9-5.5 9-5.5s.5-3.5 2-5.5c1.5-1.5 3-2 4.5-3.5 2-2 2.5-4 2-6.5 0-3-2-4.5-4-5.5-2-1-4-1.5-4-1.5s.5 2 .5 3.5c0 0-2.5-1-4.5.5-2.5 1.5-4.5 5-4.5 8.5" fill="#fff"/>
+  <path d="M20.5 19.5c.5 1 1 2 1.5 2.5" fill="none"/>
+  <path d="M22 22c-1 .5-2.5.5-3 1.5-.5 1 0 2 .5 3" fill="none"/>
+  <circle cx="16" cy="22" r="1.5" fill="#000" stroke="none"/>
+  <path d="M22.5 11.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#000" stroke="none"/>
+</g></svg>`,
+bN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="none" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9.5 39.5h26v-2h-26v2z" fill="#1a1a1a"/>
+  <path d="M11.5 37.5c0-4.5 9.5-5 9.5-5s5.5-1.5 8-8c0 0 .5 2.5 0 5-1.5 5-7 5-7 5l2 3" fill="#1a1a1a"/>
+  <path d="M11.5 37.5c0-4.5 9-5.5 9-5.5s.5-3.5 2-5.5c1.5-1.5 3-2 4.5-3.5 2-2 2.5-4 2-6.5 0-3-2-4.5-4-5.5-2-1-4-1.5-4-1.5s.5 2 .5 3.5c0 0-2.5-1-4.5.5-2.5 1.5-4.5 5-4.5 8.5" fill="#1a1a1a"/>
+  <path d="M20.5 19.5c.5 1 1 2 1.5 2.5" fill="none"/>
+  <path d="M22 22c-1 .5-2.5.5-3 1.5-.5 1 0 2 .5 3" fill="none"/>
+  <circle cx="16" cy="22" r="1.5" fill="#ddd" stroke="none"/>
+  <path d="M22.5 11.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#ddd" stroke="none"/>
+</g></svg>`,
 
-    N: `<ellipse cx="22.5" cy="35" rx="10" ry="3.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <path d="M16 32 C12 28 11 22 13 17 C15 12 20 8 25 7 C30 6 34 9 33 14 C32 18 27 20 26 24 C25 28 25 32 16 32Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <circle cx="19" cy="16" r="2" fill="${stroke}"/>
-        <path d="M22 22 C24 20 27 19 29 21" fill="none" stroke="${accent}" stroke-width="1.5"/>`,
+// ── BISHOP ──
+wB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 36c3.4-1 10.1.43 13.5-2 3.4 2.43 10.1 1 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.4-.97-10.1.46-13.5-1-3.4 1.46-10.1.03-13.5 1-1.35.49-2.32.47-3-.5 1.35-1.94 3-2 3-2z" fill="#fff" stroke-linecap="butt"/>
+  <path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z" fill="#fff"/>
+  <circle cx="22.5" cy="8" r="2.5" fill="#fff"/>
+  <path d="M17.5 26h10M15 30h15" stroke-linejoin="miter"/>
+  <path d="M22.5 15.5v5M20 18h5" stroke-width="1" stroke-linejoin="miter"/>
+</g></svg>`,
+bB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="none" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 36c3.4-1 10.1.43 13.5-2 3.4 2.43 10.1 1 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.4-.97-10.1.46-13.5-1-3.4 1.46-10.1.03-13.5 1-1.35.49-2.32.47-3-.5 1.35-1.94 3-2 3-2z" fill="#1a1a1a" stroke-linecap="butt"/>
+  <path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z" fill="#1a1a1a"/>
+  <circle cx="22.5" cy="8" r="2.5" fill="#1a1a1a"/>
+  <path d="M17.5 26h10M15 30h15" stroke="#888" stroke-linejoin="miter"/>
+  <path d="M22.5 15.5v5M20 18h5" stroke="#888" stroke-width="1" stroke-linejoin="miter"/>
+</g></svg>`,
 
-    B: `<ellipse cx="22.5" cy="35" rx="10" ry="3.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <path d="M22.5 8 C18 12 15 17 15 22 C15 28 18 31 22.5 32 C27 31 30 28 30 22 C30 17 27 12 22.5 8Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <circle cx="22.5" cy="10" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <line x1="15" y1="26" x2="30" y2="26" stroke="${accent}" stroke-width="1.2"/>
-        <line x1="22.5" y1="13" x2="22.5" y2="7" stroke="${stroke}" stroke-width="1"/>
-        <line x1="20" y1="9.5" x2="25" y2="9.5" stroke="${stroke}" stroke-width="1"/>`,
+// ── QUEEN ──
+wQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="6" cy="12" r="2.75"/>
+  <circle cx="14" cy="9" r="2.75"/>
+  <circle cx="22.5" cy="8" r="2.75"/>
+  <circle cx="31" cy="9" r="2.75"/>
+  <circle cx="39" cy="12" r="2.75"/>
+  <path d="M9 26c8.5-8.5 15.5-4 16.5 2h1.5c1-6 8-10.5 16-2l-5-4L33 5l-6.5 9L22.5 5l-4 9L11 5 9 22z"/>
+  <path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-7 4-23 4-30 0z"/>
+  <path d="M11.5 30c3.5-1 18.5-1 22 0" fill="none" stroke-linejoin="miter"/>
+</g></svg>`,
+bQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="6" cy="12" r="2.75"/>
+  <circle cx="14" cy="9" r="2.75"/>
+  <circle cx="22.5" cy="8" r="2.75"/>
+  <circle cx="31" cy="9" r="2.75"/>
+  <circle cx="39" cy="12" r="2.75"/>
+  <path d="M9 26c8.5-8.5 15.5-4 16.5 2h1.5c1-6 8-10.5 16-2l-5-4L33 5l-6.5 9L22.5 5l-4 9L11 5 9 22z"/>
+  <path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-7 4-23 4-30 0z"/>
+  <path d="M11.5 30c3.5-1 18.5-1 22 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
+</g></svg>`,
 
-    Q: `<ellipse cx="22.5" cy="35" rx="11" ry="4" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <path d="M13 28 C13 22 15 18 22.5 15 C30 18 32 22 32 28Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <circle cx="22.5" cy="10" r="3" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <circle cx="13" cy="14" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <circle cx="32" cy="14" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <circle cx="9" cy="20" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <circle cx="36" cy="20" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <path d="M9 20 L13 14 L22.5 10 L32 14 L36 20 L32 28 L13 28 Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
+// ── KING ──
+wK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22.5 11.63V6M20 8h5" stroke-linejoin="miter"/>
+  <path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+  <path d="M12.5 37c5.5 3.5 14.5 3.5 20 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 5 10 5 10V37z"/>
+  <path d="M12.5 30c5.5-3 14.5-3 20 0" fill="none" stroke-linejoin="miter"/>
+  <path d="M12.5 33.5c5.5-3 14.5-3 20 0" fill="none" stroke-linejoin="miter"/>
+  <path d="M12.5 37c5.5-3 14.5-3 20 0" fill="none" stroke-linejoin="miter"/>
+</g></svg>`,
+bK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+<g fill="#1a1a1a" stroke="#bbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22.5 11.63V6M20 8h5" stroke="#ccc" stroke-linejoin="miter"/>
+  <path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+  <path d="M12.5 37c5.5 3.5 14.5 3.5 20 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 5 10 5 10V37z"/>
+  <path d="M12.5 30c5.5-3 14.5-3 20 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
+  <path d="M12.5 33.5c5.5-3 14.5-3 20 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
+  <path d="M12.5 37c5.5-3 14.5-3 20 0" fill="none" stroke="#888" stroke-linejoin="miter"/>
+</g></svg>`,
+};
 
-    K: `<ellipse cx="22.5" cy="35" rx="11" ry="4" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <path d="M12 28 C12 20 16 16 22.5 14 C29 16 33 20 33 28Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="20" y="8" width="5" height="12" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <rect x="17" y="11" width="11" height="4" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>
-        <path d="M12 28 L33 28" stroke="${accent}" stroke-width="1" fill="none"/>`,
-  };
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">${shapes[type]||''}</svg>`;
-}
-
-// Cache SVG data URLs
 const pieceCache = {};
 function getPieceSrc(code) {
   if (pieceCache[code]) return pieceCache[code];
-  const isW = code[0] === 'w';
-  const type = code[1];
-  const svg = makePieceSVG(type, isW);
+  const svg = PIECE_SVGS[code];
+  if (!svg) return '';
   const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   pieceCache[code] = url;
   return url;
@@ -1441,15 +1568,25 @@ function endGame(status){
   if(status==='checkmate'){
     const winner=G.turn==='w'?'Black':'White',youWon=G.turn==='b';
     ti.textContent=t('cm');em.textContent=youWon?'🏆':'💀';de.textContent=winner+' '+t('wb');
-    if((G.mode==='competitive'||G.mode==='pvp')&&me){
+    // Only competitive mode gives/removes points
+    if(G.mode==='competitive'&&me){
+      incrementCompGames();
       if(youWon){me.points+=10;me.wins++;}
       else{me.points=Math.max(0,me.points-5);me.losses++;}
       const u=DB.users.find(x=>x.id===me.id);
       if(u){u.points=me.points;u.wins=me.wins;u.losses=me.losses;dbSave();}
       updTB();showToast(youWon?'+10 '+t('pts'):'−5 '+t('pts'));
+    } else if(G.mode==='competitive'&&me&&!youWon){
+      // count loss game too
+      incrementCompGames();
     }
-  }else if(status==='stalemate'){ti.textContent='Draw';em.textContent='🤝';de.textContent=t('stale');}
-  else{ti.textContent='Draw';em.textContent='🤝';de.textContent='Draw agreed.';}
+  }else if(status==='stalemate'){
+    ti.textContent='Draw';em.textContent='🤝';de.textContent=t('stale');
+    if(G.mode==='competitive'&&me) incrementCompGames();
+  }else{
+    ti.textContent='Draw';em.textContent='🤝';de.textContent='Draw agreed.';
+    if(G.mode==='competitive'&&me) incrementCompGames();
+  }
   om('mGO');
 }
 
@@ -1460,10 +1597,11 @@ function resignG(){
     document.getElementById('goTi').textContent=t('res');
     document.getElementById('goEm').textContent='🏳';
     document.getElementById('goDe').textContent=t('bl');
-    if((G.mode==='competitive'||G.mode==='pvp')&&me){
+    if(G.mode==='competitive'&&me){
+      incrementCompGames();
       me.points=Math.max(0,me.points-5);me.losses++;
       const u=DB.users.find(x=>x.id===me.id);if(u){u.points=me.points;u.losses=me.losses;dbSave();}
-      updTB();
+      updTB();showToast('−5 '+t('pts'));
     }
     om('mGO');
   }
