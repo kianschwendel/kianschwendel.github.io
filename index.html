@@ -251,14 +251,18 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
 .pmeta{font-size:0.82rem;color:var(--mu);margin-bottom:9px;display:flex;flex-direction:column;gap:4px;}
 .fpav{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 10px;border:2px solid var(--gold-d);}
 .fpbio{font-size:0.88rem;color:var(--mu);text-align:center;margin-bottom:11px;font-style:italic;min-height:17px;}
-.dm-msgs{max-height:165px;overflow-y:auto;margin:8px 0;display:flex;flex-direction:column;gap:5px;}
-.dm-m{padding:7px 11px;border-radius:8px;font-size:0.85rem;max-width:80%;}
-.dm-m.mine{background:rgba(201,168,76,0.12);border:1px solid var(--gold-d);align-self:flex-end;}
-.dm-m.theirs{background:var(--d5);align-self:flex-start;}
-.dm-row{display:flex;gap:6px;}
-.dm-row input{flex:1;margin-bottom:0;}
-.dm-send{background:var(--gold-d);border:none;border-radius:8px;color:var(--dark);padding:0 13px;cursor:pointer;font-size:0.92rem;font-weight:700;}
+.dm-msgs{flex:1;overflow-y:auto;margin:10px 0 8px;display:flex;flex-direction:column;padding:4px 2px;min-height:0;}
+.dm-msgs::-webkit-scrollbar{width:4px;}
+.dm-msgs::-webkit-scrollbar-thumb{background:#252525;border-radius:2px;}
+.dm-m{padding:9px 13px;border-radius:12px;font-size:0.88rem;word-break:break-word;}
+.dm-m.mine{background:rgba(201,168,76,0.15);border:1px solid var(--gold-d);color:var(--white);}
+.dm-m.theirs{background:var(--d5);color:var(--white);}
+.dm-row{display:flex;gap:8px;flex-shrink:0;}
+.dm-row input{flex:1;margin-bottom:0;border-radius:22px;padding:10px 16px;}
+.dm-send{background:var(--gold-d);border:none;border-radius:22px;color:var(--dark);padding:0 18px;cursor:pointer;font-size:1rem;font-weight:700;transition:background 0.18s;}
 .dm-send:hover{background:var(--gold);}
+/* DM modal override */
+#mDM .modal{padding:22px 24px;display:flex;flex-direction:column;}
 .confirm-btns{display:flex;gap:10px;margin-top:6px;}
 .pts-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(201,168,76,0.07);border:1px solid #252525;border-radius:18px;padding:3px 11px;font-family:'Cinzel',serif;font-size:0.78rem;color:var(--gold);font-weight:700;}
 .on-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.76rem;color:#4CAF50;font-weight:600;}
@@ -357,12 +361,12 @@ body{background:var(--dark);color:var(--white);font-family:'Inter',sans-serif;fo
   </div>
 </div></div>
 
-<div class="ov" id="mDM"><div class="modal">
-  <button class="mc" onclick="cm('mDM')">✕</button>
-  <h2 id="dmTi">Message</h2>
+<div class="ov" id="mDM"><div class="modal" style="width:600px;max-width:92vw;height:520px;display:flex;flex-direction:column;">
+  <button class="mc" onclick="cm('mDM');if(dmPollInterval){clearInterval(dmPollInterval);dmPollInterval=null;}">✕</button>
+  <h2 id="dmTi" style="text-align:left;margin-bottom:8px;font-size:0.95rem;border-bottom:1px solid #2a2a2a;padding-bottom:12px;flex-shrink:0"></h2>
   <div class="dm-msgs" id="dmMs"></div>
   <div class="dm-row">
-    <input type="text" id="dmIn" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendDm()"/>
+    <input type="text" id="dmIn" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendDm()" style="margin-bottom:0"/>
     <button class="dm-send" onclick="sendDm()">➤</button>
   </div>
 </div></div>
@@ -905,27 +909,113 @@ function searchP(){
   }).join('');
 }
 
-// ═══ DM ═══
-let dmTId=null,dmH={};
-function openDM(uid){
-  const f=DB.users.find(x=>x.id===uid);if(!f)return;
-  dmTId=uid;const k=me.id+'_'+uid;
-  if(!dmH[k])dmH[k]=[{from:'them',text:'Hey! Ready to play? 👑'}];
-  document.getElementById('dmTi').textContent=f.name;renderDM();om('mDM');
+// ═══ REAL CHAT — localStorage cross-tab messaging ═══
+const CHAT_KEY = 'cg_chats';
+let dmTId = null;
+let dmPollInterval = null;
+
+function chatLoad() {
+  try { return JSON.parse(localStorage.getItem(CHAT_KEY)||'{}'); } catch(e){ return {}; }
 }
-function renderDM(){
-  const k=me.id+'_'+dmTId,el=document.getElementById('dmMs');
-  el.innerHTML=(dmH[k]||[]).map(m=>`<div class="dm-m ${m.from==='me'?'mine':'theirs'}">${m.text}</div>`).join('');
-  el.scrollTop=el.scrollHeight;
+function chatSave(chats) {
+  try { localStorage.setItem(CHAT_KEY, JSON.stringify(chats)); } catch(e){}
 }
-function sendDm(){
-  const inp=document.getElementById('dmIn'),txt=inp.value.trim();
-  if(!txt||!dmTId)return;
-  const k=me.id+'_'+dmTId;if(!dmH[k])dmH[k]=[];
-  dmH[k].push({from:'me',text:txt});inp.value='';renderDM();
-  const r=['Nice! ♟','GG!','Ready! 🎯','Let\'s go! ⚔️','Good luck! 🏆'];
-  setTimeout(()=>{dmH[k].push({from:'them',text:r[Math.floor(Math.random()*r.length)]});renderDM();},700+Math.random()*600);
+function chatKey(a, b) {
+  // deterministic key: always sort the two IDs so both sides use same key
+  return [a,b].sort().join('::');
 }
+function chatGet(uid) {
+  const chats = chatLoad();
+  return chats[chatKey(me.id, uid)] || [];
+}
+function chatAppend(toId, text) {
+  const chats = chatLoad();
+  const k = chatKey(me.id, toId);
+  if(!chats[k]) chats[k] = [];
+  chats[k].push({ from: me.id, text, ts: Date.now() });
+  chatSave(chats);
+}
+
+function openDM(uid) {
+  const f = DB.users.find(x=>x.id===uid);
+  if(!f) return;
+  dmTId = uid;
+
+  // Big chat modal — replace standard small modal with full-screen style
+  const overlay = document.getElementById('mDM');
+  const modal = overlay.querySelector('.modal');
+  modal.style.width = '600px';
+  modal.style.maxWidth = '90vw';
+  modal.style.height = '520px';
+  modal.style.display = 'flex';
+  modal.style.flexDirection = 'column';
+
+  // header
+  const onlineStatus = f.online
+    ? `<span style="display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;color:#4CAF50"><span style="width:7px;height:7px;border-radius:50%;background:#4CAF50;display:inline-block"></span>Online</span>`
+    : `<span style="font-size:0.72rem;color:var(--mu)">Offline</span>`;
+  document.getElementById('dmTi').innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),#181818);display:flex;align-items:center;justify-content:center;font-size:0.9rem">${avH(f,36)}</div>
+      <div><div style="font-family:'Cinzel',serif;font-size:1rem;font-weight:700">${f.name}</div><div>${onlineStatus}</div></div>
+    </div>`;
+
+  renderDM();
+  om('mDM');
+
+  // Poll for new messages every 1.5s while chat is open
+  if(dmPollInterval) clearInterval(dmPollInterval);
+  dmPollInterval = setInterval(() => {
+    if(document.getElementById('mDM').classList.contains('on')) {
+      renderDM();
+    } else {
+      clearInterval(dmPollInterval);
+      dmPollInterval = null;
+    }
+  }, 1500);
+}
+
+function renderDM() {
+  if(!dmTId) return;
+  const msgs = chatGet(dmTId);
+  const el = document.getElementById('dmMs');
+  const wasAtBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 30;
+
+  el.innerHTML = msgs.length === 0
+    ? `<div style="text-align:center;color:var(--mu);padding:30px 0;font-size:0.88rem">No messages yet. Say hi! 👋</div>`
+    : msgs.map(m => {
+        const isMe = m.from === me.id;
+        const sender = DB.users.find(x=>x.id===m.from);
+        const name = isMe ? 'You' : (sender?.name || '?');
+        const time = new Date(m.ts).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+        return `<div style="display:flex;flex-direction:column;align-items:${isMe?'flex-end':'flex-start'};margin-bottom:10px">
+          <div style="font-size:0.68rem;color:var(--mu);margin-bottom:3px;padding:0 4px">${name} · ${time}</div>
+          <div class="dm-m ${isMe?'mine':'theirs'}" style="max-width:78%;word-break:break-word">${escHtml(m.text)}</div>
+        </div>`;
+      }).join('');
+
+  if(wasAtBottom || msgs.length <= 1) el.scrollTop = el.scrollHeight;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function sendDm() {
+  const inp = document.getElementById('dmIn');
+  const txt = inp.value.trim();
+  if(!txt || !dmTId) return;
+  chatAppend(dmTId, txt);
+  inp.value = '';
+  renderDM();
+}
+
+// Close chat cleanup
+document.getElementById('mDM').addEventListener('click', e => {
+  if(e.target === document.getElementById('mDM')) {
+    if(dmPollInterval) { clearInterval(dmPollInterval); dmPollInterval = null; }
+  }
+});
 function chalFriend(uid){
   const f=DB.users.find(x=>x.id===uid);if(!f)return;
   if(!f.online){showToast(f.name+' is offline.',true);return;}
@@ -1120,108 +1210,29 @@ function startMM(){
   },2000);
 }
 
-// ═══ CHESS PIECES — proper Staunton silhouettes ═══
-// Based on the classic Merida/Staunton set used by Chess.com
-// Clean filled shapes, no thin strokes, clear silhouettes
-const WF='#FFFFFF',WS='#1a1a1a'; // white fill, dark stroke
-const BF='#1a1a1a',BS='#cccccc'; // black fill, light stroke
-
-function mkSVG(body){return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">${body}</svg>`;}
+// ═══ CHESS PIECES — Classic Lichess cburnett style ═══
+// These are the original, recognizable classic Staunton SVG paths
+const WF='#FFFFFF',WS='#000000';
+const BF='#1a1a1a',BS='#bbbbbb';
 
 const PIECE_SVGS={
-// PAWN
-wP:mkSVG(`<path d="M22.5 9a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<path d="M19 17c-2 1.5-3 3.5-3 5.5 0 1.5.5 3 1.5 4l-3.5 7c-.5 1-.5 2-.5 2.5h18c0-.5 0-1.5-.5-2.5L27.5 26.5c1-1 1.5-2.5 1.5-4 0-2-1-4-3-5.5H19z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
-<rect x="11" y="36" width="23" height="3" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>`),
+wP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03C15.41 27.09 11 31.58 11 39.5H34c0-7.92-4.41-12.41-7.41-13.47C28.06 24.84 29 23.03 29 21c0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+bP:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03C15.41 27.09 11 31.58 11 39.5H34c0-7.92-4.41-12.41-7.41-13.47C28.06 24.84 29 23.03 29 21c0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linecap="round"/></svg>`,
 
-bP:mkSVG(`<path d="M22.5 9a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<path d="M19 17c-2 1.5-3 3.5-3 5.5 0 1.5.5 3 1.5 4l-3.5 7c-.5 1-.5 2-.5 2.5h18c0-.5 0-1.5-.5-2.5L27.5 26.5c1-1 1.5-2.5 1.5-4 0-2-1-4-3-5.5H19z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
-<rect x="11" y="36" width="23" height="3" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>`),
+wR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 39h27v-3H9v3zm3-3v-4h21v4H12zm-2-16v-9h5v2h3v-2h3v2h3v-2h3v2h5v9H10z" stroke-linecap="butt"/><path d="M12 36v-4h21v4H12zm-3-16h27m-27 5h27m-27 5h27" fill="none" stroke-linecap="butt"/></g></svg>`,
+bR:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 39h27v-3H9v3zm3-3v-4h21v4H12zm-2-16v-9h5v2h3v-2h3v2h3v-2h3v2h5v9H10z" stroke-linecap="butt"/><path d="M12 36v-4h21v4H12zm-3-16h27m-27 5h27m-27 5h27" fill="none" stroke="${BF}" stroke-linecap="butt"/></g></svg>`,
 
-// ROOK
-wR:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<rect x="11" y="20" width="23" height="16" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<rect x="13" y="15" width="19" height="6" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<rect x="9" y="9" width="5" height="7" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<rect x="20" y="9" width="5" height="7" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<rect x="31" y="9" width="5" height="7" rx="1" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<line x1="14" y1="15" x2="14" y2="20" stroke="${WS}" stroke-width="1.5"/>
-<line x1="31" y1="15" x2="31" y2="20" stroke="${WS}" stroke-width="1.5"/>`),
+wN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="none" stroke="${WS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21" fill="${WF}"/><path d="M24 18c.38 5.12-4.8 5.79-7 10.5-.76 1.69-.5 3.9-2 4.5-1.21.59-4 .5-5.5 2.5-.13.9 1.5 2 1.5 2l-1 1.5c1 .5 4.5.5 5.5 0l.5-1.5h2c.5-1 .5-2 0-3l2-2.5c-3.5-2-2.5-11.5 1-15z" fill="${WF}"/><path d="M9.5 25.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" fill="${WS}" stroke="${WS}"/><path d="M14.933 15.75a5.433 2.166 31.028 1 1-.002-.058" fill="${WS}" stroke="none"/></g></svg>`,
+bN:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="none" stroke="${BS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21" fill="${BF}"/><path d="M24 18c.38 5.12-4.8 5.79-7 10.5-.76 1.69-.5 3.9-2 4.5-1.21.59-4 .5-5.5 2.5-.13.9 1.5 2 1.5 2l-1 1.5c1 .5 4.5.5 5.5 0l.5-1.5h2c.5-1 .5-2 0-3l2-2.5c-3.5-2-2.5-11.5 1-15z" fill="${BF}"/><path d="M9.5 25.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" fill="${BS}" stroke="${BS}"/><path d="M14.933 15.75a5.433 2.166 31.028 1 1-.002-.058" fill="${BS}" stroke="none"/></g></svg>`,
 
-bR:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<rect x="11" y="20" width="23" height="16" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<rect x="13" y="15" width="19" height="6" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<rect x="9" y="9" width="5" height="7" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<rect x="20" y="9" width="5" height="7" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<rect x="31" y="9" width="5" height="7" rx="1" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<line x1="14" y1="15" x2="14" y2="20" stroke="${BS}" stroke-width="1.5"/>
-<line x1="31" y1="15" x2="31" y2="20" stroke="${BS}" stroke-width="1.5"/>`),
+wB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="none" stroke="${WS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g fill="${WF}" stroke-linecap="butt"><path d="M9 36c3.39-.97 10.11.43 13.5-2 3.39 2.43 10.11 1.03 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.39-.97-10.11.46-13.5-1-3.39 1.46-10.11.03-13.5 1-1.354.49-2.323.47-3-.5 1.354-1.94 3-2 3-2z"/><path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z"/><path d="M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/></g><path d="M17.5 26h10M15 30h15" stroke-linejoin="miter"/></g></svg>`,
+bB:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="none" stroke="${BS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g fill="${BF}" stroke-linecap="butt"><path d="M9 36c3.39-.97 10.11.43 13.5-2 3.39 2.43 10.11 1.03 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.39-.97-10.11.46-13.5-1-3.39 1.46-10.11.03-13.5 1-1.354.49-2.323.47-3-.5 1.354-1.94 3-2 3-2z"/><path d="M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z"/><path d="M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/></g><path d="M17.5 26h10M15 30h15" stroke="${BF}" stroke-linejoin="miter"/></g></svg>`,
 
-// KNIGHT
-wN:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<path d="M14 37c0 0 1-8 4-11 2-2 4-3 4-3s-2-2-2-5c0-3 2-5 5-6 3-1 6 0 7.5 2.5 1 1.5 1 4-.5 6-1 1.5-3 2-3 2s1 1 1 3c0 2-1 4-2.5 5.5L25 37H14z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
-<circle cx="27" cy="15" r="2" fill="${WS}"/>
-<path d="M16 26c1-2 3-3 4-5 1-2 0-4-.5-5.5" fill="none" stroke="${WS}" stroke-width="1"/>`),
+wQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.75"/><circle cx="14" cy="9" r="2.75"/><circle cx="22.5" cy="8" r="2.75"/><circle cx="31" cy="9" r="2.75"/><circle cx="39" cy="12" r="2.75"/><path d="M9 26c8.5-8.5 15.5-4 16.5 2h1c1-6 8-10.5 16-2l-5 4.5c-7-5.5-11.5-3.5-11.5 0s-4.5 5.5-11.5 0z"/><path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4"/><path d="M11.5 30c3.5-1 18.5-1 22 0" fill="none"/></g></svg>`,
+bQ:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.75"/><circle cx="14" cy="9" r="2.75"/><circle cx="22.5" cy="8" r="2.75"/><circle cx="31" cy="9" r="2.75"/><circle cx="39" cy="12" r="2.75"/><path d="M9 26c8.5-8.5 15.5-4 16.5 2h1c1-6 8-10.5 16-2l-5 4.5c-7-5.5-11.5-3.5-11.5 0s-4.5 5.5-11.5 0z"/><path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1 2.5-1 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4"/><path d="M11.5 30c3.5-1 18.5-1 22 0" fill="none" stroke="${BF}"/></g></svg>`,
 
-bN:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<path d="M14 37c0 0 1-8 4-11 2-2 4-3 4-3s-2-2-2-5c0-3 2-5 5-6 3-1 6 0 7.5 2.5 1 1.5 1 4-.5 6-1 1.5-3 2-3 2s1 1 1 3c0 2-1 4-2.5 5.5L25 37H14z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
-<circle cx="27" cy="15" r="2" fill="${BS}"/>
-<path d="M16 26c1-2 3-3 4-5 1-2 0-4-.5-5.5" fill="none" stroke="${BS}" stroke-width="1"/>`),
-
-// BISHOP
-wB:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<ellipse cx="22.5" cy="33" rx="10" ry="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<path d="M17 30c0 0 .5-4 2-7 1.5-3 3.5-6 3.5-8.5 0-2-1-3.5-1-3.5s1.5-1.5 1-3.5c-.5-1.5-1.5-2.5-2-3 1 0 2.5.5 3.5 1.5s2 2.5 2 4c0 2-1.5 4-1.5 4s2 1.5 3.5 4.5 2 9.5 2 9.5" fill="none" stroke="${WS}" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M15 30c0 0 2-3 7.5-3s7.5 3 7.5 3" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M14 30h17c0 0 1 0 2 2H12c1-2 2-2 2-2z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
-<circle cx="22.5" cy="8" r="2.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<line x1="22.5" y1="8" x2="22.5" y2="13" stroke="${WS}" stroke-width="1.5"/>
-<line x1="20" y1="10.5" x2="25" y2="10.5" stroke="${WS}" stroke-width="1.5"/>`),
-
-bB:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<ellipse cx="22.5" cy="33" rx="10" ry="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<path d="M17 30c0 0 .5-4 2-7 1.5-3 3.5-6 3.5-8.5 0-2-1-3.5-1-3.5s1.5-1.5 1-3.5c-.5-1.5-1.5-2.5-2-3 1 0 2.5.5 3.5 1.5s2 2.5 2 4c0 2-1.5 4-1.5 4s2 1.5 3.5 4.5 2 9.5 2 9.5" fill="none" stroke="${BS}" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M15 30c0 0 2-3 7.5-3s7.5 3 7.5 3" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M14 30h17c0 0 1 0 2 2H12c1-2 2-2 2-2z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
-<circle cx="22.5" cy="8" r="2.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<line x1="22.5" y1="8" x2="22.5" y2="13" stroke="${BS}" stroke-width="1.5"/>
-<line x1="20" y1="10.5" x2="25" y2="10.5" stroke="${BS}" stroke-width="1.5"/>`),
-
-// QUEEN
-wQ:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<path d="M9 30h27v5.5H9z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M22.5 8L9 30h27L22.5 8z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M9 30c0 0 3.5-2 13.5-2s13.5 2 13.5 2" fill="none" stroke="${WS}" stroke-width="1"/>
-<circle cx="6" cy="13" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<circle cx="13.5" cy="8" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<circle cx="22.5" cy="6.5" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<circle cx="31.5" cy="8" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<circle cx="39" cy="13" r="3" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<path d="M6 13L9 30M13.5 8L14 30M22.5 6.5L22.5 30M31.5 8L31 30M39 13L36 30" stroke="${WS}" stroke-width="1"/>`),
-
-bQ:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<path d="M9 30h27v5.5H9z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M22.5 8L9 30h27L22.5 8z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M9 30c0 0 3.5-2 13.5-2s13.5 2 13.5 2" fill="none" stroke="${BS}" stroke-width="1"/>
-<circle cx="6" cy="13" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<circle cx="13.5" cy="8" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<circle cx="22.5" cy="6.5" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<circle cx="31.5" cy="8" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<circle cx="39" cy="13" r="3" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<path d="M6 13L9 30M13.5 8L14 30M22.5 6.5L22.5 30M31.5 8L31 30M39 13L36 30" stroke="${BS}" stroke-width="1"/>`),
-
-// KING
-wK:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${WF}" stroke="${WS}" stroke-width="1.5"/>
-<path d="M9 30h27v5.5H9z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M12 30c0 0 0-12 10.5-15C33 18 33 30 33 30H12z" fill="${WF}" stroke="${WS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M22.5 5v12M17 11h11" stroke="${WS}" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M12 30c0 0 3-3 10.5-3s10.5 3 10.5 3" fill="none" stroke="${WS}" stroke-width="1"/>`),
-
-bK:mkSVG(`<rect x="9" y="36" width="27" height="3.5" rx="1.5" fill="${BF}" stroke="${BS}" stroke-width="1.5"/>
-<path d="M9 30h27v5.5H9z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M12 30c0 0 0-12 10.5-15C33 18 33 30 33 30H12z" fill="${BF}" stroke="${BS}" stroke-width="1.5" stroke-linejoin="round"/>
-<path d="M22.5 5v12M17 11h11" stroke="${BS}" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M12 30c0 0 3-3 10.5-3s10.5 3 10.5 3" fill="none" stroke="${BS}" stroke-width="1"/>`),
+wK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="none" stroke="${WS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 11.63V6M20 8h5" stroke-linejoin="miter"/><path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" fill="${WF}" stroke-linecap="butt" stroke-linejoin="miter"/><path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 5 10 5 10V37z" fill="${WF}"/><path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" fill="none"/></g></svg>`,
+bK:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="none" stroke="${BS}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 11.63V6M20 8h5" stroke="${BS}" stroke-linejoin="miter"/><path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" fill="${BF}" stroke-linecap="butt" stroke-linejoin="miter"/><path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V17c-2.5-7.5-12-10.5-16-4-3 6 5 10 5 10V37z" fill="${BF}"/><path d="M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0" fill="none" stroke="${BS}"/></g></svg>`,
 };
 
 const pCache={};
